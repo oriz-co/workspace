@@ -39,6 +39,7 @@ If you're an agent reading this for the first time, start with:
 | [`policy/`](./policy/) | Age-gating, public/private line, monetisation, ingester contract, etc. | 11 |
 | [`runbooks/`](./runbooks/) | Step-by-step actionable sequences (auth setup, add a site, etc.) | 4 |
 | [`glossary/`](./glossary/) | Definitions of family-specific terms | 28 |
+| [`sites/`](./sites/) | Per-site bundles (concepts that only apply to one site) | varies |
 
 **Total: 164 concept files + 3 root files (`_okf.md`, this file, `log.md`).**
 
@@ -47,12 +48,11 @@ limit is enforced in `_okf.md`'s convention rules.
 
 ## Per-site knowledge
 
-Every submodule has its own `knowledge/` for site-specific concepts.
-The master `oriz/knowledge/` (this file) holds family-wide facts.
-When in doubt: family-wide goes here, site-specific goes there.
+Per-site bundles live under [`sites/<site>/`](./sites/) — same OKF contract, just scoped to one site. As of 2026-06-20 every per-site bundle is folded into this family bundle (no second `knowledge/` lives inside any submodule). Family-wide goes here at the root; site-specific goes under `sites/<site>/`.
 
 Currently populated per-site bundles:
-- [`sites/oriz-me/knowledge/`](../sites/oriz-me/knowledge/) — the lifestream + 100-year strategy + age-gating + ingester contract (25 files across decisions, architecture, components, integrations, runbooks, sources)
+
+- [`sites/oriz-me/`](./sites/oriz-me/) — lifestream + 100-year strategy + age-gating + ingester contract
 
 ## Update protocol
 

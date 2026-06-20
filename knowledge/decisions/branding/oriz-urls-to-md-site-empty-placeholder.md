@@ -5,13 +5,32 @@ description: "The chirag127/oriz-urls-to-md-site repo (renamed today from oriz-u
 tags: [branding, repo, placeholder, urls-to-md, reservation, family]
 timestamp: 2026-06-20
 format_version: okf-v0.1
-status: active
+status: superseded
+superseded_by: rules/user-prefers-deletion-over-archive
 related:
   - decisions/branding/repo-naming-suffixes
   - decisions/content/urls-to-md-folds-into-dev-tools
   - rules/never-delete-empty-placeholder-repos
+  - rules/user-prefers-deletion-over-archive
   - rules/repo-naming
   - runbooks/rename-repo
+---
+
+# oriz-urls-to-md-site stays as an empty placeholder repo — DO NOT delete
+
+> **SUPERSEDED 2026-06-20 evening.** The repo was deleted same day under
+> the same-day-migration exception now codified at
+> [`rules/user-prefers-deletion-over-archive.md`](../../rules/user-prefers-deletion-over-archive.md).
+> The URL→Markdown tool was rolled into `chirag127/dev-tools-site` as
+> two routes (URL→MD + URLs→MD batch), per
+> [`content/urls-to-md-folds-into-dev-tools`](../content/urls-to-md-folds-into-dev-tools.md).
+> The slug `chirag127/oriz-urls-to-md-site` no longer exists.
+>
+> The original "do not delete" decision below is preserved for audit
+> trail. The same-day exception applied because (a) repo had only stub
+> README+LICENSE, (b) <24 hours since suffix-rename, (c) user confirmed
+> deletion via MCQ.
+
 ---
 
 # oriz-urls-to-md-site stays as an empty placeholder repo — DO NOT delete

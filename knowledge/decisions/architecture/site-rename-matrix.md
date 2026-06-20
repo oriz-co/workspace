@@ -4,6 +4,36 @@ title: "Site rename matrix — every site uses -site suffix"
 description: "Full rename plan for the 11 existing site repos: every kept site uses the -site suffix; the 4 absorbed-into-tools sites get renamed in place to their new tool-category names. All renames via gh repo rename to preserve issues, stars, forks, history, and gh-pages."
 tags: [architecture, repos, naming, migration]
 timestamp: 2026-06-20
+status: superseded
+superseded_by: decisions/branding/naming/policy/family-naming-policy
+---
+
+# Site rename matrix — every site uses -site suffix
+
+> **SUPERSEDED 2026-06-20 evening.** This matrix locked `-site` suffix
+> on every kept site. Later same day, the user pivoted to **brand-only
+> repo names** for sites (and the hybrid suffix policy: sites + npm
+> packages drop the suffix, extensions/CLIs/MCP/workers/fns/data keep
+> it). The actual renames executed were:
+>
+> | Old | New | Subdomain |
+> |---|---|---|
+> | chirag127/oriz-blog-site | chirag127/pages | blog.oriz.in |
+> | chirag127/oriz-book-lore-site | chirag127/lore | (TBD) |
+> | chirag127/oriz-books-site | chirag127/ncert | ncert.oriz.in |
+> | chirag127/oriz-cards-site | chirag127/tabs | cards.oriz.in |
+> | chirag127/oriz-home-site | chirag127/home | oriz.in |
+> | chirag127/oriz-journal-site | chirag127/roam | journal.oriz.in |
+> | chirag127/oriz-me-site | chirag127/me | me.oriz.in |
+> | chirag127/oriz-omnipost | chirag127/echo | post.oriz.in (planned) |
+> | chirag127/oriz-janaushdhi | chirag127/janaushdhi | (TBD) |
+>
+> See [`decisions/branding/naming/policy/family-naming-policy.md`](../branding/naming/policy/family-naming-policy.md)
+> for the canonical naming policy and [`knowledge/log/session-2026-06-20-evening.md`](../../log/session-2026-06-20-evening.md)
+> for the rationale.
+>
+> The original matrix below is preserved for audit trail.
+
 ---
 
 # Site rename matrix — every site uses -site suffix

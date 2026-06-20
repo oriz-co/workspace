@@ -42,10 +42,7 @@ clean cross-links.
 
 ## Per-site knowledge
 
-Each submodule has its own `knowledge/` for site-specific content.
-The richest example is [`sites/oriz-me/knowledge/`](./sites/oriz-me/knowledge/) — 25 files covering
-the lifestream architecture, age-gating, ingester contract, and the
-100-year strategy.
+Per-site bundles live under the family `knowledge/sites/<site>/` (not inside each submodule). The richest example is [`knowledge/sites/oriz-me/`](./knowledge/sites/oriz-me/) — lifestream architecture, age-gating, ingester contract, 100-year strategy. As of 2026-06-20 the per-site bundle that previously lived inside the `oriz-me` submodule was folded back into the family bundle so every concept file resolves under one root and one OKF contract ([`knowledge/_okf.md`](./knowledge/_okf.md)).
 
 ## Update protocol
 

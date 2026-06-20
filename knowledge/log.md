@@ -13,6 +13,23 @@ status: active
 Reverse chronological. One line per meaningful event. Each entry
 should reference the concept file that changed by relative path.
 
+## 2026-06-20 (evening — brand-rename + hybrid suffix + 5 new rules)
+
+- 9 site repos brand-renamed via `gh repo rename` (history preserved): `oriz-blog-site→pages`, `oriz-book-lore-site→lore`, `oriz-books-site→ncert`, `oriz-cards-site→tabs`, `oriz-home-site→home`, `oriz-journal-site→roam`, `oriz-me-site→me`, `oriz-omnipost→echo`, `oriz-janaushdhi→janaushdhi`. Subdomains stay descriptive (blog.oriz.in, journal.oriz.in, me.oriz.in, etc.). Repo brand ≠ subdomain.
+- 14 atomic packages deleted (firebase-init, auth-ui, contact-form, sidebar, family, config, theme, multi-search, footer, header, seo, analytics, consent, kit). None published. Replaced by 8 astro-prefixed packages: `astro-shell`, `astro-chrome`, `astro-tools`, `astro-config`, `astro-icons`, `astro-ai`, `astro-forms`, `astro-data`. Cap 12 (astro-pdf, astro-image, astro-video deferred).
+- Hybrid suffix policy locked at [decisions/branding/repo-naming-suffixes.md](./decisions/branding/repo-naming-suffixes.md): sites + scoped npm packages drop suffix; extensions / CLIs / MCP / workers / fns / data keep suffix.
+- New family naming policy at [decisions/branding/naming/policy/family-naming-policy.md](./decisions/branding/naming/policy/family-naming-policy.md).
+- 5 new AGENTS.md rules: web-search toolbox-MCP fallback (Brave→Exa→Tavily→DDG); auth on every site (no exceptions); monetization on every site EXCEPT `me`; privacy template on every site (generated from astro-chrome); grill-me reflex.
+- 3 superseded files: [decisions/architecture/site-rename-matrix.md](./decisions/architecture/site-rename-matrix.md), [decisions/architecture/packages-14-atomic.md](./decisions/architecture/packages-14-atomic.md), [decisions/branding/oriz-urls-to-md-site-empty-placeholder.md](./decisions/branding/oriz-urls-to-md-site-empty-placeholder.md). Banner-headers added; original content preserved for audit trail.
+- 3 new MCQ-learned tastes: [rules/user-prefers-deletion-over-archive.md](./rules/user-prefers-deletion-over-archive.md), [rules/user-prefers-same-name-repo-and-npm.md](./rules/user-prefers-same-name-repo-and-npm.md), migration exception added to [rules/never-delete-empty-placeholder-repos.md](./rules/never-delete-empty-placeholder-repos.md).
+- Session resume file at [log/session-2026-06-20-evening.md](./log/session-2026-06-20-evening.md) for cross-`/compact` continuity.
+- `.env.example` extended with NPM_TOKEN, BMAC, PostHog, Clarity, Algolia, Puter keys.
+- grill-me skill installed at `~/.claude/skills/grill-me/SKILL.md`.
+
+## 2026-06-20 (per-site bundles fold into family bundle)
+
+- **`oriz-me/knowledge/` moved to [`sites/oriz-me/`](./sites/oriz-me/)** under the family bundle. Single OKF contract: family `_okf.md` is the only convention file; the submodule's duplicate `AGENTS.md` + `schema.md` were dropped (their content was a near-duplicate of [`_okf.md`](./_okf.md) and root [`AGENTS.md`](../AGENTS.md)). The submodule keeps a one-line `knowledge/README.md` pointing here. [`AGENTS.md`](../AGENTS.md) "Per-site knowledge" section + this file's "What lives here" table updated. No content was rewritten — only the path identity.
+
 ## 2026-06-20 (brand Title-Case lock + oriz-home content expansion)
 
 - **Brand capitalisation locked Title-Case "Oriz" in user-facing copy.** User direction (verbatim): *"the brand is Oriz Title Case, not oriz lowercase."* New decision [`decisions/branding/title-case-oriz.md`](./decisions/branding/title-case-oriz.md). Title-Case applies to: homepage wordmark, page titles, meta descriptions, README headlines, social cards (Bluesky / Mastodon / GitHub bio display name), OG images, status-page display name, support-page copy, billing receipts, email "from" name. Lowercase `oriz` stays for identifiers — repo slugs (`chirag127/oriz-blog-site`), npm package names (`@chirag127/oriz-kit`), DOM data-attributes (`data-oriz-multisearch`), CSS custom-property prefixes (`--oriz-*`), env-var prefixes (`ORIZ_*`), shell scripts. The trademark and the slug are different artefacts; Google is "Google" in copy and `google` in `google.com`. Refines (does not supersede) [`decisions/branding/repo-naming-suffixes`](./decisions/branding/repo-naming-suffixes.md) and [`decisions/branding/oriz-kit-package-name`](./decisions/branding/oriz-kit-package-name.md). Roll-forward strategy: each site / extension / Worker picks up the Title-Case wordmark in its next normal commit — no big-bang rename pass needed.

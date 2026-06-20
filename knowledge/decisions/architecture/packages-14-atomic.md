@@ -4,6 +4,40 @@ title: "14 atomic packages — drop oriz- prefix, maximum logical split"
 description: "Replace the @chirag127/oriz-* package family with 14 atomic packages without the oriz- prefix. Each package has a single responsibility. /kit is a meta re-export. /config holds the one place to change oriz.in. Picked over 5 / 8 / 24 package counts."
 tags: [architecture, packages, npm, monorepo, branding]
 timestamp: 2026-06-20
+status: superseded
+superseded_by: decisions/architecture/packages-12-astro
+---
+
+# 14 atomic packages — drop oriz- prefix, maximum logical split
+
+> **SUPERSEDED 2026-06-20 evening.** All 14 atomic packages
+> (firebase-init, auth-ui, contact-form, sidebar, family, config, theme,
+> multi-search, footer, header, seo, analytics, consent, kit) were
+> deleted from GitHub same day. None were published to npm.
+>
+> Replaced by **8 atomic Astro-prefixed packages** (locked count, with
+> WASM-category packages added if/when needed for a max of 12):
+>
+> | Package | Role |
+> |---|---|
+> | `@chirag127/astro-shell` | Astro 6 build + integrations + layouts |
+> | `@chirag127/astro-chrome` | Header + Footer + SEO + Analytics + Consent + Privacy templates |
+> | `@chirag127/astro-tools` | ToolGrid + tools.ts type for tool sites |
+> | `@chirag127/astro-config` | tsconfig + biome + tailwind preset + reusable workflow |
+> | `@chirag127/astro-icons` | Lucide subset re-export |
+> | `@chirag127/astro-ai` | Puter.js + token counting + auth flow |
+> | `@chirag127/astro-forms` | RHF + Zod + shadcn form wrappers |
+> | `@chirag127/astro-data` | TanStack Query + Firestore helpers |
+>
+> Future expansion (deferred until first consumer needs them):
+> `@chirag127/astro-pdf`, `@chirag127/astro-image`, `@chirag127/astro-video`.
+> Total cap: 12.
+>
+> See [`knowledge/log/session-2026-06-20-evening.md`](../../log/session-2026-06-20-evening.md)
+> for the rationale (solo-dev maintenance burden + same-name rule).
+>
+> The original 14-package design below is preserved for audit trail.
+
 ---
 
 # 14 atomic packages — drop oriz- prefix, maximum logical split
