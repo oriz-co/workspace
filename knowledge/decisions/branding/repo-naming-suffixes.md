@@ -16,29 +16,66 @@ related:
   - glossary/o-r/oriz-kit
 ---
 
-# Repo naming suffixes locked: -site / -ext / -vsc-ext / -cli / -worker / -fn
+# Repo naming — hybrid suffix policy (sites + npm packages drop, others keep)
 
-## Decision
+## Decision (revised 2026-06-20)
 
-Every repo in the `chirag127/oriz*` family carries a suffix that names
-its role unambiguously at the GitHub-org-listing level. NPM packages
-are the only exception — they stay clean because the `@chirag127/`
-scope already disambiguates them.
+Suffixes are kept ONLY where the brand alone doesn't make the repo's
+runtime category obvious. Sites and scoped npm packages drop suffixes
+because their identity is unambiguous from context (subdomain or
+`@chirag127/` scope). Everything else keeps the suffix because the
+type is invisible from the brand alone.
 
 | Role | Suffix | Examples |
 |---|---|---|
-| Static or dynamic website | `-site` | `oriz-blog-site`, `oriz-finance-site`, `oriz-me-site` |
-| Browser extension (Chrome / Firefox / Edge / Safari) | `-ext` | `oriz-bookmarks-ext`, `oriz-tab-saver-ext` |
-| VS Code extension | `-vsc-ext` | `oriz-snippets-vsc-ext` |
-| Command-line tool | `-cli` | `oriz-cli`, `oriz-deploy-cli` |
-| Cloudflare Worker (incl. Hono RPC umbrella) | `-worker` | `oriz-api-worker` |
-| Firebase Cloud Function | `-fn` | `oriz-ingest-fn` |
-| Data repo (canonical store, JSONL, etc.) | `-data` | `oriz-me-data` (already in place) |
-| NPM package (scoped) | _(none)_ | `@chirag127/oriz-kit`, `@chirag127/firebase-init`, `oriz-firestream` |
+| Static site | _(none)_ | `pages`, `lore`, `tabs`, `oriz` |
+| Astro / JS / TypeScript npm package | _(none)_ | `astro-shell`, `astro-icons`, `firebase-init` |
+| Browser extension (Chrome / Firefox / Edge / Safari) | `-ext` | `kagi-summarizer-ext`, `bookmarks-ext` |
+| VS Code extension | `-vsc-ext` | `snippets-vsc-ext` |
+| CLI tool | `-cli` | `deploy-cli`, `echo-cli` |
+| Cloudflare Worker | `-worker` | `api-worker` |
+| Cloudflare Function (or Firebase Function) | `-fn` | `og-image-fn` |
+| Model Context Protocol server | `-mcp` | `knowledge-mcp` |
+| Static data repo | `-data` | `redirects-data` |
 
-`-ext` is treated as the acronym for **ext**ension; `-vsc-ext` adds
-the `vsc-` qualifier so VS Code extensions don't collide with browser
-extensions in the org listing or the master repo's submodule tree.
+**No brand prefix.** The `chirag127/` org slug is already the prefix.
+`oriz-` survives only on legacy repos until next rename.
+
+**Same name across GitHub and npm** (when both exist). Subdomains are
+independent and stay descriptive (`pdf.oriz.in` not `slice.oriz.in`)
+even when the repo brand is something different.
+
+**Apex hub exception.** The hub at `oriz.in` is published from
+`chirag127/oriz` (no suffix, brand IS the family name).
+
+## Why hybrid
+
+Suffixes pay off where the brand is ambiguous:
+
+- **Browser extensions** — `kagi-summarizer-ext` is unambiguously a
+  Chrome/Firefox extension. `kagi-summarizer` could be a CLI, web app,
+  or script.
+- **CLI tools** — `deploy-cli` clearly publishes a binary. `deploy`
+  could be 10 things.
+- **MCP servers / Workers / Functions / data repos** — distinctive
+  runtime categories, recruiter-readable signal, and the brand alone
+  doesn't tell you the runtime.
+
+Suffixes are noise where context already disambiguates:
+
+- **Sites** — the subdomain (`blog.oriz.in`, `pages.oriz.in`) and the
+  homepage URL in the description tell you it's a site. `pages-site`
+  adds nothing over `pages`.
+- **Scoped npm packages** — `@chirag127/firebase-init` — the scope
+  already disambiguates from the public unscoped registry. No
+  additional suffix needed.
+- **Apex** — `chirag127/oriz` reads better than `chirag127/oriz-site`.
+
+The earlier all-suffix policy (decided 2026-06-19, see git log) was
+re-evaluated 2026-06-20 against [`naming/policy/family-naming-policy.md`](../naming/policy/family-naming-policy.md)
+and the user's brand-rename pivot. The hybrid policy keeps the
+readability win on extensions/CLIs/MCP/workers/data while letting
+sites and packages have clean brand-only names.
 
 ## Why
 

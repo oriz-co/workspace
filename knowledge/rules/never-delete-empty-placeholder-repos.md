@@ -79,6 +79,30 @@ Before any destructive remote action against a family repo:
 - The repo being empty, archived, or unused.
 - A README that says "TODO" or "reserved".
 
+## Same-day migration exception (added 2026-06-20)
+
+When a repo is **superseded the same day it was created** (or during an
+active migration session) by another repo with the same role, the
+standard cooling-off is waived **if the user confirms the deletion via
+MCQ in that same session**. See
+[`user-prefers-deletion-over-archive.md`](./user-prefers-deletion-over-archive.md).
+
+Conditions for the exception (all must hold):
+
+- Repo created < 24 hours ago, OR created during the current session
+- No external clones, forks, or stars beyond the user themselves
+- No commits or issues from non-owners
+- Not referenced from external blog posts / résumé / npm `repository` field of a published package
+- User confirmed deletion via MCQ (not implicit "clean up" instruction)
+
+This exception does NOT cover:
+
+- Repos older than 24 hours
+- Repos with any external traction
+- Repos where the deletion is implicit (e.g. "clean up unused stuff" — no)
+
+When in doubt, fall back to archive (`gh repo archive`) instead of delete.
+
 ## Cross-references
 
 - [oriz-urls-to-md-site empty placeholder decision](../decisions/branding/oriz-urls-to-md-site-empty-placeholder.md) — the canonical empty-but-reserved repo

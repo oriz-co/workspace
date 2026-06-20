@@ -1,24 +1,24 @@
 [submodule "sites/oriz-home"]
 	path = projects/websites/oriz-home
-	url = https://github.com/chirag127/oriz-home-site.git
+	url = https://github.com/chirag127/home.git
 [submodule "sites/oriz-blog"]
 	path = projects/websites/oriz-blog
-	url = https://github.com/chirag127/oriz-blog-site.git
+	url = https://github.com/chirag127/pages.git
 [submodule "sites/oriz-books"]
 	path = projects/websites/oriz-books
-	url = https://github.com/chirag127/oriz-books-site.git
+	url = https://github.com/chirag127/ncert.git
 [submodule "sites/oriz-book-lore"]
 	path = projects/websites/oriz-book-lore
-	url = https://github.com/chirag127/oriz-book-lore-site.git
+	url = https://github.com/chirag127/lore.git
 [submodule "sites/oriz-cards"]
 	path = projects/websites/oriz-cards
-	url = https://github.com/chirag127/oriz-cards-site.git
+	url = https://github.com/chirag127/tabs.git
 [submodule "sites/oriz-finance"]
 	path = projects/websites/tools/oriz-finance
 	url = https://github.com/chirag127/finance-tools-site.git
 [submodule "sites/oriz-journal"]
 	path = projects/websites/oriz-journal
-	url = https://github.com/chirag127/oriz-journal-site.git
+	url = https://github.com/chirag127/roam.git
 [submodule "sites/oriz-urls-to-md"]
 	path = projects/websites/tools/oriz-urls-to-md
 	url = https://github.com/chirag127/oriz-urls-to-md-site.git
@@ -33,7 +33,7 @@
 	url = https://github.com/chirag127/oriz-kit.git
 [submodule "sites/oriz-me"]
 	path = projects/websites/oriz-me
-	url = https://github.com/chirag127/oriz-me-site.git
+	url = https://github.com/chirag127/me.git
 [submodule "packages/firebase-init"]
 	path = projects/npm-packages/firebase-init
 	url = https://github.com/chirag127/firebase-init.git
@@ -48,7 +48,7 @@
 	url = https://github.com/chirag127/sidebar.git
 [submodule "packages/oriz-omnipost"]
 	path = projects/npm-packages/oriz-omnipost
-	url = https://github.com/chirag127/oriz-omnipost.git
+	url = https://github.com/chirag127/echo.git
 [submodule "projects/npm-packages/family"]
 	path = projects/npm-packages/family
 	url = https://github.com/chirag127/family.git
