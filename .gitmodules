@@ -1,54 +1,54 @@
 [submodule "sites/oriz-home"]
-	path = code/websites/oriz-home
+	path = projects/websites/oriz-home
 	url = https://github.com/chirag127/oriz-home-site.git
 [submodule "sites/oriz-blog"]
-	path = code/websites/oriz-blog
+	path = projects/websites/oriz-blog
 	url = https://github.com/chirag127/oriz-blog-site.git
 [submodule "sites/oriz-books"]
-	path = code/websites/oriz-books
+	path = projects/websites/oriz-books
 	url = https://github.com/chirag127/oriz-books-site.git
 [submodule "sites/oriz-book-lore"]
-	path = code/websites/oriz-book-lore
+	path = projects/websites/oriz-book-lore
 	url = https://github.com/chirag127/oriz-book-lore-site.git
 [submodule "sites/oriz-cards"]
-	path = code/websites/oriz-cards
+	path = projects/websites/oriz-cards
 	url = https://github.com/chirag127/oriz-cards-site.git
 [submodule "sites/oriz-finance"]
-	path = code/websites/tools/oriz-finance
+	path = projects/websites/tools/oriz-finance
 	url = https://github.com/chirag127/oriz-finance-site.git
 [submodule "sites/oriz-journal"]
-	path = code/websites/oriz-journal
+	path = projects/websites/oriz-journal
 	url = https://github.com/chirag127/oriz-journal-site.git
 [submodule "sites/oriz-urls-to-md"]
-	path = code/websites/tools/oriz-urls-to-md
+	path = projects/websites/tools/oriz-urls-to-md
 	url = https://github.com/chirag127/oriz-urls-to-md-site.git
 [submodule "sites/oriz-image-tools"]
-	path = code/websites/tools/oriz-image-tools
+	path = projects/websites/tools/oriz-image-tools
 	url = https://github.com/chirag127/oriz-image-tools-site.git
 [submodule "sites/oriz-pdf-tools"]
-	path = code/websites/tools/oriz-pdf-tools
+	path = projects/websites/tools/oriz-pdf-tools
 	url = https://github.com/chirag127/oriz-pdf-tools-site.git
 [submodule "packages/oriz-ui"]
-	path = code/npm-packages/oriz-ui
+	path = projects/npm-packages/oriz-ui
 	url = https://github.com/chirag127/oriz-kit.git
 [submodule "sites/oriz-me"]
-	path = code/websites/oriz-me
+	path = projects/websites/oriz-me
 	url = https://github.com/chirag127/oriz-me-site.git
 [submodule "packages/firebase-init"]
-	path = code/npm-packages/firebase-init
+	path = projects/npm-packages/firebase-init
 	url = https://github.com/chirag127/firebase-init.git
 [submodule "packages/auth-ui"]
-	path = code/npm-packages/auth-ui
+	path = projects/npm-packages/auth-ui
 	url = https://github.com/chirag127/auth-ui.git
 [submodule "packages/contact-form"]
-	path = code/npm-packages/contact-form
+	path = projects/npm-packages/contact-form
 	url = https://github.com/chirag127/contact-form.git
 [submodule "packages/sidebar"]
-	path = code/npm-packages/sidebar
+	path = projects/npm-packages/sidebar
 	url = https://github.com/chirag127/sidebar.git
 [submodule "packages/oriz-family"]
-	path = code/npm-packages/oriz-family
+	path = projects/npm-packages/oriz-family
 	url = https://github.com/chirag127/oriz-family.git
 [submodule "packages/oriz-omnipost"]
-	path = code/npm-packages/oriz-omnipost
+	path = projects/npm-packages/oriz-omnipost
 	url = https://github.com/chirag127/oriz-omnipost.git
