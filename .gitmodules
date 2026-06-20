@@ -15,7 +15,7 @@
 	url = https://github.com/chirag127/oriz-cards-site.git
 [submodule "sites/oriz-finance"]
 	path = projects/websites/tools/oriz-finance
-	url = https://github.com/chirag127/oriz-finance-site.git
+	url = https://github.com/chirag127/finance-tools-site.git
 [submodule "sites/oriz-journal"]
 	path = projects/websites/oriz-journal
 	url = https://github.com/chirag127/oriz-journal-site.git
@@ -24,10 +24,10 @@
 	url = https://github.com/chirag127/oriz-urls-to-md-site.git
 [submodule "sites/oriz-image-tools"]
 	path = projects/websites/tools/oriz-image-tools
-	url = https://github.com/chirag127/oriz-image-tools-site.git
+	url = https://github.com/chirag127/image-tools-site.git
 [submodule "sites/oriz-pdf-tools"]
 	path = projects/websites/tools/oriz-pdf-tools
-	url = https://github.com/chirag127/oriz-pdf-tools-site.git
+	url = https://github.com/chirag127/pdf-tools-site.git
 [submodule "packages/oriz-ui"]
 	path = projects/npm-packages/oriz-ui
 	url = https://github.com/chirag127/oriz-kit.git
@@ -46,9 +46,72 @@
 [submodule "packages/sidebar"]
 	path = projects/npm-packages/sidebar
 	url = https://github.com/chirag127/sidebar.git
-[submodule "packages/oriz-family"]
-	path = projects/npm-packages/oriz-family
-	url = https://github.com/chirag127/oriz-family.git
 [submodule "packages/oriz-omnipost"]
 	path = projects/npm-packages/oriz-omnipost
 	url = https://github.com/chirag127/oriz-omnipost.git
+[submodule "projects/npm-packages/family"]
+	path = projects/npm-packages/family
+	url = https://github.com/chirag127/family.git
+[submodule "projects/npm-packages/config"]
+	path = projects/npm-packages/config
+	url = https://github.com/chirag127/config.git
+[submodule "projects/npm-packages/theme"]
+	path = projects/npm-packages/theme
+	url = https://github.com/chirag127/theme.git
+[submodule "projects/npm-packages/multi-search"]
+	path = projects/npm-packages/multi-search
+	url = https://github.com/chirag127/multi-search.git
+[submodule "projects/npm-packages/footer"]
+	path = projects/npm-packages/footer
+	url = https://github.com/chirag127/footer.git
+[submodule "projects/npm-packages/header"]
+	path = projects/npm-packages/header
+	url = https://github.com/chirag127/header.git
+[submodule "projects/npm-packages/seo"]
+	path = projects/npm-packages/seo
+	url = https://github.com/chirag127/seo.git
+[submodule "projects/npm-packages/analytics"]
+	path = projects/npm-packages/analytics
+	url = https://github.com/chirag127/analytics.git
+[submodule "projects/npm-packages/consent"]
+	path = projects/npm-packages/consent
+	url = https://github.com/chirag127/consent.git
+[submodule "projects/npm-packages/kit"]
+	path = projects/npm-packages/kit
+	url = https://github.com/chirag127/kit.git
+[submodule "projects/websites/tools/dev-tools-site"]
+	path = projects/websites/tools/dev-tools-site
+	url = https://github.com/chirag127/dev-tools-site.git
+[submodule "projects/websites/tools/text-tools-site"]
+	path = projects/websites/tools/text-tools-site
+	url = https://github.com/chirag127/text-tools-site.git
+[submodule "projects/websites/tools/convert-tools-site"]
+	path = projects/websites/tools/convert-tools-site
+	url = https://github.com/chirag127/convert-tools-site.git
+[submodule "projects/websites/tools/qr-tools-site"]
+	path = projects/websites/tools/qr-tools-site
+	url = https://github.com/chirag127/qr-tools-site.git
+[submodule "projects/websites/tools/data-tools-site"]
+	path = projects/websites/tools/data-tools-site
+	url = https://github.com/chirag127/data-tools-site.git
+[submodule "projects/websites/tools/audio-tools-site"]
+	path = projects/websites/tools/audio-tools-site
+	url = https://github.com/chirag127/audio-tools-site.git
+[submodule "projects/websites/tools/video-tools-site"]
+	path = projects/websites/tools/video-tools-site
+	url = https://github.com/chirag127/video-tools-site.git
+[submodule "projects/websites/tools/seo-tools-site"]
+	path = projects/websites/tools/seo-tools-site
+	url = https://github.com/chirag127/seo-tools-site.git
+[submodule "projects/websites/tools/crypto-tools-site"]
+	path = projects/websites/tools/crypto-tools-site
+	url = https://github.com/chirag127/crypto-tools-site.git
+[submodule "projects/websites/tools/health-tools-site"]
+	path = projects/websites/tools/health-tools-site
+	url = https://github.com/chirag127/health-tools-site.git
+[submodule "projects/websites/tools/random-tools-site"]
+	path = projects/websites/tools/random-tools-site
+	url = https://github.com/chirag127/random-tools-site.git
+[submodule "projects/websites/tools/print-tools-site"]
+	path = projects/websites/tools/print-tools-site
+	url = https://github.com/chirag127/print-tools-site.git
