@@ -16,18 +16,6 @@
 [submodule "projects_apps_tools_finance-tools-app"]
 	path = projects/apps/tools/oriz-paisa-finance-tools-app
 	url = https://github.com/chirag127/oriz-paisa-finance-tools-app.git
-[submodule "projects_npm-packages_astro-config-npm-pkg"]
-	path = projects/npm-packages/astro-config-npm-pkg
-	url = https://github.com/chirag127/astro-config-npm-pkg.git
-[submodule "projects_npm-packages_astro-icons-npm-pkg"]
-	path = projects/npm-packages/astro-icons-npm-pkg
-	url = https://github.com/chirag127/astro-icons-npm-pkg.git
-[submodule "projects_npm-packages_astro-forms-npm-pkg"]
-	path = projects/npm-packages/astro-forms-npm-pkg
-	url = https://github.com/chirag127/astro-forms-npm-pkg.git
-[submodule "projects_npm-packages_astro-data-npm-pkg"]
-	path = projects/npm-packages/astro-data-npm-pkg
-	url = https://github.com/chirag127/astro-data-npm-pkg.git
 [submodule "projects_skills_agents-md-sync-skill"]
 	path = projects/skills/agents-md-sync-skill
 	url = https://github.com/chirag127/agents-md-sync-skill.git
@@ -46,18 +34,6 @@
 [submodule "projects_apps_tools_pdf-tools-app"]
 	path = projects/apps/tools/oriz-slice-pdf-tools-app
 	url = https://github.com/chirag127/oriz-slice-pdf-tools-app.git
-[submodule "projects_npm-packages_astro-shell-npm-pkg"]
-	path = projects/npm-packages/astro-shell-npm-pkg
-	url = https://github.com/chirag127/astro-shell-npm-pkg.git
-[submodule "projects_npm-packages_astro-chrome-npm-pkg"]
-	path = projects/npm-packages/astro-chrome-npm-pkg
-	url = https://github.com/chirag127/astro-chrome-npm-pkg.git
-[submodule "projects_npm-packages_astro-tools-npm-pkg"]
-	path = projects/npm-packages/astro-tools-npm-pkg
-	url = https://github.com/chirag127/astro-tools-npm-pkg.git
-[submodule "projects_npm-packages_astro-ai-npm-pkg"]
-	path = projects/npm-packages/astro-ai-npm-pkg
-	url = https://github.com/chirag127/astro-ai-npm-pkg.git
 [submodule "projects_apps_content_lore-app"]
 	path = projects/apps/content/oriz-lore-book-summaries-app
 	url = https://github.com/chirag127/oriz-lore-book-summaries-app.git
@@ -106,45 +82,45 @@
 [submodule "projects_apps_content_oriz-janaushdhi-app"]
 	path = projects/apps/content/oriz-janaushdhi-app
 	url = https://github.com/chirag127/oriz-janaushdhi-app.git
-[submodule "projects_npm-packages_astro-distribute-npm-pkg"]
-	path = projects/npm-packages/astro-distribute-npm-pkg
-	url = https://github.com/chirag127/astro-distribute-npm-pkg.git
-[submodule "projects_npm-packages_astro-pwa-npm-pkg"]
-	path = projects/npm-packages/astro-pwa-npm-pkg
-	url = https://github.com/chirag127/astro-pwa-npm-pkg.git
+[submodule "projects_npm-packages_astro-shell-npm-pkg"]
+	path = projects/npm-packages/astro-shell-npm-pkg
+	url = https://github.com/chirag127/astro-shell-npm-pkg.git
+[submodule "projects_npm-packages_astro-chrome-npm-pkg"]
+	path = projects/npm-packages/astro-chrome-npm-pkg
+	url = https://github.com/chirag127/astro-chrome-npm-pkg.git
+[submodule "projects_npm-packages_astro-data-npm-pkg"]
+	path = projects/npm-packages/astro-data-npm-pkg
+	url = https://github.com/chirag127/astro-data-npm-pkg.git
+[submodule "projects_npm-packages_astro-forms-npm-pkg"]
+	path = projects/npm-packages/astro-forms-npm-pkg
+	url = https://github.com/chirag127/astro-forms-npm-pkg.git
+[submodule "projects_npm-packages_astro-tools-npm-pkg"]
+	path = projects/npm-packages/astro-tools-npm-pkg
+	url = https://github.com/chirag127/astro-tools-npm-pkg.git
 [submodule "projects_npm-packages_astro-content-npm-pkg"]
 	path = projects/npm-packages/astro-content-npm-pkg
 	url = https://github.com/chirag127/astro-content-npm-pkg.git
 [submodule "projects_npm-packages_astro-billing-npm-pkg"]
 	path = projects/npm-packages/astro-billing-npm-pkg
 	url = https://github.com/chirag127/astro-billing-npm-pkg.git
-[submodule "projects_npm-packages_astro-search-npm-pkg"]
-	path = projects/npm-packages/astro-search-npm-pkg
-	url = https://github.com/chirag127/astro-search-npm-pkg.git
-[submodule "projects_npm-packages_astro-mdx-npm-pkg"]
-	path = projects/npm-packages/astro-mdx-npm-pkg
-	url = https://github.com/chirag127/astro-mdx-npm-pkg.git
-[submodule "projects_npm-packages_astro-toc-npm-pkg"]
-	path = projects/npm-packages/astro-toc-npm-pkg
-	url = https://github.com/chirag127/astro-toc-npm-pkg.git
-[submodule "projects_npm-packages_astro-comments-npm-pkg"]
-	path = projects/npm-packages/astro-comments-npm-pkg
-	url = https://github.com/chirag127/astro-comments-npm-pkg.git
-[submodule "projects_npm-packages_astro-share-npm-pkg"]
-	path = projects/npm-packages/astro-share-npm-pkg
-	url = https://github.com/chirag127/astro-share-npm-pkg.git
-[submodule "projects_npm-packages_astro-newsletter-npm-pkg"]
-	path = projects/npm-packages/astro-newsletter-npm-pkg
-	url = https://github.com/chirag127/astro-newsletter-npm-pkg.git
-[submodule "projects_npm-packages_astro-affiliate-npm-pkg"]
-	path = projects/npm-packages/astro-affiliate-npm-pkg
-	url = https://github.com/chirag127/astro-affiliate-npm-pkg.git
-[submodule "projects_npm-packages_astro-keyboard-npm-pkg"]
-	path = projects/npm-packages/astro-keyboard-npm-pkg
-	url = https://github.com/chirag127/astro-keyboard-npm-pkg.git
-[submodule "projects_npm-packages_astro-feedback-npm-pkg"]
-	path = projects/npm-packages/astro-feedback-npm-pkg
-	url = https://github.com/chirag127/astro-feedback-npm-pkg.git
-[submodule "projects_npm-packages_astro-test-utils-npm-pkg"]
-	path = projects/npm-packages/astro-test-utils-npm-pkg
-	url = https://github.com/chirag127/astro-test-utils-npm-pkg.git
+[submodule "projects_npm-packages_auth-core-npm-pkg"]
+	path = projects/npm-packages/auth-core-npm-pkg
+	url = https://github.com/chirag127/auth-core-npm-pkg.git
+[submodule "projects_npm-packages_auth-wxt-npm-pkg"]
+	path = projects/npm-packages/auth-wxt-npm-pkg
+	url = https://github.com/chirag127/auth-wxt-npm-pkg.git
+[submodule "projects_npm-packages_auth-vsc-npm-pkg"]
+	path = projects/npm-packages/auth-vsc-npm-pkg
+	url = https://github.com/chirag127/auth-vsc-npm-pkg.git
+[submodule "projects_npm-packages_auth-cli-npm-pkg"]
+	path = projects/npm-packages/auth-cli-npm-pkg
+	url = https://github.com/chirag127/auth-cli-npm-pkg.git
+[submodule "projects_npm-packages_astro-pwa-npm-pkg"]
+	path = projects/npm-packages/astro-pwa-npm-pkg
+	url = https://github.com/chirag127/astro-pwa-npm-pkg.git
+[submodule "projects_npm-packages_astro-distribute-npm-pkg"]
+	path = projects/npm-packages/astro-distribute-npm-pkg
+	url = https://github.com/chirag127/astro-distribute-npm-pkg.git
+[submodule "projects_npm-packages_astro-widgets-npm-pkg"]
+	path = projects/npm-packages/astro-widgets-npm-pkg
+	url = https://github.com/chirag127/astro-widgets-npm-pkg.git

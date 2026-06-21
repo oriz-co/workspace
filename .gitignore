@@ -13,3 +13,4 @@ dist/
 .wrangler/
 .firebase/
 firebase-debug.log
+projects/npm-packages/astro-test-utils-npm-pkg
