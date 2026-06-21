@@ -5,6 +5,7 @@ packages:
   - 'projects/apps/content/*'
   - 'projects/apps/tools/*'
   - 'projects/apis/*'
+  - 'projects/books/*'
   - 'projects/browser-extensions/*'
   - 'projects/ide-extensions/*'
   - 'projects/mcp-servers/*'

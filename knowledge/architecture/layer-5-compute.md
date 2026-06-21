@@ -11,6 +11,7 @@ related:
   - architecture/cloud-dbs-as-caches
   - architecture/canonical-store-jsonl
   - rules/never-hit-quotas
+  - decisions/architecture/cf-worker-quota-mitigation
 ---
 
 # Layer 5 — compute, in three tiers
@@ -65,3 +66,4 @@ can do it keeps every quota deep in the green.
 - The Worker that owns Tier 2 → [api-umbrella-hono-worker.md](api-umbrella-hono-worker.md)
 - What the cron jobs build → [canonical-store-jsonl.md](canonical-store-jsonl.md), [cloud-dbs-as-caches.md](cloud-dbs-as-caches.md)
 - The non-negotiable that drives this → [`../rules/never-hit-quotas.md`](../rules/never-hit-quotas.md)
+- The Tier-2 quota-headroom playbook → [`../decisions/architecture/cf-worker-quota-mitigation.md`](../decisions/architecture/cf-worker-quota-mitigation.md)

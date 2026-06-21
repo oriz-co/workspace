@@ -11,6 +11,7 @@ related:
   - rules/no-card-on-file
   - rules/never-hit-quotas
   - architecture/layer-3-auth-firebase-spark
+  - decisions/monetisation/no-subscriptions-anywhere
 ---
 
 # No paid tier in the dependency stack
@@ -79,3 +80,4 @@ catalog is the live record.
 - [`../rules/no-card-on-file.md`](../rules/no-card-on-file.md) — the foundational rule
 - [`../rules/never-hit-quotas.md`](../rules/never-hit-quotas.md) — the architectural posture this policy enforces
 - [`../architecture/layer-3-auth-firebase-spark.md`](../architecture/layer-3-auth-firebase-spark.md) — the canonical "Spark forever, never Blaze" application
+- [`../decisions/monetisation/no-subscriptions-anywhere.md`](../decisions/monetisation/no-subscriptions-anywhere.md) — the decision-version of this policy

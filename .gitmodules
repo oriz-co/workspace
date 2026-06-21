@@ -133,3 +133,21 @@
 [submodule "projects_apps_content_oriz-packages-catalog-app"]
 	path = projects/apps/content/oriz-packages-catalog-app
 	url = https://github.com/chirag127/oriz-packages-catalog-app.git
+[submodule "projects_npm-packages_oriz-book-build-npm-pkg"]
+	path = projects/npm-packages/oriz-book-build-npm-pkg
+	url = https://github.com/chirag127/oriz-book-build-npm-pkg.git
+[submodule "projects_books_oriz-stack-book"]
+	path = projects/books/oriz-stack-book
+	url = https://github.com/chirag127/oriz-stack-book.git
+[submodule "projects_books_oriz-paisa-book"]
+	path = projects/books/oriz-paisa-book
+	url = https://github.com/chirag127/oriz-paisa-book.git
+[submodule "projects_books_oriz-pdf-book"]
+	path = projects/books/oriz-pdf-book
+	url = https://github.com/chirag127/oriz-pdf-book.git
+[submodule "projects_books_oriz-janaushdhi-book"]
+	path = projects/books/oriz-janaushdhi-book
+	url = https://github.com/chirag127/oriz-janaushdhi-book.git
+[submodule "projects_books_oriz-me-book"]
+	path = projects/books/oriz-me-book
+	url = https://github.com/chirag127/oriz-me-book.git

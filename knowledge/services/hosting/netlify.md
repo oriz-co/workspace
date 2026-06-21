@@ -10,14 +10,21 @@ role: static-hosting-fallback
 provider: netlify
 free_tier: "100 GB bandwidth/mo, 300 build minutes/mo, unlimited deploys (starter)"
 swap_cost: low
+related:
+  - services/hosting/cloudflare-pages
+  - services/hosting/github-pages
+  - services/hosting/vercel
+  - decisions/infrastructure/cloudflare-pages-for-all-sites
 ---
 
 # Netlify
 
 ## Role
 
-Documented fallback if Cloudflare Pages, GitHub Pages, and Vercel
-were all unavailable.
+Documented fallback only — Cloudflare Pages is the primary host per
+[cloudflare-pages-for-all-sites](../../decisions/infrastructure/cloudflare-pages-for-all-sites.md).
+Netlify is reserved for the scenario where Cloudflare Pages, GitHub
+Pages, and Vercel were all unavailable.
 
 ## Free tier
 
@@ -48,3 +55,4 @@ Cloudflare's unlimited.
 
 - [Cloudflare Pages](./cloudflare-pages.md) — primary
 - [Vercel](./vercel.md)
+- [Cloudflare Pages for all sites decision](../../decisions/infrastructure/cloudflare-pages-for-all-sites.md) — why Netlify stays fallback-only

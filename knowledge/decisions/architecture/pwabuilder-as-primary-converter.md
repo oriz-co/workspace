@@ -11,6 +11,7 @@ related:
   - architecture/the-six-packages
   - runbooks/build-distributable
   - rules/no-card-on-file
+  - rules/linux-ci-only
 ---
 
 # PWABuilder is the primary PWA→native converter; Tauri optional
@@ -62,3 +63,4 @@ Tauri stays available as an opt-in escape hatch because PWABuilder MSIX binaries
 - The build runbook → [../../runbooks/build-distributable.md](../../runbooks/build-distributable.md)
 - The previous distribution lock (PWA + Bubblewrap + Tauri) → [distribution-and-queues-locked.md](./distribution-and-queues-locked.md) — superseded in scope by this file (Tauri demoted to optional, Bubblewrap replaced by PWABuilder)
 - The cost discipline this fits → [`rules/no-card-on-file.md`](../../rules/no-card-on-file.md)
+- The Linux-only CI rule that depends on PWABuilder eliminating macOS/Xcode → [`rules/linux-ci-only.md`](../../rules/linux-ci-only.md)

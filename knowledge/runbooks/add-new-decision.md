@@ -10,6 +10,7 @@ related:
   - rules/self-update-rule
   - _okf
   - log
+  - decisions/process/okf-as-canonical-format
 ---
 
 # Add a new decision to the knowledge bundle
@@ -96,3 +97,4 @@ preserved as history.
 - [`../_okf.md`](../_okf.md) — the full OKF contract
 - [`../rules/self-update-rule.md`](../rules/self-update-rule.md)
 - [`../log.md`](../log.md)
+- [`../decisions/process/okf-as-canonical-format.md`](../decisions/process/okf-as-canonical-format.md) — the decision that locks OKF v0.1 as the format used by this runbook

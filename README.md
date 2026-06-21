@@ -12,7 +12,7 @@ This is the **master umbrella repo** (`chirag127/workspace`). It is a meta-repo 
 
 | What you need | Read |
 |---|---|
-| The 8 hard rules that govern every decision | [`AGENTS.md`](./AGENTS.md) |
+| The 11 hard rules that govern every decision | [`AGENTS.md`](./AGENTS.md) |
 | Family-wide knowledge (rules, decisions, services, architecture, runbooks, glossary, design, policy) | [`knowledge/`](./knowledge/) |
 | Per-app knowledge (one bundle per submodule) | each submodule's own `knowledge/` folder |
 | Fresh-clone + bootstrap commands | [`knowledge/runbooks/install-and-bootstrap.md`](./knowledge/runbooks/install-and-bootstrap.md) |

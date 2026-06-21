@@ -11,6 +11,7 @@ related:
   - rules/no-card-on-file
   - decisions/infrastructure/firebase-spark-forever
   - decisions/infrastructure/cloudflare-pages-for-all-sites
+  - policy/no-paid-tier
 ---
 
 # No service in the stack may require a paid subscription
@@ -60,3 +61,4 @@ zero by construction.
 - [Firebase Spark forever](../infrastructure/firebase-spark-forever.md)
 - [Cloudflare Pages for all sites](../infrastructure/cloudflare-pages-for-all-sites.md)
 - [AGENTS.md service catalog](../../../AGENTS.md)
+- [No paid tier policy](../../policy/no-paid-tier.md) — the policy-version of this decision

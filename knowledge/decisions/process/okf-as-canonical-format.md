@@ -9,6 +9,7 @@ status: active
 related:
   - rules/self-update-rule
   - decisions/content/100-year-strategy-locked
+  - runbooks/add-new-decision
 ---
 
 # OKF v0.1 is the canonical format for all family knowledge
@@ -43,4 +44,5 @@ re-litigation each time we open a new submodule.
 - [Format conventions (`_okf.md`)](../../_okf.md)
 - [Self-update rule](../../rules/self-update-rule.md)
 - [Knowledge bundle index](../../index.md)
+- [Add-new-decision runbook](../../runbooks/add-new-decision.md) — the operational workflow that enforces this format
 - OKF v0.1 spec — Google Cloud, published 2026-06-13

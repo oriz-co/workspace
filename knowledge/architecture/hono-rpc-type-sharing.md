@@ -1,58 +1,34 @@
 ---
 type: architecture
-title: Hono RPC — type-safe client across sites and extensions
-description: Backend exports `type AppType = typeof app`. Frontends consume it via `hc<AppType>` re-exported from @chirag127/api-client. No codegen, no schema files — just a workspace package import.
-tags: [architecture, api, hono, rpc, types]
+title: "Hono RPC type-sharing — `hc<typeof app>` client across sites"
+description: "API consumers get full type inference from the Hono Worker via the rpc client. See the decision file for why."
+tags: [architecture, hono, rpc, type-safety]
 timestamp: 2026-06-20
 format_version: okf-v0.1
 status: active
 related:
+  - decisions/architecture/hono-rpc-for-type-sharing
   - architecture/api-umbrella-hono-worker
-  - architecture/api-routes-structure
-  - architecture/the-six-packages
-  - architecture/package-isolation-rule
 ---
 
-# Hono RPC — type-safe client across sites and extensions
+# Hono RPC type-sharing
 
-## Concept
+## Shape
 
-Hono's `hc<AppType>` ships a type-safe RPC client by reusing the
-backend's TypeScript types. No OpenAPI, no codegen, no `.d.ts` files
-that drift. Backend changes propagate to every frontend at typecheck
-time.
+`apps/api/src/index.ts` ends with `export type AppType = typeof app`. The workspace package `packages/api-client/` re-exports `hc<AppType>` configured against `https://api.oriz.in`. Every site and extension imports it:
 
-## How it works
+```ts
+import { client } from '@chirag127/api-client'
+await client.routes.contact.$post({ json: { ... } })
+```
 
-- The Worker's `src/index.ts` ends with:
-  ```ts
-  const app = new Hono()
-    .route('/contact', contact)
-    .route('/recaptcha', recaptcha)
-    // ...
-  export type AppType = typeof app
-  export default app
-  ```
-- A workspace package `packages/api-client/` re-exports `hc<AppType>`
-  pointed at `https://api.oriz.in`
-- Every site and every extension imports from `@chirag127/api-client`
-  and gets fully-typed request/response shapes
-- Refactoring a route signature on the Worker side breaks `tsc` in
-  every consumer at the next CI run, so nothing ships partially-typed
+Calls have full IntelliSense on payload + response shape.
 
-## Why this shape
+## Build flow
 
-The alternatives all introduce a second source of truth:
-- OpenAPI + codegen needs a generation step that humans forget to run
-- Hand-written `.d.ts` drifts from the actual handler
-- gRPC / tRPC + transport-specific tooling adds dependencies
-
-Hono's `hc<AppType>` is just TypeScript — the type flows over the
-workspace boundary like any other type. It is the lowest-overhead way
-to keep 11+ sites in sync with one Worker.
+The Worker's `AppType` flows through the workspace boundary like any other type — no codegen, no `.d.ts` emit, no OpenAPI spec. Master matrix deploy publishes the Worker and `@chirag127/api-client` in lockstep so consumers never see type drift. A route signature change on the Worker breaks `tsc` in every consumer at the next CI run.
 
 ## Cross-refs
 
-- The Worker exporting `AppType` → [api-umbrella-hono-worker.md](api-umbrella-hono-worker.md)
-- Where the client package sits in the package matrix → [the-six-packages.md](the-six-packages.md)
-- Why packages, not direct imports → [package-isolation-rule.md](package-isolation-rule.md)
+- Why → [[decisions/architecture/hono-rpc-for-type-sharing]]
+- API umbrella → [[architecture/api-umbrella-hono-worker]]

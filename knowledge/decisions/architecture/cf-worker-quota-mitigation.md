@@ -13,6 +13,7 @@ related:
   - decisions/architecture/hono-worker-api-umbrella
   - rules/never-hit-quotas
   - rules/no-card-on-file
+  - architecture/layer-5-compute
 ---
 
 # Cloudflare Worker quota mitigation playbook
@@ -156,3 +157,4 @@ periodic tasks.
 - [Security headers strategy — uses `_headers`](../security/security-headers-strategy.md)
 - [Never hit quotas rule](../../rules/never-hit-quotas.md)
 - [No card-on-file rule](../../rules/no-card-on-file.md)
+- [Layer 5 — compute architecture (Tier 2 = CF Workers)](../../architecture/layer-5-compute.md)
