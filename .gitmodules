@@ -130,3 +130,6 @@
 [submodule "projects_npm-packages_omni-publish-npm-pkg"]
 	path = projects/npm-packages/omni-publish-npm-pkg
 	url = https://github.com/chirag127/omni-publish-npm-pkg.git
+[submodule "projects_apps_content_oriz-packages-catalog-app"]
+	path = projects/apps/content/oriz-packages-catalog-app
+	url = https://github.com/chirag127/oriz-packages-catalog-app.git

@@ -31,6 +31,13 @@ This directory now runs at **4-level hierarchy** — see [`../_okf.md`](../_okf.
 | Security | [security/](./security/index.md) | Multi-provider auth stack, secrets management (Doppler), anti-bot defense in depth, env-and-secrets single source |
 | Tooling | [tooling/](./tooling/index.md) | Tooling-specific decisions (currently empty — placeholder for future) |
 
+## 2026-06-21 (packages.oriz.in catalog hub — auto-discovery, no duplicated content)
+
+- [./architecture/packages-oriz-in-catalog.md](./architecture/packages-oriz-in-catalog.md) — **Single central catalog at `packages.oriz.in`** lists every `@chirag127/*-npm-pkg` GitHub repo, auto-discovered at build time. Per-package detail pages embed the GitHub README live (cached 24h) + npm/GitHub/bundlephobia metadata. 5 sidebar groups (Astro foundation / UI & widgets / Data & auth / Distribution / Testing). Rebuild triggers: daily cron 04:00 IST + on-push + repository_dispatch from any package's release.yml. Astro Starlight default theme. New 25th app submodule at `projects/apps/content/oriz-packages-catalog-app/`.
+- New runbook [`runbooks/add-package-to-catalog.md`](../runbooks/add-package-to-catalog.md) — auto-discovery means almost nothing to do: publish a public `*-npm-pkg` repo and it auto-appears within 24h.
+- 16 packages currently catalogued (the locked set from earlier today + the new `@chirag127/omni-publish`).
+- `status: active`; free, no card.
+
 ## 2026-06-21 (MIT relicense + 4-host git mirror + Linux-only CI + omni-publish + easy-free-tier catalog)
 
 - [../architecture/mit-license-all-repos.md](./architecture/mit-license-all-repos.md) — **All 42 repos (16 npm packages + 24 apps + 2 APIs) relicensed from source-available-all-rights-reserved to MIT.** Unlocks every free-for-OSS perk (Sentry for OSS, BrowserStack OSS, FOSSA, Crowdin, Mintlify Pro, etc.). Commercial use unaffected — apps still monetise via ads/affiliate/subscription, that's orthogonal to source license. Supersedes the [free-for-developer-not-for-services](../../../../C:/Users/C5420321/.claude/projects/c--D-oriz/memory/free-for-developer-not-for-services.md) memory interpretation.
