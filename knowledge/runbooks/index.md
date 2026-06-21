@@ -36,6 +36,7 @@ a specific operational outcome. Runbooks are distinct from
 | [`restic-backup-setup.md`](./restic-backup-setup.md) | Set up the weekly restic → Backblaze B2 backup loop in a data-bearing repo (init repo, add weekly workflow, restore drill, retention policy) | Agent (copy + commit), user (one-shot `restic init` + first `gh workflow run`) |
 | [`sync-env-example-to-all-repos.md`](./sync-env-example-to-all-repos.md) | Add / remove / rename a family-wide env var: edit master `templates/.env.example`, run `scripts/sync-env-example.sh`, commit + push every touched submodule + bump master pointers, verify with `scripts/verify-env-example-sync.sh` | Agent (run script + commit), user (push, especially for new keys) |
 | [`set-github-org-level-secrets.md`](./set-github-org-level-secrets.md) | Pull a secret value from Doppler and set it at the `chirag127` ORG level for GitHub Actions (`gh secret set --org chirag127 --visibility all`); used after adding a new key to `templates/.env.example`, after a rotation, and on the quarterly audit | Agent (script run + verify), user (initial Doppler write) |
+| [`build-distributable.md`](./build-distributable.md) | Build PWA + Android APK (Bubblewrap TWA) + desktop EXE/dmg/AppImage (Tauri) from a single app via `@chirag127/astro-distribute` | Agent (CI), user (signing key setup) |
 | [`migrate-okf-to-new-version.md`](./migrate-okf-to-new-version.md) | Placeholder for when OKF v0.1 → v0.2 happens | Agent + user |
 
 ## Where runbooks sit relative to the rest

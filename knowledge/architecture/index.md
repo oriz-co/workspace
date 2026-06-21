@@ -11,8 +11,9 @@ status: active
 # Architecture — the oriz family stack
 
 The family is one master repo (`chirag127/oriz`) that points at 11+ site
-submodules, an open-ended set of extension submodules, six shared
-packages, and one inline Hono Worker. Everything is built on free tiers
+submodules, an open-ended set of extension submodules, thirteen shared
+`@chirag127/astro-*` packages (8 on disk today + 5 planned — see
+[the-six-packages.md](the-six-packages.md)), and one inline Hono Worker. Everything is built on free tiers
 of Cloudflare, GitHub, and Firebase Spark — no card on file anywhere.
 
 This bundle breaks the architecture into five orthogonal axes:

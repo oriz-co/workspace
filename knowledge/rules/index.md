@@ -37,6 +37,7 @@ wins, and the rule file is updated in the same conversation.
 ## Stricter than no-card
 
 - [`no-subscriptions.md`](./no-subscriptions.md) — no service requiring a subscription, ever; no "free trial then pay".
+- [`cloudflare-pages-only.md`](./cloudflare-pages-only.md) — every website and every app in the family hosts on Cloudflare Pages. No exceptions. GitHub Pages is the per-site survival mirror only; Firebase Hosting / Vercel / Netlify / Render / Fly all rejected.
 
 ## Git rules
 

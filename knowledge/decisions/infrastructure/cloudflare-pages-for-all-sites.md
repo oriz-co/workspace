@@ -1,7 +1,7 @@
 ---
 type: decision
-title: "Cloudflare Pages free hosts every site; Firebase Hosting dropped"
-description: "All 11+ sites and the extensions catalog deploy to Cloudflare Pages free. Firebase Hosting is no longer used (journal previously did; reversed)."
+title: "Cloudflare Pages hosts every website and app; no other host"
+description: "Every website and every app in the family — content sites, tool apps, hub apps, personal apps, the extensions catalog — deploys to Cloudflare Pages free. No exceptions. Firebase Hosting, Vercel, Netlify, GitHub Pages-as-primary all rejected. GitHub Pages stays only as the per-site survival mirror."
 tags: [hosting, cloudflare, firebase, pages]
 timestamp: 2026-06-20
 format_version: okf-v0.1
@@ -14,15 +14,11 @@ related:
   - architecture/layer-1-static-hosting
 ---
 
-# Cloudflare Pages free hosts every site; Firebase Hosting dropped
+# Cloudflare Pages hosts every website and app; no other host
 
 ## Decision
 
-Every site in the family — all 11 current sites, the extensions
-catalog, and per-extension subdomains — deploys to Cloudflare Pages
-free. Firebase Hosting is no longer used. The `oriz-journal` site,
-which previously hosted on Firebase Hosting, moves to Cloudflare
-Pages so all sites share one host.
+Every website and every app in the family deploys to Cloudflare Pages free. No exceptions. This covers content sites (`projects/apps/content/*`), tool apps (`projects/apps/tools/*`), hub apps (`projects/apps/hub/*`), personal apps (`projects/apps/personal/*`), the extensions catalog, and every per-extension subdomain. Firebase Hosting, Vercel, Netlify, Render, Fly, and GitHub Pages-as-primary are all REJECTED. GitHub Pages remains only as the per-site survival mirror per [github-pages-mirror-per-site](./github-pages-mirror-per-site.md).
 
 ## Why
 

@@ -32,8 +32,9 @@ chirag127/oriz/
 │   ├── oriz-books/
 │   └── ...
 ├── packages/
-│   ├── oriz-kit/              ← submodule per shared npm package (6 packages)
-│   ├── firebase-init/
+│   ├── astro-shell/            ← submodule per shared @chirag127/astro-* npm package
+│   ├── astro-chrome/           ← (8 on disk today + 5 planned — see the-six-packages.md)
+│   ├── astro-config/
 │   └── ...
 ├── apps/
 │   └── api/                   ← INLINE (not a submodule). Hono Worker → api.oriz.in
@@ -79,4 +80,4 @@ lockstep with the master pointer, not lag behind in its own repo.
 - How submodule SHAs become production state → [master-pointer-as-production-sha.md](master-pointer-as-production-sha.md)
 - Day-to-day submodule mechanics → [submodule-pattern.md](submodule-pattern.md)
 - Why apps/api/ is inline → [api-umbrella-hono-worker.md](api-umbrella-hono-worker.md)
-- The packages list → [the-six-packages.md](the-six-packages.md)
+- The packages list → [the-six-packages.md](the-six-packages.md) (the file name is legacy; current content lists 13 packages — 8 on disk + 5 planned)

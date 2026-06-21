@@ -53,6 +53,6 @@ abstraction; the provider is a config detail.
 
 ## Cross-refs
 
-- The current packages → [the-six-packages.md](the-six-packages.md)
+- The current packages → [the-six-packages.md](the-six-packages.md) (13 packages — 8 on disk + 5 planned)
 - The server-side mirror of this rule → [api-routes-structure.md](api-routes-structure.md)
 - Why typed clients matter for the API package → [hono-rpc-type-sharing.md](hono-rpc-type-sharing.md)

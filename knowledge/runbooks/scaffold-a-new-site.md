@@ -104,9 +104,25 @@ export const footer = {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "@chirag127/astro-shell": "workspace:*",
-    "@chirag127/astro-chrome": "workspace:*"
+    "@chirag127/astro-chrome": "workspace:*",
+    "@chirag127/astro-pwa": "workspace:*",
+    "@chirag127/astro-distribute": "workspace:*"
   }
 }
+```
+
+Typical `astro.config.ts` after the starter is copied:
+
+```ts
+import { defineConfig } from 'astro/config'
+import { shell } from '@chirag127/astro-shell'
+import { pwa } from '@chirag127/astro-pwa'
+
+export default defineConfig(shell({
+  site: 'https://<subdomain>.oriz.in',
+  integrations: [pwa({ name: '<brand>' })],
+}))
+// ponytail: site config in ~4 lines. Per-app overrides only when shell can't cover it.
 ```
 
 ### 6. Install + dev
@@ -176,3 +192,9 @@ git push origin main
 - DNS + CF Pages + push: 2 min
 
 Total: **~10 minutes per new site.**
+
+## Building distributables
+
+To emit APK + EXE/dmg/AppImage alongside the PWA build, see
+[build-distributable.md](./build-distributable.md). The starter ships
+the workflow stub; signing keys come from org-level secrets.
