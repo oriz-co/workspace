@@ -1,8 +1,8 @@
 ---
 type: rule
-title: "Keep knowledge fresh — read first, write decisions, delete obsoletes every session"
-description: "Every chat session begins with reading the relevant knowledge files. Every decision the user makes in chat must land in knowledge in the same conversation. Every superseded decision file must be marked status: superseded OR deleted same-day. Never let knowledge and conversation drift."
-tags: [rules, knowledge, okf, self-update, family]
+title: "Keep knowledge fresh — read first, write current truth, delete obsoletes"
+description: "Every session reads knowledge before acting, writes decisions into knowledge as CURRENT TRUTH (not historical logs), and deletes obsoleted content same-turn. Knowledge files are snapshots of what IS, not journeys of how we got here."
+tags: [rules, knowledge, okf, self-update, family, current-truth]
 timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
@@ -18,7 +18,11 @@ memory. Every chat session, every agent, every subagent reads from it
 before acting, writes to it whenever a decision lands, and prunes it
 whenever a prior decision is obsolete.
 
-Three obligations on every session:
+Knowledge files read as **CURRENT TRUTH SNAPSHOTS**, not as journey
+logs. A reader landing on any file sees what IS today, not how we got
+here. Git commit history is the durable record of "how."
+
+Four obligations on every session:
 
 ### 1. Read first
 
@@ -46,13 +50,43 @@ durable.
 
 ### 3. Delete obsoletes same-day
 
-When a decision is superseded:
-- If <24 hours old AND has no external refs → DELETE the file
-- If >24 hours old OR referenced externally → mark `status: superseded`
-  with banner-header pointing at the superseder
+When a decision is superseded, **delete the old file outright.** The
+git commit history preserves what was there. Banner-superseded stubs
+are forbidden — they pollute knowledge with stale references.
 
-Audit trail lives in git history, not in lingering stale files. Per
-`rules/user-prefers-deletion-over-archive.md`.
+When a single section inside a file is obsoleted, **rewrite the section
+in place** to state the new truth. Delete the prior version in the same
+commit.
+
+Per `rules/user-prefers-deletion-over-archive.md`.
+
+### 4. Current truth only — no historical logs
+
+Every concept file reads as a snapshot of what IS today.
+
+Forbidden in knowledge prose:
+
+- Rename-history tables (`Old slug | New slug`).
+- "v5 was X, v6 is Y" comparison sections.
+- `## Q47-Q77 additions (2026-06-21 grill round 2)` log-style headers.
+- `(LOCKED 2026-06-21)` inline date stamps.
+- `(added 2026-06-21)` subheader annotations.
+- `previously locked at`, `earlier in this session`, `fourth-pass / fifth-pass` progression language.
+- Per-repo audit status columns (`CREATED 2026-06-21`, `LIVE`, `in verification`).
+- Evidence tables with date+choice pairs.
+- `Decided YYYY-MM-DD` tag lines on bullets.
+- `## The audit / ## Audit progress` sections.
+- Sentence-level "this was renamed from X" asides.
+
+Permitted:
+
+- The frontmatter `timestamp:` field (file-level audit-trail).
+- `supersedes:` / `superseded_by:` frontmatter (current pointer relationships).
+- Tables describing CURRENT state (`current slug | current subdomain`).
+
+When you change a decision, rewrite the section in place. When you
+supersede a file entirely, delete it. Apply both to new content and
+retroactively when touching any existing file.
 
 ## How to apply per session
 

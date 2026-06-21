@@ -25,18 +25,6 @@ they were created (or during an active migration session) can be
 deleted without the standard cooling-off, when the user confirms via
 MCQ.
 
-## Evidence
-
-| Date | Repos deleted | Reason |
-|---|---|---|
-| 2026-06-20 | `oriz-urls-to-md-site` | Content rolled into `dev-tools-site` |
-| 2026-06-20 | `oriz-kit` | Superseded by `kit` (same role, drop oriz prefix) |
-| 2026-06-20 | `oriz-family` | Auto-redirected to `family` (same slug, was a rename) |
-
-User confirmed all three deletions via MCQ in the same session they were
-created. The family-rule cooling-off was waived because the supersession
-was unambiguous within minutes of creation.
-
 ## When NOT to delete
 
 - Repo has external clones / forks / stars beyond the user themselves.
@@ -59,5 +47,5 @@ When the user requests "delete unneeded repos after migration":
 
 ## Source
 
-Mined from MCQ confirmation 2026-06-20 per `~/AGENTS.md` AskUserQuestion
+Rule derived from explicit user preference per `~/AGENTS.md` AskUserQuestion
 learning rule.

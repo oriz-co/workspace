@@ -14,7 +14,7 @@ related: [decisions/architecture/chrome-config-contract, decisions/architecture/
 ## Decision
 
 Every `*-app` repo in the chirag127 family follows this contents
-template. Locked 2026-06-21.
+template.
 
 ## Folder structure per app
 
@@ -192,55 +192,44 @@ jobs:
       - run: npx lhci autorun     # WCAG 2.2 AA + a11y >= 95 + perf >= 80 gates
 ```
 
-## Local submodule path = full brand slug (locked 2026-06-21)
+## Local submodule path = full brand slug
 
-Local submodule disk paths now mirror the full GitHub slug:
+Local submodule disk paths mirror the full GitHub slug. Apps and APIs
+live under `projects/apps/` and `projects/apis/`:
 
-| Old local path | New local path |
-|---|---|
-| `projects/apps/personal/me-app` | `projects/apps/personal/oriz-cs-me-app` |
-| `projects/apps/content/blog-app` | `projects/apps/content/oriz-pages-blog-app` |
-| `projects/apps/content/journal-app` | `projects/apps/content/oriz-roam-journal-app` |
-| `projects/apps/content/lore-app` | `projects/apps/content/oriz-lore-book-summaries-app` |
-| `projects/apps/content/cards-app` | `projects/apps/content/oriz-tabs-cards-app` |
-| `projects/apps/content/post-app` | `projects/apps/content/oriz-omni-post-app` |
-| `projects/apps/tools/pdf-tools-app` | `projects/apps/tools/oriz-slice-pdf-tools-app` |
-| `projects/apps/tools/image-tools-app` | `projects/apps/tools/oriz-pixie-image-tools-app` |
-| `projects/apps/tools/finance-tools-app` | `projects/apps/tools/oriz-paisa-finance-tools-app` |
-| `projects/apps/tools/dev-tools-app` | `projects/apps/tools/oriz-forge-dev-tools-app` |
-| `projects/apps/tools/text-tools-app` | `projects/apps/tools/oriz-scribe-text-tools-app` |
-| `projects/apps/tools/convert-tools-app` | `projects/apps/tools/oriz-shift-convert-tools-app` |
-| `projects/apps/tools/qr-tools-app` | `projects/apps/tools/oriz-grid-qr-tools-app` |
-| `projects/apps/tools/data-tools-app` | `projects/apps/tools/oriz-pivot-data-tools-app` |
-| `projects/apps/tools/audio-tools-app` | `projects/apps/tools/oriz-echo-audio-tools-app` |
-| `projects/apps/tools/video-tools-app` | `projects/apps/tools/oriz-reel-video-tools-app` |
-| `projects/apps/tools/seo-tools-app` | `projects/apps/tools/oriz-rank-seo-tools-app` |
-| `projects/apps/tools/crypto-tools-app` | `projects/apps/tools/oriz-cipher-crypto-tools-app` |
-| `projects/apps/tools/health-tools-app` | `projects/apps/tools/oriz-vitals-health-tools-app` |
-| `projects/apps/tools/random-tools-app` | `projects/apps/tools/oriz-dice-random-tools-app` |
-| `projects/apps/tools/print-tools-app` | `projects/apps/tools/oriz-paper-print-tools-app` |
-| `projects/apis/mmi-tickertape-mmi-api` | `projects/apis/oriz-mmi-tickertape-mmi-api` |
-| `projects/apis/flow-fii-dii-activity-api` | `projects/apis/oriz-flow-fii-dii-activity-api` |
+| Local path |
+|---|
+| `projects/apps/personal/oriz-cs-me-app` |
+| `projects/apps/content/oriz-pages-blog-app` |
+| `projects/apps/content/oriz-roam-journal-app` |
+| `projects/apps/content/oriz-lore-book-summaries-app` |
+| `projects/apps/content/oriz-tabs-cards-app` |
+| `projects/apps/content/oriz-omni-post-app` |
+| `projects/apps/content/oriz-ncert-app` |
+| `projects/apps/content/oriz-janaushdhi-app` |
+| `projects/apps/tools/oriz-slice-pdf-tools-app` |
+| `projects/apps/tools/oriz-pixie-image-tools-app` |
+| `projects/apps/tools/oriz-paisa-finance-tools-app` |
+| `projects/apps/tools/oriz-forge-dev-tools-app` |
+| `projects/apps/tools/oriz-scribe-text-tools-app` |
+| `projects/apps/tools/oriz-shift-convert-tools-app` |
+| `projects/apps/tools/oriz-grid-qr-tools-app` |
+| `projects/apps/tools/oriz-pivot-data-tools-app` |
+| `projects/apps/tools/oriz-echo-audio-tools-app` |
+| `projects/apps/tools/oriz-reel-video-tools-app` |
+| `projects/apps/tools/oriz-rank-seo-tools-app` |
+| `projects/apps/tools/oriz-cipher-crypto-tools-app` |
+| `projects/apps/tools/oriz-vitals-health-tools-app` |
+| `projects/apps/tools/oriz-dice-random-tools-app` |
+| `projects/apps/tools/oriz-paper-print-tools-app` |
+| `projects/apis/oriz-mmi-tickertape-mmi-api` |
+| `projects/apis/oriz-flow-fii-dii-activity-api` |
 
 Kept short (vendor-convention or category-IS-brand):
 - `projects/apps/hub/home-app`
 - `projects/skills/agents-md-sync-skill`
 - `projects/skills/claude-code-mcq-notes-skill`
 - All 8 `projects/npm-packages/astro-*-npm-pkg`
-
-Renamed 2026-06-21 late (separate from the 23-path batch):
-- `projects/apps/content/ncert-app` → `projects/apps/content/oriz-ncert-app` (GitHub repo `ncert-app` also renamed to `oriz-ncert-app`)
-- New repo created: `projects/apps/content/oriz-janaushdhi-app` (chirag127/oriz-janaushdhi-app — fresh; the previous `janaushdhi-app` was a 0KB stub deleted in an earlier audit pass)
-
-Done via `git mv` in workspace; submodule pointers preserved.
-
-## What's NOT built yet
-
-This decision file specifies the contents. As of 2026-06-21, the
-21 app submodules contain ONLY seed files (README + LICENSE + .gitignore).
-The Astro scaffolds, src/config/, src/pages/, .github/workflows/, etc.
-will be built in a follow-up turn — one scaffolding pass per app, likely
-via fan-out subagents.
 
 ## Cross-refs
 

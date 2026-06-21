@@ -27,12 +27,6 @@ can differ from both repo and npm. Examples:
 - Repo: `pdf-tools-site` | npm: _(not published)_ | Subdomain: `pdf.oriz.in`
 - Repo: `astro-shell` | npm: `@chirag127/astro-shell` | Subdomain: _(none)_
 
-## Evidence
-
-| Date | Choice offered | Choice picked |
-|---|---|---|
-| 2026-06-20 | "It's best if github reponame and npm package is same" — user-explicit |
-
 ## How to apply
 
 When creating a new package:
@@ -48,5 +42,4 @@ When renaming:
 
 ## Source
 
-Mined from explicit user statement 2026-06-20 per `~/AGENTS.md`
-AskUserQuestion learning rule.
+User-explicit preference per `~/AGENTS.md` AskUserQuestion learning rule.

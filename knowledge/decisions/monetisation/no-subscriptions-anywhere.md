@@ -15,7 +15,7 @@ related:
 
 # No service in the stack may require a paid subscription
 
-## Scope clarification (added 2026-06-21)
+## Scope clarification
 
 This rule applies to **developer-facing services that the family consumes** — the cloud / API / tool subscriptions the developer themself would pay for to run the family. It does NOT apply to **user-facing subscriptions** that the apps offer to their visitors.
 

@@ -79,7 +79,7 @@ Before any destructive remote action against a family repo:
 - The repo being empty, archived, or unused.
 - A README that says "TODO" or "reserved".
 
-## Same-day migration exception (added 2026-06-20)
+## Same-day migration exception
 
 When a repo is **superseded the same day it was created** (or during an
 active migration session) by another repo with the same role, the
