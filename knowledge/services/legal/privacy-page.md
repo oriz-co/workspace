@@ -74,7 +74,7 @@ third-party tool involved.
 ## Swap cost
 
 **Low.** Markdown source lives in
-`sites/oriz-me-site/src/content/legal/privacy.md` (master site). If
+`projects/apps/personal/oriz-cs-me-app/src/content/legal/privacy.md` (master site). If
 the family ever moves off the self-built path, the markdown is
 portable to any hosted privacy-policy tool.
 

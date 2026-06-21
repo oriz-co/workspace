@@ -85,4 +85,4 @@ upstream, or remove the source entirely.
 
 - [`./secrets-handling.md`](./secrets-handling.md) — property (6) leans on the envpact rotation runbook
 - [`./data-canonical-store.md`](./data-canonical-store.md) — where ingester writes land
-- `sites/oriz-me/knowledge/decisions/ingester-contract.md` — original site-scoped version with reference implementation skeleton
+- [`projects/apps/personal/oriz-cs-me-app/knowledge/decisions/ingester-contract.md`](../../projects/apps/personal/oriz-cs-me-app/knowledge/decisions/ingester-contract.md) — original app-scoped version (in the oriz-cs-me-app submodule) with reference implementation skeleton

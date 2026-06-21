@@ -31,6 +31,15 @@ This directory now runs at **4-level hierarchy** — see [`../_okf.md`](../_okf.
 | Security | [security/](./security/index.md) | Multi-provider auth stack, secrets management (Doppler), anti-bot defense in depth, env-and-secrets single source |
 | Tooling | [tooling/](./tooling/index.md) | Tooling-specific decisions (currently empty — placeholder for future) |
 
+## 2026-06-21 (per-app knowledge MOVED into submodules — master/knowledge/sites/ deleted)
+
+- **Master `knowledge/sites/oriz-me/` (27 files) MOVED into the oriz-cs-me-app submodule at `projects/apps/personal/oriz-cs-me-app/knowledge/`.** Master `knowledge/sites/` directory DELETED entirely. Per the locked rule from the previous session: per-app knowledge lives IN the submodule, NOT at master. Files moved cover lifestream architecture (auth/data-flow/overview/themes), components (empty-state/mega-header/page-header/sidebar/status-strip), 6 decisions (100-year-strategy / accent-token-policy / age-gating-policy / ingester-contract / why-content-folder-is-not-content-collection / why-firestore-not-turso), 4 integrations (firestore / open-router / puter-js / render-cv), 3 runbooks (add-new-tracker-page / deploy / refresh-firestore-data), 3 sources (design-audit / rebuild-plan / tracker-landscape-2026), plus `index.md` + `log.md`.
+- **home-app `knowledge/` normalized to OKF-light**: `anchor-patterns.md` reclassified as a decision (the family-anchor v2 design reference); `index.md` rewritten as the OKF entry point.
+- **12 master files updated** to convert deep-links into the deleted `sites/oriz-me/` location into pointers to the per-app bundle inside the submodule: `knowledge/index.md`, `knowledge/_okf.md`, `rules/keep-knowledge-fresh.md`, `runbooks/apply-per-site-ci.md`, `runbooks/auth-setup.md`, `architecture/events-table-schema.md`, `policy/ingester-contract.md`, `policy/age-gating.md`, `decisions/content/100-year-strategy-locked.md`, `decisions/branding/oriz-me-added-to-family.md`, `decisions/branding/family-wide-privacy-page.md`, `decisions/process/4-level-hierarchy-for-big-dirs.md`, `services/legal/privacy-page.md`. `AGENTS.md` per-site section updated to match. 0 refs to `sites/oriz-me` remain anywhere.
+- **`_okf.md` "Per-site knowledge" section renamed to "Per-app knowledge bundles"** with explicit OKF-light tree + clarification that the deprecated master `knowledge/sites/<app>/` location is NOT used.
+- This action implements the family rule (locked in the previous session and now in AGENTS.md): "Per-app knowledge in submodules, cross-cutting knowledge at master. Master `knowledge/sites/<app>/` is NOT used for app-specifics."
+- `status: active`; free, no card.
+
 ## 2026-06-21 (15 packages — revived astro-test-utils + per-app knowledge + minimal READMEs + tests scaffolded everywhere)
 
 - [../architecture/the-six-packages.md](../architecture/the-six-packages.md) — **Package set widened to 15**: revived `@chirag127/astro-test-utils` (v0.1.1) as a thin wrapper over `@firebase/rules-unit-testing` + `msw` + `@playwright/test` for shared test fixtures across 24 apps + 14 other packages. Same ≥25-line × ≥3-consumer threshold holds — test fixtures clear it easily.

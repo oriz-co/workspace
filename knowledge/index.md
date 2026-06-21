@@ -48,11 +48,11 @@ limit is enforced in `_okf.md`'s convention rules.
 
 ## Per-site knowledge
 
-Per-site bundles live under [`sites/<site>/`](./sites/) — same OKF contract, just scoped to one site. As of 2026-06-20 every per-site bundle is folded into this family bundle (no second `knowledge/` lives inside any submodule). Family-wide goes here at the root; site-specific goes under `sites/<site>/`.
+Per-app knowledge lives INSIDE each app submodule under its own `knowledge/` folder (OKF-light: `index.md` + `decisions/` + `runbooks/` + `services/`). Same OKF contract as this family bundle, just scoped to one app. The deprecated master `knowledge/sites/<app>/` location is NOT used.
 
-Currently populated per-site bundles:
+Richest example of a per-app bundle:
 
-- [`sites/oriz-me/`](./sites/oriz-me/) — lifestream + 100-year strategy + age-gating + ingester contract
+- [`projects/apps/personal/oriz-cs-me-app/knowledge/`](../projects/apps/personal/oriz-cs-me-app/knowledge/) — lifestream + 100-year strategy + age-gating + ingester contract (lives inside the oriz-cs-me-app submodule)
 
 ## Update protocol
 

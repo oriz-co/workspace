@@ -360,7 +360,7 @@ Each ingester needs read access to one external service. Get a token, store in e
 | GitHub webhooks | per-repo Settings → Webhooks | webhook secret (for HMAC validation) |
 
 ```bash
-cd /c/D/oriz/sites/oriz-me
+cd /c/D/oriz/projects/apps/personal/oriz-cs-me-app
 envpact set LASTFM_API_KEY            <paste>
 envpact set LISTENBRAINZ_USER_TOKEN   <paste>
 envpact set LICHESS_TOKEN             <paste>
@@ -388,7 +388,7 @@ Dashboard: <https://discord.com/developers/applications>
 3. No token needed — Lanyard's API is public for users in the bot's server.
 4. Store the user ID:
    ```bash
-   cd /c/D/oriz/sites/oriz-me
+   cd /c/D/oriz/projects/apps/personal/oriz-cs-me-app
    envpact set DISCORD_USER_ID <paste-user-id>
    ```
 

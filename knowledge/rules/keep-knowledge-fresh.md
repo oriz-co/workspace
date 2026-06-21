@@ -134,7 +134,7 @@ Everything else triggers the read-write-prune cycle.
 | Service pick with alternatives + swap cost | `services/<category>/<service>.md` | `services/auth/firebase-spark.md` |
 | Step-by-step actionable sequence | `runbooks/<slug>.md` | `runbooks/scaffold-a-new-site.md` |
 | Family-specific term definition | `glossary/<letter>/<term>.md` | `glossary/o-r/oriz-kit.md` |
-| Per-site scoped concept | `sites/<site>/<slug>.md` | `sites/oriz-me/lifestream-spec.md` |
+| Per-app scoped concept | inside the app submodule at `<app-path>/knowledge/<slug>.md` | see [`projects/apps/personal/oriz-cs-me-app/knowledge/`](../../projects/apps/personal/oriz-cs-me-app/knowledge/) |
 | Time-stamped history | `log.md` | (append-only) |
 
 ## Cross-refs

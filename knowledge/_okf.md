@@ -162,10 +162,24 @@ knowledge/
     └── s-z/
 ```
 
-Per-site `knowledge/` (inside each submodule) follows the same shape
-but only carries site-specific concepts. Cross-link to family-wide
-concepts via relative paths (e.g.
-`../../knowledge/rules/no-card-on-file.md` from a site's runbook).
+## Per-app knowledge bundles
+
+Every app submodule under `projects/apps/**/<app>/` has its own `knowledge/` folder following an OKF-light shape:
+
+```text
+<app-submodule>/
+└── knowledge/
+    ├── index.md
+    ├── decisions/
+    ├── runbooks/
+    └── services/
+```
+
+The per-app bundle only carries facts specific to that app. Cross-cutting family rules, decisions, services, and architecture live HERE at master `knowledge/`. The deprecated master `knowledge/sites/<app>/` location is NOT used — per-app knowledge stays inside the submodule.
+
+Cross-link to family-wide concepts via relative paths (e.g. `../../../../knowledge/rules/no-card-on-file.md` from an app's runbook at depth 3 in a submodule that's at depth 4 from master root).
+
+Richest example: [`projects/apps/personal/oriz-cs-me-app/knowledge/`](../projects/apps/personal/oriz-cs-me-app/knowledge/) — lifestream architecture, age-gating, ingester contract, 100-year strategy.
 
 ## Cross-linking conventions
 

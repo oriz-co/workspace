@@ -45,7 +45,7 @@ clean cross-links.
 
 ## Per-site knowledge
 
-Per-site bundles live under the family `knowledge/sites/<site>/` (not inside each submodule). The richest example is [`knowledge/sites/oriz-me/`](./knowledge/sites/oriz-me/) — lifestream architecture, age-gating, ingester contract, 100-year strategy. As of 2026-06-20 the per-site bundle that previously lived inside the `oriz-me` submodule was folded back into the family bundle so every concept file resolves under one root and one OKF contract ([`knowledge/_okf.md`](./knowledge/_okf.md)).
+Per-app knowledge lives INSIDE each app submodule under its own `knowledge/` folder (OKF-light: `index.md` + `decisions/` + `runbooks/` + `services/`). The richest example is [`projects/apps/personal/oriz-cs-me-app/knowledge/`](./projects/apps/personal/oriz-cs-me-app/knowledge/) — lifestream architecture, age-gating, ingester contract, 100-year strategy. Each per-app bundle follows the same OKF contract ([`knowledge/_okf.md`](./knowledge/_okf.md)). Master `knowledge/` holds family-wide rules / decisions / architecture only; the deprecated `knowledge/sites/<app>/` location is NOT used.
 
 ## Update protocol
 
