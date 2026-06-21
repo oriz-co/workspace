@@ -96,6 +96,79 @@ The earlier per-repo MCQ answers under the unique-brand-per-product draft (`cs-m
 - **Category**: kebab-case, names the function. May include compound words (`pdf-tools`, `image-tools`, `kids-game`).
 - **Suffix**: from the locked role-suffix matrix in `naming-policy-v5.md` (carried forward).
 
+## Per-category nuance (added 2026-06-21 mid-audit)
+
+The category portion behaves differently per repo type:
+
+### Tool apps — keep category in slug for SEO
+
+Tool apps benefit from the category word being searchable. Google ranks `oriz-pdf-tools` for "pdf tools" the way it ranks "Google Images" for "images." Pattern: `oriz-<category>-<suffix>`.
+
+| Example | Why |
+|---|---|
+| `oriz-pdf-tools-app` | SEO target: "pdf tools" |
+| `oriz-image-tools-app` | SEO target: "image tools" |
+| `oriz-finance-tools-app` | SEO target: "finance tools / calculators" |
+| `oriz-dev-tools-app` | SEO target: "developer tools" |
+
+### Games — brand + game-name + suffix (no category word)
+
+Games don't benefit from a generic category word — the GAME NAME itself is what users search for. Pattern: `oriz-<game-name>-game`. No "category" between brand and game-name.
+
+| Example | Reasoning |
+|---|---|
+| `oriz-tic-tac-toe-game` | "tic-tac-toe" IS the searchable name |
+| `oriz-2048-game` | "2048" IS the searchable name |
+| `oriz-sudoku-game` | "sudoku" IS the searchable name |
+| `oriz-snake-game` | "snake" IS the searchable name |
+| `oriz-counting-1-10-kids-game` | "counting 1 to 10" IS the search target for parents |
+| `oriz-memory-match-kids-game` | "memory match" IS the search target |
+
+### Non-tool apps — brand + app-name + suffix
+
+Content apps (blog, journal, lore, etc.) where the app name carries the brand:
+
+| Example | Reasoning |
+|---|---|
+| `oriz-blog-app` | The "blog" name IS the function |
+| `oriz-journal-app` | "journal" IS the function |
+| `oriz-me-app` | "me" IS the role (personal portfolio) |
+| `oriz-lore-app` | "lore" IS the brand/role |
+| `oriz-cards-app` | "cards" IS the function (India financial cards) |
+| `oriz-ncert-app` | "ncert" IS the searchable keyword |
+| `oriz-post-app` | "post" IS the function (cross-poster) |
+
+### Decision tree for new repos
+
+```
+Is the repo a tool app where users search for "X tools"?
+  YES → oriz-<category>-tools-app (keep "tools" in slug)
+  NO  → Is it a game (named entity is the product)?
+        YES → oriz-<game-name>-game (or -kids-game)
+        NO  → oriz-<role-or-function>-<suffix>
+```
+
+## Vendor-convention exceptions (carried)
+
+Some repo names match a vendor or community convention better than `oriz-*` would. These keep their bare slugs:
+
+| Repo | Convention |
+|---|---|
+| `workspace` | Apex umbrella |
+| `agents-md` | The well-known AGENTS.md filename convention |
+| `setup` | Personal dotfiles + install scripts |
+| `envpact*` (7 repos) | Separate brand (envpact is its own product line) |
+| `astro-*-npm-pkg` (8 repos) | Astro framework family |
+
+For envpact specifically, the 7 repos keep their `envpact-*` prefix but add the v5 role suffix to each:
+- `envpact` (umbrella) → keep
+- `envpact-cli` → `envpact-npm-cli`
+- `envpact-registry-publisher` → `envpact-registry-publisher-npm-cli`
+- `envpact-python` → `envpact-py-pkg`
+- `envpact-dashboard` → `envpact-dashboard-app`
+- `envpact-vscode` → `envpact-vscode-vsc-ext`
+- `envpact-action` → `envpact-gh-action` (new suffix for GH Actions)
+
 ## What changed from v5
 
 - v5: "no brand prefix in slug, the chirag127/ org is the prefix"
