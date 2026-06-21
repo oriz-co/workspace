@@ -38,7 +38,7 @@
 	path = projects/apps/hub/home-app
 	url = https://github.com/chirag127/oriz-app.git
 [submodule "projects_apps_content_ncert-app"]
-	path = projects/apps/content/ncert-app
+	path = projects/apps/content/oriz-ncert-app
 	url = https://github.com/chirag127/oriz-ncert-app.git
 [submodule "projects_apps_content_post-app"]
 	path = projects/apps/content/oriz-omni-post-app
@@ -103,3 +103,6 @@
 [submodule "projects_apis_flow-fii-dii-activity-api"]
 	path = projects/apis/oriz-flow-fii-dii-activity-api
 	url = https://github.com/chirag127/oriz-flow-fii-dii-activity-api.git
+[submodule "projects_apps_content_oriz-janaushdhi-app"]
+	path = projects/apps/content/oriz-janaushdhi-app
+	url = https://github.com/chirag127/oriz-janaushdhi-app.git

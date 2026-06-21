@@ -224,11 +224,13 @@ Local submodule disk paths now mirror the full GitHub slug:
 
 Kept short (vendor-convention or category-IS-brand):
 - `projects/apps/hub/home-app`
-- `projects/apps/content/ncert-app`
-- `projects/apps/content/janaushdhi-app`
 - `projects/skills/agents-md-sync-skill`
 - `projects/skills/claude-code-mcq-notes-skill`
 - All 8 `projects/npm-packages/astro-*-npm-pkg`
+
+Renamed 2026-06-21 late (separate from the 23-path batch):
+- `projects/apps/content/ncert-app` → `projects/apps/content/oriz-ncert-app` (GitHub repo `ncert-app` also renamed to `oriz-ncert-app`)
+- New repo created: `projects/apps/content/oriz-janaushdhi-app` (chirag127/oriz-janaushdhi-app — fresh; the previous `janaushdhi-app` was a 0KB stub deleted in an earlier audit pass)
 
 Done via `git mv` in workspace; submodule pointers preserved.
 

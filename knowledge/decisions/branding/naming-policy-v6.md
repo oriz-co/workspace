@@ -93,8 +93,8 @@ Repos that stay WITHOUT a product brand (category IS the brand):
 | Slug | Reason |
 |---|---|
 | `oriz-app` (apex) | apex hub, brand IS oriz |
-| `oriz-ncert-app` | ncert IS the SEO target |
-| `oriz-janaushdhi-app` | janaushdhi IS the brand |
+| `oriz-ncert-app` | ncert IS the SEO target (renamed from `ncert-app` 2026-06-21 late) |
+| `oriz-janaushdhi-app` | janaushdhi IS the brand (created fresh 2026-06-21 late; previous `janaushdhi-app` was a stub, deleted in earlier audit pass) |
 
 ---
 
