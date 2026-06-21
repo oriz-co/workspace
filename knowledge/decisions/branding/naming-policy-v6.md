@@ -12,7 +12,50 @@ related: [decisions/architecture/multi-target-build, decisions/architecture/per-
 
 # Naming policy v6
 
-## Decision
+## v6.2 amendment — product brand inserted between family brand and category (2026-06-21 late)
+
+Format expanded from `<family-brand>-<category>-<suffix>` to:
+
+```
+<family-brand>-<product-brand>-<category>-<suffix>
+```
+
+- **family brand** = `oriz` (carried)
+- **product brand** = a unique short word per product (e.g. `paisa` for finance, `slice` for PDF, `pixie` for image)
+- **category** = the function (e.g. `finance-tools`, `pdf-tools`)
+- **suffix** = the runtime/role (`-app`, `-game`, `-api`, etc.)
+
+Examples:
+
+| Old (v6.1) | New (v6.2) |
+|---|---|
+| `oriz-finance-tools-app` | `oriz-paisa-finance-tools-app` |
+| `oriz-pdf-tools-app` | `oriz-<brand>-pdf-tools-app` |
+| `oriz-image-tools-app` | `oriz-<brand>-image-tools-app` |
+| `oriz-blog-app` | `oriz-<brand>-blog-app` |
+| `oriz-2048-game` | `oriz-<brand>-2048-game` (or `oriz-2048-game` if "2048" IS the brand) |
+
+The earlier "Google-style single brand" rationale from v6.1 was a simplification — Google ALSO has product brand layers ("Google Maps" not "Google Map App"; "Google Pixel"; "Google Workspace"). v6.2 restores the product-brand layer the family had partially attempted in pre-v6.1.
+
+### Special cases
+
+- **Where the category word IS already the brand** (e.g. `me`, `home`, `journal`, `blog` if no separate product brand) → format collapses to `oriz-<category>-<suffix>` (no product brand). This is v6.1's form, preserved for these.
+- **Games where the game-name IS the brand** (e.g. `2048`, `tic-tac-toe`, `sudoku`) → `oriz-<game-name>-game` (no separate brand). Game name carries identity.
+- **Tool apps** SHOULD have a product brand because "PDF tools" is a generic SEO target, but `paisa-finance-tools` is brandable + memorable.
+
+### Existing renames to revise under v6.2
+
+| Repo (v6.1) | v6.2 form (brand TBD per repo) |
+|---|---|
+| `oriz-finance-tools-app` | `oriz-paisa-finance-tools-app` (LOCKED) |
+| `oriz-pdf-tools-app` | `oriz-<brand>-pdf-tools-app` |
+| `oriz-image-tools-app` | `oriz-<brand>-image-tools-app` |
+
+Audit table updates next turn after brand picks land.
+
+---
+
+## Decision (v6.1 base, retained)
 
 Repo slugs are `oriz-<category>-<suffix>` where:
 - **`oriz`** = single family-wide brand prefix on every repo. Google-style: Google Maps, Google Journal, Google Photos — same brand, different products.
