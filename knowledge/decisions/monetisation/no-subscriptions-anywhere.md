@@ -15,6 +15,19 @@ related:
 
 # No service in the stack may require a paid subscription
 
+## Scope clarification (added 2026-06-21)
+
+This rule applies to **developer-facing services that the family consumes** — the cloud / API / tool subscriptions the developer themself would pay for to run the family. It does NOT apply to **user-facing subscriptions** that the apps offer to their visitors.
+
+| Direction | Subscription allowed? |
+|---|---|
+| Developer → service provider (Vercel Pro, Firebase Blaze, Sentry Team) | **NO. Forbidden.** |
+| App → end user (e.g. `pdf-tools-app` offers Free / Pro / Ultra / Max tiers) | **YES. Allowed and encouraged for revenue.** |
+
+User-facing subscription tiers on the apps follow Google-style naming: Free → Pro → Ultra → Max. Each tier unlocks more advanced features, removes ads, raises quotas. Implementation per [`one-subscription-unlocks-all.md`](./one-subscription-unlocks-all.md) (one Razorpay/LS subscription covers every app in the family).
+
+The developer-side constraint below is what makes the user-side subscription possible: by keeping the cost stack at zero, the user-side margin is high.
+
 ## Decision
 
 Every service we depend on must have a free tier sufficient for the
