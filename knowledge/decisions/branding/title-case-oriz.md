@@ -14,7 +14,7 @@ related:
 
 # Decision
 
-The brand mark is **"Oriz"** (Title-Case) in every user-facing surface — homepage wordmark, page titles, meta descriptions, README headlines, social cards, OG images, status-page name, support-page copy, billing receipts, and email "from" name. Lowercase `oriz` is reserved for machine-facing identifiers: repo slugs (`chirag127/pages`), npm package names (`@chirag127/oriz-kit`), DOM data-attributes (`data-oriz-multisearch`), CSS custom-property prefixes (`--oriz-*`), env-var prefixes (`ORIZ_*`), and shell scripts.
+The brand mark is **"Oriz"** (Title-Case) in every user-facing surface — homepage wordmark, page titles, meta descriptions, README headlines, social cards, OG images, status-page name, support-page copy, billing receipts, and email "from" name. Lowercase `oriz` is reserved for machine-facing identifiers: repo slugs (`chirag127/blog-site`), npm package names (`@chirag127/oriz-kit`), DOM data-attributes (`data-oriz-multisearch`), CSS custom-property prefixes (`--oriz-*`), env-var prefixes (`ORIZ_*`), and shell scripts.
 
 # Why
 
@@ -25,7 +25,7 @@ The user wrote on 2026-06-20: *"the brand is Oriz Title Case, not oriz lowercase
 - **Homepage wordmark.** `<h1 class="brand">Oriz</h1>` everywhere. Update on `oriz.in`, every sister site that mentions the family ("a part of Oriz"), every README's "What is this?" section, every OG image, every `og:site_name` meta tag, every JSON-LD `Organization.name`.
 - **Page titles + meta descriptions.** Every `<title>` and `<meta name="description">` that currently reads "oriz —" or "oriz is" is updated to "Oriz —" / "Oriz is". The `<BaseLayout title=…>` invocations pass the Title-Case form.
 - **Social copy.** Bluesky / Mastodon / GitHub bio / Twitter handle display names use "Oriz". Handle slugs (`@oriz`, `@oriz.bsky.social`, etc.) stay lowercase because handles are identifiers, not display names.
-- **Repo slugs UNCHANGED.** `chirag127/pages` stays lowercase — it's a path component. Renaming repos to "Pages" would break every existing deep link, every CI workflow, every submodule pointer, every `pnpm` lockfile path, every git remote — for zero brand benefit because nobody reads the slug as the brand.
+- **Repo slugs UNCHANGED.** `chirag127/blog-site` stays lowercase — it's a path component. Renaming repos to "Pages" would break every existing deep link, every CI workflow, every submodule pointer, every `pnpm` lockfile path, every git remote — for zero brand benefit because nobody reads the slug as the brand.
 - **npm package names UNCHANGED.** `@chirag127/oriz-kit` stays lowercase — npm packages are case-sensitive on case-sensitive filesystems and the convention is firmly lowercase across the registry. The package's `package.json` `description` field, however, says "Oriz".
 - **DOM / HTML attributes UNCHANGED.** `data-oriz-multisearch`, `data-oriz-status`, `data-oriz-status-dismiss` stay lowercase — HTML attribute names are case-insensitive but the convention is lowercase, and the attribute selector grammar (`[data-oriz-…]`) reads cleaner unbroken.
 - **CSS / env / shell prefixes UNCHANGED.** `--oriz-accent`, `ORIZ_API_KEY`, `oriz_*` shell vars all stay lowercase — these are identifiers, not display strings.

@@ -44,12 +44,12 @@ real even if recoverable.
 ### 11 site submodules (all `oriz-<name>-site`)
 
 - `chirag127/home`
-- `chirag127/pages`
+- `chirag127/blog-site`
 - `chirag127/ncert`
 - `chirag127/lore`
-- `chirag127/tabs`
+- `chirag127/cards-site`
 - `chirag127/finance-tools-site`
-- `chirag127/roam`
+- `chirag127/journal-site`
 - `chirag127/dev-tools-site`
 - `chirag127/image-tools-site`
 - `chirag127/pdf-tools-site`
@@ -70,7 +70,7 @@ Empty does not mean abandoned.
 
 ### Active future submodules
 
-- `chirag127/echo` (active submodule at `packages/oriz-omnipost`)
+- `chirag127/post-site` (active submodule at `packages/oriz-omnipost`)
 - `chirag127/oriz-lifestream` (planned; will become a submodule when
   the lifestream service is wired)
 

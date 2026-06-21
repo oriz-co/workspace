@@ -53,7 +53,7 @@ Three properties matter:
 1. **Each site / package / extension can be released independently.**
    A bug fix to oriz-blog doesn't need a master commit; the master
    commit happens when production should pin to that fix.
-2. **Open-source visibility per repo.** Recruiters read `chirag127/pages`
+2. **Open-source visibility per repo.** Recruiters read `chirag127/blog-site`
    directly, with its own README, issues, and stars.
 3. **Per-repo CI keeps blast radius small.** A failing extension
    build blocks only that extension's release, not the family.

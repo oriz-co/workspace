@@ -1,9 +1,9 @@
 ---
 type: decision
-title: "Repo naming suffixes locked: -site / -ext / -vsc-ext / -cli / -worker / -fn"
-description: "Every chirag127/oriz* repo gets a role-typed suffix. Sites end -site, browser extensions -ext, VS Code extensions -vsc-ext, CLIs -cli, Workers -worker, Cloud Functions -fn. NPM packages stay clean (no suffix)."
+title: "Repo naming locked: <subdomain-prefix>-site for every site + role suffix matrix for everything else"
+description: "Every site repo is named <subdomain-prefix>-site (the subdomain prefix on oriz.in, suffixed with -site). Extensions get -ext, VS Code extensions -vsc-ext, CLIs -cli, Workers -worker, Cloud Functions -fn, MCP servers -mcp, data repos -data, agent skills -skill, rule bundles -rules. NPM packages stay clean (no suffix)."
 tags: [naming, repo, packages, suffix, family, branding]
-timestamp: 2026-06-20
+timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
 related:
@@ -16,21 +16,28 @@ related:
   - glossary/o-r/oriz-kit
 ---
 
-# Repo naming — universal suffix policy (every repo carries a role suffix)
+# Repo naming — subdomain-prefix for sites + role suffix for everything else
 
-## Decision (revised 2026-06-20 evening, second pass)
+## Decision (revised 2026-06-21, fourth pass)
 
 Every chirag127 repo carries a suffix that names its runtime category.
-Sites get `-site`, npm packages stay bare scoped (`@chirag127/<name>`),
-extensions get `-ext` / `-vsc-ext`, CLIs get `-cli`, MCP servers get
-`-mcp`, Cloudflare Workers get `-worker`, Cloudflare/Firebase Functions
-get `-fn`, static-data repos get `-data`, agent skills get `-skill`,
-agent rule bundles get `-rules`. **No exceptions for sites this time** —
-the prior hybrid carve-out (sites bare) is dropped.
+**Site repos are named `<subdomain-prefix>-site`** — the slug mirrors the
+public subdomain on `oriz.in`. The repo for `blog.oriz.in` is
+`chirag127/blog-site`, for `journal.oriz.in` it's
+`chirag127/journal-site`, etc. This replaces the prior brand-only slugs
+(`pages-site`, `tabs-site`, `roam-site`, `echo-site`) that didn't track
+their public URL.
+
+Everything else keeps its role suffix from the third-pass matrix: npm
+packages stay bare scoped (`@chirag127/<name>`), extensions get `-ext` /
+`-vsc-ext`, CLIs get `-cli`, MCP servers get `-mcp`, Cloudflare Workers
+get `-worker`, Cloudflare/Firebase Functions get `-fn`, static-data
+repos get `-data`, agent skills get `-skill`, agent rule bundles get
+`-rules`.
 
 | Role | Suffix | Examples |
 |---|---|---|
-| Static site | `-site` | `pages-site`, `lore-site`, `pdf-tools-site` |
+| Static site | `<subdomain-prefix>-site` | `blog-site` (blog.oriz.in), `journal-site` (journal.oriz.in), `pdf-tools-site` (pdf.oriz.in) |
 | Astro / JS / TS npm package | _(none — scoped only)_ | `@chirag127/astro-shell`, `@chirag127/astro-chrome` |
 | Browser extension | `-ext` | `kagi-summarizer-ext`, `bookmarks-ext` |
 | VS Code extension | `-vsc-ext` | `snippets-vsc-ext` |
@@ -74,30 +81,48 @@ Renamed this session:
 GitHub auto-redirects keep old `npx skills add chirag127/skill-<name>`
 URLs working until the next `gh repo rename` round.
 
-## Site rename (this session, third pass)
+## Site rename (this session, fourth pass)
 
-The earlier brand-only push (`pages`, `lore`, `tabs`, etc.) was reverted.
-All 9 sites carry `-site` suffix now:
+Brand-only slugs that didn't track the public subdomain are dropped.
+Every site repo now mirrors its `oriz.in` subdomain prefix. Sites whose
+slug already matched (`me`, `home`, `ncert`, `lore`, `janaushdhi`, and
+all `*-tools-site` repos) are unchanged. Four sites renamed:
 
-| Brand | Repo | Subdomain |
+| Old slug | New slug | Subdomain |
 |---|---|---|
-| pages | `chirag127/pages-site` | blog.oriz.in |
-| lore | `chirag127/lore-site` | (TBD) |
-| ncert | `chirag127/ncert-site` | ncert.oriz.in |
-| tabs | `chirag127/tabs-site` | cards.oriz.in |
-| home | `chirag127/home-site` | oriz.in |
-| roam | `chirag127/roam-site` | journal.oriz.in |
-| me | `chirag127/me-site` | me.oriz.in |
-| echo | `chirag127/echo-site` | post.oriz.in (planned) |
-| janaushdhi | `chirag127/janaushdhi-site` | (TBD) |
+| `chirag127/pages-site` | `chirag127/blog-site` | blog.oriz.in |
+| `chirag127/tabs-site` | `chirag127/cards-site` | cards.oriz.in |
+| `chirag127/roam-site` | `chirag127/journal-site` | journal.oriz.in |
+| `chirag127/echo-site` | `chirag127/post-site` | post.oriz.in (planned) |
+
+Full current table:
+
+| Repo | Subdomain |
+|---|---|
+| `chirag127/blog-site` | blog.oriz.in |
+| `chirag127/lore-site` | (TBD) |
+| `chirag127/ncert-site` | ncert.oriz.in |
+| `chirag127/cards-site` | cards.oriz.in |
+| `chirag127/home-site` | oriz.in (apex) |
+| `chirag127/journal-site` | journal.oriz.in |
+| `chirag127/me-site` | me.oriz.in |
+| `chirag127/post-site` | post.oriz.in (planned) |
+| `chirag127/janaushdhi-site` | (TBD) |
+
+`home-site` is grandfathered for the apex domain — no public subdomain
+prefix exists for `oriz.in`. Sites without a locked subdomain
+(`lore-site`, `janaushdhi-site`) keep their current slug until the
+subdomain is decided.
 
 ## Rejected this session
 
-- Brand-only sites (`pages`, `lore`, `tabs`) — third-pass reversal.
-- Hybrid (sites bare + others suffixed) — replaced by universal suffix
-  for consistency.
-- `chirag127/skill-*` prefix convention — inconsistent with the rest of
-  the family slug pattern.
+- Brand-only sites (`pages-site`, `tabs-site`, `roam-site`, `echo-site`)
+  whose slug didn't track the public subdomain — fourth-pass reversal.
+- Dropping `-site` suffix entirely (bare `blog`, `journal`, etc.) — kept
+  for at-a-glance role typing in `gh repo list`.
+- Stripping `-tools-` from the tools sites (e.g. `pdf-site` instead of
+  `pdf-tools-site`) — kept because the `-tools-` infix signals the
+  shared tools/ directory and shared scaffold.
 
 ## Why
 
@@ -112,26 +137,16 @@ table to consult before any `gh repo create`.
 
 ## Implications
 
-- Every existing site repo migrates to its new `-site` form. Migration
-  list (current → target):
-
-  | Current | Target |
-  |---|---|
-  | `chirag127/home` | `chirag127/home` |
-  | `chirag127/pages` | `chirag127/pages` |
-  | `chirag127/ncert` | `chirag127/ncert` |
-  | `chirag127/lore` | `chirag127/lore` |
-  | `chirag127/tabs` | `chirag127/tabs` |
-  | `chirag127/oriz-finance` | `chirag127/finance-tools-site` |
-  | `chirag127/roam` | `chirag127/roam` |
-  | `chirag127/oriz-urls-to-md` | `chirag127/dev-tools-site` |
-  | `chirag127/oriz-image-tools` | `chirag127/image-tools-site` |
-  | `chirag127/oriz-pdf-tools` | `chirag127/pdf-tools-site` |
-  | `chirag127/oriz-me` | `chirag127/me` |
-
-  Submodule **paths** stay `sites/oriz-<name>` for ergonomics — only
-  the remote URL flips. Run renames per
-  [`runbooks/rename-repo.md`](../../runbooks/rename-repo.md).
+- Site repos completed in the fourth pass: `pages-site` → `blog-site`,
+  `tabs-site` → `cards-site`, `roam-site` → `journal-site`, `echo-site`
+  → `post-site`. All four renames ran through
+  [`runbooks/rename-repo.md`](../../runbooks/rename-repo.md) and the
+  local submodule paths under `projects/websites/` flipped to match.
+  GitHub auto-redirects keep old `chirag127/<old>-site` clone URLs
+  working.
+- New sites: pick the public subdomain first, then the repo slug is
+  `<subdomain-prefix>-site`. If the subdomain isn't locked, defer the
+  rename until it is — don't ship a brand-only slug.
 
 - New extensions get `oriz-<slug>-ext` from day one; new VS Code
   extensions get `oriz-<slug>-vsc-ext`.

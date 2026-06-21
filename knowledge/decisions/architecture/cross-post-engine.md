@@ -1,7 +1,7 @@
 ---
 type: decision
 title: "RSS-driven cross-post engine — oriz-omnipost"
-description: "@chirag127/echo watches the oriz-blog-site RSS feed and fans each new entry out to every blogging platform that exposes a public API. Adapter pattern; idempotent; canonical URL preserved; short-link fallback when the target truncates content."
+description: "@chirag127/post-site watches the oriz-blog-site RSS feed and fans each new entry out to every blogging platform that exposes a public API. Adapter pattern; idempotent; canonical URL preserved; short-link fallback when the target truncates content."
 tags: [decisions, architecture, oriz-omnipost, cross-post, rss, blog]
 timestamp: 2026-06-20
 format_version: okf-v0.1
@@ -17,7 +17,7 @@ related:
 
 ## Decision
 
-`@chirag127/echo` is the family's single cross-poster. It
+`@chirag127/post-site` is the family's single cross-poster. It
 reads the canonical RSS feed at `blog.oriz.in/rss.xml`, diffs against
 its persisted state, and fans each new entry out to every supported
 blogging platform via a pluggable **Adapter pattern** — one adapter

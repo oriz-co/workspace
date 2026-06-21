@@ -1,27 +1,27 @@
-[submodule "projects/websites/pages-site"]
-	path = projects/websites/pages-site
-	url = https://github.com/chirag127/pages-site.git
+[submodule "projects/websites/blog-site"]
+	path = projects/websites/blog-site
+	url = https://github.com/chirag127/blog-site.git
 [submodule "projects/websites/lore-site"]
 	path = projects/websites/lore-site
 	url = https://github.com/chirag127/lore-site.git
 [submodule "projects/websites/ncert-site"]
 	path = projects/websites/ncert-site
 	url = https://github.com/chirag127/ncert-site.git
-[submodule "projects/websites/tabs-site"]
-	path = projects/websites/tabs-site
-	url = https://github.com/chirag127/tabs-site.git
+[submodule "projects/websites/cards-site"]
+	path = projects/websites/cards-site
+	url = https://github.com/chirag127/cards-site.git
 [submodule "projects/websites/home-site"]
 	path = projects/websites/home-site
 	url = https://github.com/chirag127/home-site.git
-[submodule "projects/websites/roam-site"]
-	path = projects/websites/roam-site
-	url = https://github.com/chirag127/roam-site.git
+[submodule "projects/websites/journal-site"]
+	path = projects/websites/journal-site
+	url = https://github.com/chirag127/journal-site.git
 [submodule "projects/websites/me-site"]
 	path = projects/websites/me-site
 	url = https://github.com/chirag127/me-site.git
-[submodule "projects/websites/echo-site"]
-	path = projects/websites/echo-site
-	url = https://github.com/chirag127/echo-site.git
+[submodule "projects/websites/post-site"]
+	path = projects/websites/post-site
+	url = https://github.com/chirag127/post-site.git
 [submodule "projects/websites/janaushdhi-site"]
 	path = projects/websites/janaushdhi-site
 	url = https://github.com/chirag127/janaushdhi-site.git

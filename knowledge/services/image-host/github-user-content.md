@@ -45,7 +45,7 @@ https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path>
 For example:
 
 ```
-https://raw.githubusercontent.com/chirag127/pages/assets/2026/06/big-animation.gif
+https://raw.githubusercontent.com/chirag127/blog-site/assets/2026/06/big-animation.gif
 ```
 
 ## Free tier

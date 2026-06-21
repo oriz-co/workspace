@@ -24,7 +24,7 @@ the umbrella `oriz/` repo being present on disk.
 Concretely:
 
 ```bash
-git clone https://github.com/chirag127/pages.git
+git clone https://github.com/chirag127/blog-site.git
 cd oriz-blog
 pnpm install
 pnpm dev      # works — site comes up locally
@@ -63,7 +63,7 @@ submodule:
 # In a scratch directory, far from any oriz/ checkout
 cd /tmp
 rm -rf oriz-blog
-git clone https://github.com/chirag127/pages.git
+git clone https://github.com/chirag127/blog-site.git
 cd oriz-blog
 pnpm install --prefer-offline=false
 pnpm typecheck && pnpm lint && pnpm build

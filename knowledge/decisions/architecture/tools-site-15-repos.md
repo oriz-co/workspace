@@ -69,7 +69,7 @@ Tools sites use **Tier A: auto-generated** — the sidebar lists all tools in th
 3. Move into the new shared-chrome shape (import `@chirag127/header` etc.).
 4. `oriz-urls-to-md` content lives at `dev.oriz.in/url-to-md` (it's a dev utility, not its own subdomain). The old repo gets renamed to `dev-site` and the URL→MD tool becomes one of dev-site's many tools.
 
-See [site-rename-matrix.md](./site-rename-matrix.md) for the full rename plan and [oriz-restructure-2026-06-20.md](../../runbooks/oriz-restructure-2026-06-20.md) for the step-by-step.
+See [oriz-restructure-2026-06-20.md](../../runbooks/oriz-restructure-2026-06-20.md) for the step-by-step rename runbook. (The historical `site-rename-matrix.md` was deleted 2026-06-21 — its mapping is fully superseded by the fourth-pass slugs in [`branding/repo-naming-suffixes.md`](../branding/repo-naming-suffixes.md).)
 
 ## Why this is the right time
 
@@ -80,4 +80,4 @@ The existing 4 tool repos are still tiny (sub-1000 LOC each). Splitting later wo
 - [tool-categories-roadmap.md](./tool-categories-roadmap.md) — Tier 1/2/3 + anti-list
 - [packages-14-atomic.md](./packages-14-atomic.md) — the shared chrome packages
 - [sidebar-4-tier.md](./sidebar-4-tier.md) — sidebar shape per site type
-- [site-rename-matrix.md](./site-rename-matrix.md) — full rename plan
+- [branding/repo-naming-suffixes.md](../branding/repo-naming-suffixes.md) — fourth-pass slug taxonomy (replaces the deleted `site-rename-matrix.md`)

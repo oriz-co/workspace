@@ -21,7 +21,7 @@ related:
 
 Every repo in the `chirag127/oriz*` family uses its **own GitHub
 Issues tab** as the sole bug intake surface. Bugs against
-`oriz-blog-site` go to `chirag127/pages/issues`; bugs
+`oriz-blog-site` go to `chirag127/blog-site/issues`; bugs
 against `@chirag127/oriz-kit` go to that package's repo; bugs
 against the `s.oriz.in` Worker go to `chirag127/oriz-s-worker/issues`.
 

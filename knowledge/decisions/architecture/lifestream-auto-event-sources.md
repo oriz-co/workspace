@@ -54,7 +54,7 @@ Subscribed events:
 JSONL line shape:
 
 ```jsonl
-{"ts": "2026-06-20T11:42:13Z", "kind": "git", "repo": "chirag127/pages", "sha": "abc1234", "message": "feat: ship", "author": "chirag127", "url": "https://github.com/chirag127/pages/commit/abc1234"}
+{"ts": "2026-06-20T11:42:13Z", "kind": "git", "repo": "chirag127/blog-site", "sha": "abc1234", "message": "feat: ship", "author": "chirag127", "url": "https://github.com/chirag127/blog-site/commit/abc1234"}
 ```
 
 Idempotent on `(repo, sha)` for push, `(repo, pr_number)` for PR,

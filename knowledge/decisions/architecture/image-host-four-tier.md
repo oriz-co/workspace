@@ -116,7 +116,7 @@ images:
     src: ./hero.png                          # Tier 1 — repo-hosted
     imageTier2: https://i.ibb.co/.../...     # Tier 2 — ImgBB
     imageTier3: https://i.imgur.com/....png  # Tier 3 — Imgur mirror
-    imageTier4: https://raw.githubusercontent.com/chirag127/pages/assets/2026/06/hero.png  # Tier 4
+    imageTier4: https://raw.githubusercontent.com/chirag127/blog-site/assets/2026/06/hero.png  # Tier 4
 ---
 ```
 

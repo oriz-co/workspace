@@ -84,6 +84,6 @@ Pattern observed: **user prefers wider topical coverage over narrow SEO concentr
 ## Related
 
 - [tools-site-15-repos.md](./tools-site-15-repos.md) — cards-site is NOT in the tools family; it's a content site
-- [site-rename-matrix.md](./site-rename-matrix.md) — `oriz-cards` → `cards-site` (suffix change, scope confirmed here)
+- [branding/repo-naming-suffixes.md](../branding/repo-naming-suffixes.md) — current slug is `chirag127/cards-site` (fourth-pass naming; renamed from `oriz-cards` → `tabs` → `cards-site`)
 - [sidebar-4-tier.md](./sidebar-4-tier.md) — Tier C config
 - [max-payment-methods.md](../monetisation/max-payment-methods.md) — affiliate fits within the existing monetisation matrix

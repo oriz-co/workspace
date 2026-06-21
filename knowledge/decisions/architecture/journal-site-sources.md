@@ -78,4 +78,4 @@ The risk-mitigation: ship in vertical slices. Don't try to ship everything at on
 
 - [auto-only-tracking.md](../../rules/auto-only-tracking.md) — metrics vs content carve-out
 - [sidebar-4-tier.md](./sidebar-4-tier.md) — Tier B
-- [site-rename-matrix.md](./site-rename-matrix.md) — `oriz-journal` → `journal-site`
+- [branding/repo-naming-suffixes.md](../branding/repo-naming-suffixes.md) — current slug is `chirag127/journal-site` (fourth-pass naming; renamed from `oriz-journal` → `roam` → `journal-site`)

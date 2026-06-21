@@ -78,5 +78,5 @@ These categories must not be added to the family even if requested casually late
 ## Related
 
 - [tools-site-15-repos.md](./tools-site-15-repos.md) — repo shape for these 15
-- [site-rename-matrix.md](./site-rename-matrix.md) — how the existing 4 fit in
+- [branding/repo-naming-suffixes.md](../branding/repo-naming-suffixes.md) — current slug taxonomy for the existing tool repos
 - [a11y-three-tools.md](./a11y-three-tools.md) — covers the accessibility work elsewhere
