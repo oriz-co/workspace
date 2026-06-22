@@ -8,8 +8,8 @@
 	path = projects/apps/content/oriz-roam-journal-app
 	url = https://github.com/chirag127/oriz-roam-journal-app.git
 [submodule "projects_apps_content_cards-app"]
-	path = projects/apps/content/oriz-tabs-cards-app
-	url = https://github.com/chirag127/oriz-tabs-cards-app.git
+	path = projects/apps/content/oriz-financial-cards-app
+	url = https://github.com/chirag127/oriz-financial-cards-app.git
 [submodule "projects_apps_tools_image-tools-app"]
 	path = projects/apps/tools/oriz-pixie-image-tools-app
 	url = https://github.com/chirag127/oriz-pixie-image-tools-app.git

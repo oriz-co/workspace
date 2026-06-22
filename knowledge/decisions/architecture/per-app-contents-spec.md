@@ -203,7 +203,7 @@ live under `projects/apps/` and `projects/apis/`:
 | `projects/apps/content/oriz-pages-blog-app` |
 | `projects/apps/content/oriz-roam-journal-app` |
 | `projects/apps/content/oriz-lore-app` |
-| `projects/apps/content/oriz-tabs-cards-app` |
+| `projects/apps/content/oriz-financial-cards-app` |
 | `projects/apps/content/oriz-omni-post-app` |
 | `projects/apps/content/oriz-ncert-app` |
 | `projects/apps/content/oriz-janaushdhi-app` |

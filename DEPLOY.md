@@ -71,7 +71,7 @@ Same settings page, **Authorized domains** → add:
 - `blog.oriz.in`
 - `books.oriz.in`
 - `book-lore.oriz.in`
-- `cards.oriz.in`
+- `financial-cards.oriz.in`
 - `finance.oriz.in`
 - `image.oriz.in`
 - `journal.oriz.in`
@@ -134,7 +134,7 @@ www.oriz.in          CNAME  oriz-home.pages.dev          (proxy on)
 blog.oriz.in         CNAME  oriz-blog.pages.dev          (proxy on)
 books.oriz.in        CNAME  oriz-books.pages.dev         (proxy on)
 book-lore.oriz.in    CNAME  oriz-book-lore.pages.dev     (proxy on)
-cards.oriz.in        CNAME  oriz-cards.pages.dev         (proxy on)
+financial-cards.oriz.in  CNAME  oriz-financial-cards.pages.dev   (proxy on)
 finance.oriz.in      CNAME  oriz-finance.pages.dev       (proxy on)
 image.oriz.in        CNAME  oriz-image-tools.pages.dev   (proxy on)
 img.oriz.in          CNAME  oriz-image-tools.pages.dev   (proxy on; secondary)

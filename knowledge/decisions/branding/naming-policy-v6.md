@@ -74,7 +74,7 @@ Suffixes name the runtime/role of the repo:
 | `oriz-pages-blog-app` | `projects/apps/content/oriz-pages-blog-app` |
 | `oriz-roam-journal-app` | `projects/apps/content/oriz-roam-journal-app` |
 | `oriz-lore-app` | `projects/apps/content/oriz-lore-app` |
-| `oriz-tabs-cards-app` | `projects/apps/content/oriz-tabs-cards-app` |
+| `oriz-financial-cards-app` | `projects/apps/content/oriz-financial-cards-app` |
 | `oriz-omni-post-app` | `projects/apps/content/oriz-omni-post-app` |
 | `oriz-ncert-app` | `projects/apps/content/oriz-ncert-app` |
 | `oriz-janaushdhi-app` | `projects/apps/content/oriz-janaushdhi-app` |
@@ -173,7 +173,7 @@ Content apps where the function name carries the brand:
 | `oriz-roam-journal-app` | "journal" IS the function |
 | `oriz-cs-me-app` | "me" IS the role (personal portfolio) |
 | `oriz-lore-app` | "lore" is the product brand for book summaries |
-| `oriz-tabs-cards-app` | "cards" IS the function (India financial cards) |
+| `oriz-financial-cards-app` | "financial-cards" IS the function (India financial cards: credit/debit/prepaid/travel/corporate) |
 | `oriz-omni-post-app` | "post" IS the function (cross-poster) |
 
 ### Decision tree for new repos

@@ -64,12 +64,12 @@ related:
 - Pagefind search across all entries
 - v1 priority: ship AFTER the 4 priority apps
 
-## 6. oriz-tabs-cards-app — tabs.oriz.in
+## 6. oriz-financial-cards-app — financial-cards.oriz.in
 
-- Personal visual bookmark cards (browser-tab style)
-- Personal use only (auth required for write; read public)
-- Tags + collections
-- No flashcards, no spaced-repetition
+- India financial card intelligence (credit + debit + prepaid + travel/forex + corporate + business)
+- 750+ credit card profiles live; debit/prepaid/travel/corporate seeded with sample data
+- Public read; no auth required
+- JSON-on-disk catalog at `data/cards/<type>/<bank>/<card>.json`
 - v1 priority
 
 ## 7. oriz-roam-journal-app — journal.oriz.in
@@ -132,7 +132,7 @@ Per `tools-shape-and-priority.md`: 16 separate subdomains, each is its own repo 
 ## Apps NOT shipping in v0 (slug-reservation only)
 
 - oriz-lore-app (was lore-book-summaries) — v1
-- oriz-tabs-cards-app — v1
+- oriz-financial-cards-app — v1
 - oriz-roam-journal-app — v1
 - oriz-cs-me-app — v1
 - oriz-omni-post-app — v1

@@ -42,7 +42,7 @@ Run `git submodule status | wc -l` from `c:/D/oriz/` to verify the submodule tot
 - `oriz-packages-catalog-app` — `packages.oriz.in` auto-discovery Starlight catalog
 - `oriz-pages-blog-app` — `blog.oriz.in` daily post + cross-post fan-out
 - `oriz-roam-journal-app` — `journal.oriz.in` Roam-style networked daily journal
-- `oriz-tabs-cards-app` — `tabs.oriz.in` visual bookmark cards
+- `oriz-financial-cards-app` — `financial-cards.oriz.in` India financial card intelligence (credit + debit + prepaid + travel + corporate)
 
 ### Tools (16)
 

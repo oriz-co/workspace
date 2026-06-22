@@ -53,7 +53,7 @@ The per-app content for each app (from sweep #5):
 | oriz-slice-pdf-tools-app | tool tabs | Slice / Merge / Compress / Convert / Sign + Workspace | Home / Tools / Recent / Saved / Menu |
 | oriz-pixie-image-tools-app | tool tabs | Resize / Convert / Compress / Bg-remove + Workspace | Home / Tools / Recent / Saved / Menu |
 | oriz-roam-journal-app | section nav drawer | Browse / Views / Account | Home / Today / Tags / Search / Menu |
-| oriz-tabs-cards-app | terminal bar + sign-in | Collections / Cards / Account | Home / Collections / All / Search / Menu |
+| oriz-financial-cards-app | terminal bar + sign-in | Credit / Debit / Prepaid / Travel / Corporate / Account | Home / Cards / Compare / Search / Menu |
 | oriz-cs-me-app | tab bar (Home/Now/Uses/CV/Contact) | Profile / Work / Interests / Contact | Home / About / Projects / Writing / Menu |
 
 ## Why
