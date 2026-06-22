@@ -10,9 +10,11 @@ the rule-book lives in [`knowledge/`](./knowledge/) as an
 bundle — 167 small concept files organised across 8 directories with
 clean cross-links.
 
-## The 13 hard rules (full versions in `knowledge/rules/`)
+## The 14 hard rules (full versions in `knowledge/rules/`)
 
 **NEW (2026-06-22 evening):**
+
+**Rule 14: Env vars ORG-level only — per-repo secrets FORBIDDEN** — env vars are pushed to GitHub ORG-level secrets with `--visibility all`. NEVER per-repo. Per-repo writes cause N×M API calls (3,770 per sync at our scale) and hit the 5K/hr rate limit. CI/CD pipelines inherit org secrets automatically. `chirag127` is a USER account today (no org secrets); migrate to a real GH Org (`oriz`) per [`knowledge/runbooks/migrate-to-oriz-org.md`](./knowledge/runbooks/migrate-to-oriz-org.md). Env-sync workflow is PAUSED until migration. Full body in [`knowledge/rules/org-level-secrets-only-no-per-repo.md`](./knowledge/rules/org-level-secrets-only-no-per-repo.md).
 
 **Rule 13: Frontend-design skill is baked-in agent philosophy** — every UI task approached as design lead at a small studio. Ground in subject. Hero is thesis. Typography carries personality. Structure is information. Motion deliberate. Match complexity to vision. AVOID AI-cluster defaults (cream+serif+terracotta / near-black+acid / broadsheet-hairlines) unless brief calls for them. Process: brainstorm → explore → plan → critique → build → critique again. Restraint: spend boldness in one place; Chanel's mirror — remove one accessory before publishing. Writing IS design material: active voice, end-user side, name by what people control. Full body in [`knowledge/rules/frontend-design-skill-baked-in.md`](./knowledge/rules/frontend-design-skill-baked-in.md).
 

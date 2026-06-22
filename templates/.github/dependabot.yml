@@ -1,0 +1,21 @@
+# Master template — synced to every chirag127/oriz* submodule via the
+# dependabot-notification-tuning.md sweep. Goal: ≤2 PRs/week/ecosystem,
+# grouped minor+patch, kills email noise.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      production-minor-patch:
+        update-types: ["minor", "patch"]
+      dev-dependencies:
+        dependency-type: "development"
+        update-types: ["minor", "patch", "major"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
