@@ -45,6 +45,8 @@ a specific operational outcome. Runbooks are distinct from
 | [`build-distributable.md`](./build-distributable.md) | Build PWA + Android APK (Bubblewrap TWA) + desktop EXE/dmg/AppImage (Tauri) from a single app via `@chirag127/astro-distribute` | Agent (CI), user (signing key setup) |
 | [`razorpay-end-to-end-setup.md`](./razorpay-end-to-end-setup.md) | After Razorpay signup: generate TEST API keys, verify the 4 pre-created plans, add webhook with 9 events, create 4 promo codes (FOUNDER50/LAUNCH30/BLOG20/STUDENT50), wire into `@chirag127/astro-billing`, E2E test with test card `4111…` via ngrok, then flip to LIVE. | User (dashboard clicks + push), agent (integration code in future task) |
 | [`migrate-okf-to-new-version.md`](./migrate-okf-to-new-version.md) | Placeholder for when OKF v0.1 → v0.2 happens | Agent + user |
+| [`dependabot-notification-tuning.md`](./dependabot-notification-tuning.md) | Kill Dependabot email noise without disabling alerts. Phase 1 user UI settings + Phase 2 per-repo `dependabot.yml` batching sweep. Drops email volume ~90%. | User (UI clicks), agent (sweep) |
+| [`github-apps-audit-2026-06-22.md`](./github-apps-audit-2026-06-22.md) | One-shot audit of 33 installed GitHub Apps on `chirag127`. 5 KEEP / 20 REMOVE-recommended / 8 REVIEW. Uninstall is manual (no API). | User (uninstall clicks), agent (audit only) |
 
 ## Where runbooks sit relative to the rest
 
