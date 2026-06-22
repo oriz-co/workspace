@@ -223,6 +223,6 @@
 [submodule "projects/apis/oriz-stackoverflow-trending-api"]
 	path = projects/apis/oriz-stackoverflow-trending-api
 	url = https://github.com/chirag127/oriz-stackoverflow-trending-api.git
-[submodule "projects/browser-extensions/Ai-rewrite"]
-	path = projects/browser-extensions/Ai-rewrite
+[submodule "projects/forks/Ai-rewrite"]
+	path = projects/forks/Ai-rewrite
 	url = https://github.com/chirag127/Ai-rewrite.git

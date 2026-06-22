@@ -1,0 +1,11 @@
+{
+  "name": "oriz-master",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Master pointer for the chirag127/oriz family. Top-level pnpm scripts only; per-app builds live in their submodules.",
+  "scripts": {
+    "env:encrypt": "sops --encrypt --input-type dotenv --output-type dotenv .env > .env.enc",
+    "env:decrypt": "sops --decrypt --input-type dotenv --output-type dotenv .env.enc > .env",
+    "env:edit": "sops .env.enc"
+  }
+}
