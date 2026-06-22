@@ -1,8 +1,8 @@
 ---
 type: rule
-title: "Grill on LOC removal >= 1000 lines per sweep"
-description: "When a dedup/refactor sweep removes ≥1000 lines of code, the agent MUST surface this as a delta, ask the user 20+ questions about what was removed + why, offer restoration paths, and confirm before deleting. Reason: consolidation of DESIGN PATTERNS is safe (Header/Footer/Sidebar/BottomBar structure can be identical); consolidation of CONTENT is dangerous (finance app sidebar content is different from PDF app sidebar content). Always verify: design-pattern consolidation vs. content consolidation."
-tags: [rule, dedup, refactoring, loc-threshold, content-vs-pattern, grill]
+title: "Grill on LOC removal >= 50 lines per sweep (TIGHTENED 2026-06-22 evening)"
+description: "TIGHTENED 2026-06-22 evening: threshold dropped from 1000 LOC → 50 LOC. When a dedup/refactor/cleanup sweep removes ≥50 lines of code in a single agent action, the agent MUST surface this as a delta, ask the user MCQs about what was removed + why, offer restoration paths, and confirm before deleting. Reason: 50-LOC sweeps can hide substantive functional removal (an entire component, a route, a feature). Design pattern consolidation safe ONLY after grill; content/feature deletion NEVER safe without grill."
+tags: [rule, dedup, refactoring, loc-threshold, content-vs-pattern, grill, tightened]
 timestamp: 2026-06-22
 format_version: okf-v0.1
 status: active
@@ -10,9 +10,10 @@ related:
   - rules/design-divergence-vs-dedup
   - rules/confirm-knowledge-deltas
   - rules/grill-to-knowledge
+  - rules/per-app-distinctive-frontend-design
 ---
 
-# Grill on LOC removal >= 1000 lines per sweep
+# Grill on LOC removal >= 50 lines per sweep
 
 ## Rule
 
