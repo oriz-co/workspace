@@ -80,6 +80,8 @@ format_version: okf-v0.1
 | [drafts-queue-host.md](./drafts-queue-host.md) | Manual-post drafts queue = private GitHub repo `chirag127/oriz-drafts` with Issues. One issue per draft per platform (label `platform:x` / `platform:reddit` / `platform:linkedin` / `platform:medium`). Replaces Telegram (banned in India). Requires OMNI_DRAFTS_GH_PAT env var |
 | [tools-shape-and-priority.md](./tools-shape-and-priority.md) | 16 tools = 16 separate *.oriz.in subdomains. Locked Wave-2 ship order: paisa, slice, scribe, pixie, grid, forge, shift, dice, cipher, paper, vitals, rank, reel, echo, pivot, then remainder. Anonymous-first auth; sponsor footer; affiliate where ethically clean (NOT on health tools) |
 | [newsletter-substack.md](./newsletter-substack.md) | Single newsletter at chirag127.substack.com — free tier; Substack takes 10% on any future paid tier. ONE newsletter for the family (not per-app). Daily blog feed + weekly digest + book drop announcements. Supersedes Buttondown + EmailOctopus split |
+| [no-firebase-functions.md](./no-firebase-functions.md) | Firebase Cloud Functions hard-banned (Blaze requires card on file). Replacements: GH Actions cron, CF Workers REST, CF Pages Functions, Firestore client SDK direct from browser |
+| [payment-architecture-direct-links.md](./payment-architecture-direct-links.md) | Buttons on our sites redirect to provider-hosted checkouts (Razorpay / Paddle / Gumroad / Substack / Play Billing). Tiny CF Worker logs the click anonymously, then 302s. Zero payment secrets on our infra; ~20x headroom on the Worker free envelope |
 
 ## Cross-refs
 

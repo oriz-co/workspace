@@ -83,3 +83,4 @@ wins, and the rule file is updated in the same conversation.
 
 - [`no-telegram-india-banned.md`](./no-telegram-india-banned.md) — Telegram is banned in India; user cannot access reliably. Drafts queue → GH Issues; notifications → GH + email. Do NOT propose Telegram bots for India-resident users.
 - [`communication-stt-friendly.md`](./communication-stt-friendly.md) — user uses STT heavily; accept transcription noise. When ambiguous, pick most-likely interpretation, state it explicitly, proceed. Never ask user to re-transcribe.
+- [`confirm-knowledge-deltas.md`](./confirm-knowledge-deltas.md) — when new user input contradicts existing knowledge, surface the delta explicitly, ask the user to confirm overwrite vs one-off, and only then act. Latest input wins ONLY after explicit confirmation. Pairs with future-overrides-past + keep-knowledge-fresh.
