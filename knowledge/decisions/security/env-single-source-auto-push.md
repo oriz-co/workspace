@@ -84,3 +84,19 @@ For client-side env vars (PUBLIC_*), Astro embeds them at build time via `import
 - GH org-level secrets rule → [[rules/github-org-level-secrets]]
 - .env.example synced rule → [[rules/env-example-synced-from-master]]
 - No hardcoded secrets → [[rules/no-hardcoded-secrets]]
+
+## Status: deployed 2026-06-22
+
+First-run results (local bootstrap, 2026-06-22):
+
+- `sops` 3.12.2 installed via winget `SecretsOPerationS.SOPS` at `C:\Users\C5420321\AppData\Local\Microsoft\WinGet\Packages\SecretsOPerationS.SOPS_*\sops.exe`
+- `age` 1.3.1 installed via winget `FiloSottile.age` at `C:\Users\C5420321\AppData\Local\Microsoft\WinGet\Packages\FiloSottile.age_*\age\age.exe`
+- Age keypair generated at `c:/D/oriz/.sops-age-key.txt` (gitignored). Public key: `age1c40qjamejzrp9cajle9g0dss25mmsmyaq6uaa2pgmyr3pflsy4qspgw5c4`
+- `c:/D/oriz/.env` (128 lines, 65 key=value pairs) encrypted → `c:/D/oriz/.env.enc` (committed)
+- `SOPS_AGE_KEY` pushed to `chirag127/workspace` as a **repo-level** bootstrap secret (CI reads it from there)
+- **Scope correction**: `chirag127` is a GitHub **User** account, not an Organization. Org-level secrets unavailable. Pivoted to **per-repo Actions secrets** across the oriz family (workspace + every `oriz-*` repo = 42 repos). The script `scripts/sync-env-to-org-secrets.mjs` fans out automatically.
+- First sync pushed **31 secrets × 42 repos = 1302 repo-level secrets** plus 1 bootstrap = **1335 total**, 0 failures.
+- One canonical key skipped automatically: `GITHUB_TOKEN` (reserved name; GitHub auto-injects per workflow run). The script now hard-rejects `GITHUB_TOKEN` and any `GITHUB_*` / `ACTIONS_*` prefix.
+- Cron: `30 1 * * *` UTC (06:30 IST) daily, plus `workflow_dispatch` and push triggers on `.env.enc` / `templates/.env.example` / sync script changes.
+- Manual user step **still required**: generate a PAT with `repo` scope at https://github.com/settings/tokens and run `gh secret set GH_ADMIN_PAT --repo chirag127/workspace --body "ghp_..."`. The workflow fails fast with a clear error until that PAT is set.
+- 21 keys exist in `.env.enc` but are **not** in `templates/.env.example` (e.g. `BING_SEARCH_API_KEY`, `APPWRITE_*`, `SSH_PRIVATE_KEY`). They are listed by the script as warnings and **not pushed** until added to `.env.example`. Reconciling this drift is a follow-up task.

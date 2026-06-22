@@ -164,10 +164,17 @@ async function main() {
   const canonical = canonicalKeys();
   console.log(`[env-sync] canonical: ${canonical.length} keys in templates/.env.example`);
 
-  // Filter: only keys that are canonical AND have non-empty values AND match --keys filter
+  // GitHub reserves these secret names — they cannot be set manually.
+  // GITHUB_TOKEN is auto-injected per-workflow; GITHUB_*/ACTIONS_* are reserved prefixes.
+  const RESERVED = new Set(["GITHUB_TOKEN"]);
+  const RESERVED_PREFIXES = ["GITHUB_", "ACTIONS_"];
+  const isReserved = (k) => RESERVED.has(k) || RESERVED_PREFIXES.some((p) => k.startsWith(p));
+
+  // Filter: only keys that are canonical AND have non-empty values AND aren't reserved AND match --keys filter
   const toPush = canonical.filter((k) => {
     const v = values.get(k);
     if (v === undefined || v === "") return false;
+    if (isReserved(k)) return false;
     if (ONLY_KEYS.length && !ONLY_KEYS.includes(k)) return false;
     return true;
   });
