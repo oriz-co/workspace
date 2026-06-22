@@ -16,13 +16,17 @@ related:
 
 # Two-tier pricing: Ad-free + Pro
 
+## 2026-06-22 pricing update
+
+Tier 1 doubled (from ₹49/₹399/₹999) per user re-grill the same day. Tier 2 stays at the level it was; Tier 2 features list may expand (see [[decisions/pricing/tier-2-pro-features]]).
+
 ## Tier 1: Ad-free
 
 | Duration | Price INR | Price USD |
 |---|---|---|
-| Monthly | ₹49 | ~$0.59 (Paddle converts) |
-| Yearly | ₹399 | ~$4.79 (Paddle converts) |
-| Lifetime | ₹999 | ~$12 (Paddle converts) |
+| Monthly | ₹99 | ~$1.19 (Paddle converts) |
+| Yearly | ₹799 | ~$9.59 (Paddle converts) |
+| Lifetime | ₹1,999 | ~$24 (Paddle converts) |
 
 **Feature:** Remove AdSense + AdMob ads from all apps. Single Firebase Auth flag (`isAdFree`) checked at render time.
 
@@ -30,9 +34,9 @@ related:
 
 | Duration | Price INR | Price USD |
 |---|---|---|
-| Monthly | ₹99 | ~$1.19 (Paddle converts) |
-| Yearly | ₹799 | ~$9.59 (Paddle converts) |
-| Lifetime | ₹1,999 | ~$24 (Paddle converts) |
+| Monthly | ₹199 | ~$2.39 (Paddle converts) |
+| Yearly | ₹1,599 | ~$19 (Paddle converts) |
+| Lifetime | ₹3,999 | ~$48 (Paddle converts) |
 
 **Features:** Everything in Ad-free PLUS:
 1. **Offline download** — current app content packaged as static assets, cached via service worker.
