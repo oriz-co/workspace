@@ -13,7 +13,12 @@ related:
 
 # Monitoring + uptime + logs — free tiers (2026-06-22)
 
-UptimeRobot's free tier became personal/OSS-only in Oct 2024. For commercial monitoring, Better Stack is now the go-to. Sentry + Axiom round out the observability stack.
+**Primary uptime in 2026 is the custom `oriz-status-app`** (CF Worker + KV cache, self-hosted on Cloudflare Pages). Third-party uptime tools are kept as secondary because no commercial-OK free tier scales to the family's 45+ endpoint count:
+
+- **UptimeRobot** became personal/OSS-only in Oct 2024 → unusable for commercial endpoints.
+- **Better Stack Uptime free is capped at 10 monitors** → covers only the top 10 endpoints, not the 45+ fleet.
+
+For errors, Sentry Developer + Axiom Personal still cover the family at $0.
 
 ## The table
 
@@ -28,17 +33,23 @@ UptimeRobot's free tier became personal/OSS-only in Oct 2024. For commercial mon
 
 ## How the family uses monitoring
 
-Today: lightly. Cloudflare Pages + Workers analytics cover the "is the site up" question for the static fleet. We don't yet have a unified status page or error tracker.
+Target end state (in progress, 2026-06):
 
-Target end state:
+| Layer | Provider | Cost | Status |
+|---|---|---|---|
+| Uptime (primary, all 45+ endpoints) | **`oriz-status-app`** (custom; CF Worker + KV cache, hosted on CF Pages) | $0 | In build |
+| Uptime (secondary, top-10 commercial) | Better Stack | $0 (capped at 10 monitors → cannot cover full fleet) | Active |
+| Uptime (tertiary, personal/OSS only) | UptimeRobot | $0 (commercial-use ban since Oct 2024) | Active for OSS sites only |
+| Cron monitoring (restic backup, daily catalog rebuild, etc.) | Healthchecks.io | $0 (20 checks) | Active |
+| Error tracking (frontend + Workers) | Sentry Developer | $0 (5K errors/mo, plenty of headroom) | Active |
+| Log ingestion (Workers logs, Pages function logs) | Axiom Personal | $0 (500 GB/mo is huge) | Active |
 
-| Layer | Provider | Cost |
-|---|---|---|
-| Uptime + status page (commercial) | Better Stack | $0 (10 monitors covers the top 10 sites) |
-| Uptime overflow (personal/OSS sites) | UptimeRobot | $0 (50 monitors) |
-| Cron monitoring (restic backup, daily catalog rebuild, etc.) | Healthchecks.io | $0 (20 checks) |
-| Error tracking (frontend + Workers) | Sentry Developer | $0 (5K errors/mo, plenty of headroom) |
-| Log ingestion (Workers logs, Pages function logs) | Axiom Personal | $0 (500 GB/mo is huge) |
+### Why we're building `oriz-status-app`
+
+- **Better Stack hard-caps free at 10 monitors.** The family runs 45+ endpoints (5 apps + 19 API surfaces + 21 content sites). Better Stack covers only the top 10 → 35+ endpoints uncovered.
+- **UptimeRobot 2024 ToS change** banned commercial use on the free tier. Roughly half the family is commercial-adjacent (paid services, ads-enabled sites), so UptimeRobot is unsafe except on the strictly-OSS sites.
+- **No third-party free tier scales to 45+ commercial monitors.** Conclusion: build our own.
+- **`oriz-status-app` shape:** CF Worker hits each endpoint every 5 min via Cron Triggers, writes result to CF KV (`status:<endpoint>:<timestamp>` keys with TTL); CF Pages site reads KV and renders the status page. All within Workers Free quota (100K req/day budget; 45 endpoints × 12/hr × 24 = 12,960 checks/day → 13% of cap).
 
 ## Quirks per provider
 
@@ -51,12 +62,13 @@ Target end state:
 
 ## Recommendation for the family
 
-1. **Uptime (commercial sites):** Better Stack — 10 monitors free.
-2. **Uptime (personal + OSS overflow):** UptimeRobot — 50 monitors free.
-3. **Cron job health:** Healthchecks.io — 20 checks free.
-4. **Frontend + Worker errors:** Sentry Developer — 5K errors/mo free.
-5. **Logs + traces + metrics:** Axiom Personal — 500 GB/mo ingest free.
-6. **Replace any of the above** with Cloudflare Analytics if the metric fits inside what CF already collects (most "page view + simple latency" metrics do).
+1. **Uptime (primary):** build + run `oriz-status-app` (CF Worker + KV + Pages). Only free path to cover 45+ commercial endpoints.
+2. **Uptime (top-10 backup):** Better Stack — 10 monitors covers the top 10 commercial endpoints as a redundant rail (independent vendor in case our own Worker layer goes down).
+3. **Uptime (OSS-only overflow):** UptimeRobot — 50 monitors free, personal/OSS sites only (commercial-use ban).
+4. **Cron job health:** Healthchecks.io — 20 checks free.
+5. **Frontend + Worker errors:** Sentry Developer — 5K errors/mo free.
+6. **Logs + traces + metrics:** Axiom Personal — 500 GB/mo ingest free.
+7. **Replace any of the above** with Cloudflare Analytics if the metric fits inside what CF already collects (most "page view + simple latency" metrics do).
 
 ## Sources
 

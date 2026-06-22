@@ -68,6 +68,25 @@ The family pattern: **Firestore for app data, Cloudflare D1 + KV for edge state,
 4. **Redis cache:** Upstash Redis (500K commands/mo) until we genuinely outgrow the cap.
 5. **Anything else:** see the use-case table above.
 
+## Firestore project + emulator
+
+- **Production Firestore project: `oriz-app`.** Single project for all production family workloads. Multi-tenant by collection prefix, not by project — keeps Spark plan free-tier quotas under one roof and dodges the [`never-hit-quotas`](../../rules/never-hit-quotas.md) cap-per-project trap.
+- **Local dev: Firestore Emulator** (`firebase emulators:start --only firestore`). **No separate dev/staging Firestore project.** A second project would either need its own Blaze upgrade for features or sit underused on Spark and burn quota headroom unnecessarily.
+- **Migration to prod = export from emulator + import to `oriz-app`** via the standard `firestore.indexes.json` + `firestore.rules` pipeline. Seed data lives in `master/scripts/seed-firestore.ts`, runnable against either emulator or prod.
+
+## Image storage replication for max durability
+
+Images uploaded by users (or assets large enough to justify external hosting — anything >100 KB that isn't ideal as a build-time static asset) are **replicated across 4 hosts on upload** for max durability + first-200-wins client-side failover:
+
+1. **Cloudinary** (25 credits/mo; transforms + CDN)
+2. **ImageKit** (20 GB + 20 GB; unlimited transforms)
+3. **imgbb** (32 MB/image cap; no expiry, no signup needed)
+4. **GitHub Releases** (cold storage; not CDN-fast but durable)
+
+Stored URL shape in Firestore is a JSON tuple `{cloudinary, imagekit, imgbb, ghRelease}`; the client `<img>` wrapper tries each in order, first 200 wins. Details in [`image-cdn.md`](./image-cdn.md).
+
+Image-only assets ride this replication strategy; general object storage (backups, large binaries) stays on Backblaze B2 per [`object-storage.md`](./object-storage.md).
+
 ## Sources
 
 - [Firebase pricing — Spark plan](https://firebase.google.com/pricing)

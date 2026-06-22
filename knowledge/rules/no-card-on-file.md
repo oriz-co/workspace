@@ -52,7 +52,11 @@ notices.
 
 ## Exceptions
 
-The Cloudflare Registrar exception above. No others.
+The Cloudflare Registrar exception above. Plus one narrow user-approved compute exception:
+
+- **AWS Lambda** as the 4th-rail fallback in the serverless chain. AWS account creation requires a card for identity verification, charged $0 if you stay in the forever-free 1M req/mo + 400K GB-sec quota. Lambda ONLY — no S3, EC2, RDS, DynamoDB, CloudFront, or any other AWS service. Full rule + hardening: [`aws-lambda-exception.md`](./aws-lambda-exception.md). Locked 2026-06-22 evening.
+
+No others.
 
 ## One-time fees exception
 

@@ -39,6 +39,10 @@ wins, and the rule file is updated in the same conversation.
 - [`no-subscriptions.md`](./no-subscriptions.md) — no service requiring a subscription, ever; no "free trial then pay".
 - [`cloudflare-pages-only.md`](./cloudflare-pages-only.md) — every website and every app in the family hosts on Cloudflare Pages. No exceptions. GitHub Pages is the per-site survival mirror only; Firebase Hosting / Vercel / Netlify / Render / Fly all rejected.
 
+## Exceptions to no-card
+
+- [`aws-lambda-exception.md`](./aws-lambda-exception.md) — **AWS Lambda ONLY** is admitted as the 4th-rail fallback in the serverless chain (CF Workers → Deno Deploy → Render → AWS Lambda). AWS account requires card at signup but Lambda forever-free (1M req/mo + 400K GB-sec) means $0 charges if quota-bounded. NO other AWS service covered. Locked 2026-06-22 evening.
+
 ## DNS / SSL constraints
 
 - [`one-level-subdomain-only.md`](./one-level-subdomain-only.md) — subdomains under `oriz.in` live AT MOST one level deep. CF free-tier Universal SSL covers only `*.oriz.in` (one wildcard level); 2-level shapes like `<name>.api.oriz.in` are FORBIDDEN for new work. Use `<name>-api.oriz.in` instead. 19 grandfathered `*.api.oriz.in` records remain DNS-only (grey-cloud); GH Pages provisions Let's Encrypt for them. Locked 2026-06-22 evening.

@@ -27,17 +27,33 @@ Research date: **2026-06-22**. Re-verify on the quarterly audit — the 2024–2
 |---|---|---|---|---|
 | Static sites (many) | **Cloudflare Pages** (primary), GitHub Pages (mirror) | 100 projects soft / unlimited | Yes | [`static-sites.md`](./static-sites.md) |
 | Web services / containers | **Koyeb** (1 nano always-on) OR **Render** (free w/ 15-min sleep) | 1 / 1 | Yes | [`web-services.md`](./web-services.md) |
-| Edge functions | **Cloudflare Workers**, Deno Deploy | 100K req/day, 1M req/mo | Yes | [`serverless-functions.md`](./serverless-functions.md) |
-| Postgres DB | **Neon** (10 projects) OR Supabase (2) | 10 / 2 | Yes | [`databases.md`](./databases.md) |
-| Document DB | **Firebase Firestore Spark** | 1 GiB | Yes | [`databases.md`](./databases.md) |
+| Edge functions (4-rail chain) | **CF Workers → Deno Deploy → Render → AWS Lambda** (4th rail = user-approved exception) | 100K req/day, 1M req/mo, 750h/mo, 1M req/mo | Yes (Lambda card-at-signup exception) | [`serverless-functions.md`](./serverless-functions.md) |
+| Serverless prototype (Azure Student) | **Azure Functions** (Student account, NOT production) | 1M execs + 400K GB-s/mo | Yes (student-verified) | [`azure-student.md`](./azure-student.md) |
+| Postgres DB | **Neon** (10 projects) OR Supabase (2) OR **Azure SQL free offer** (10 × 32 GB lifetime, Student account) | 10 / 2 / 10 | Yes | [`databases.md`](./databases.md), [`azure-student.md`](./azure-student.md) |
+| Document DB | **Firebase Firestore Spark** (prod project: `oriz-app`; dev = Firestore Emulator) | 1 GiB | Yes | [`databases.md`](./databases.md) |
 | Edge SQL | **Cloudflare D1** | 5 GB total | Yes | [`databases.md`](./databases.md) |
 | KV / Redis | **Cloudflare KV**, Upstash Redis | 1 GB / 256 MB | Yes | [`databases.md`](./databases.md) |
 | Object storage | **Backblaze B2** (no card) OR Cloudflare R2 (card required) | 10 GB / 10 GB | B2: yes, R2: NO | [`object-storage.md`](./object-storage.md) |
-| Image CDN | **ImageKit** (20 GB) OR Cloudinary (25 credits) | 20 GB / 25 GB | Yes | [`image-cdn.md`](./image-cdn.md) |
+| Image CDN + durability (4-host replicate-everywhere) | **Cloudinary + ImageKit + imgbb + GitHub Releases** | 25 credits + 20 GB + 32 MB/img + 2 GB/asset | Yes | [`image-cdn.md`](./image-cdn.md) |
 | Queues / pub-sub | **Cloudflare Queues** (2026 GA in free), Upstash QStash | 10K ops/day, 1K msg/day | Yes | [`queues-pubsub.md`](./queues-pubsub.md) |
-| Uptime / monitoring | **Better Stack** (commercial OK), UptimeRobot (personal only) | 10 monitors / 50 monitors | Yes | [`monitoring.md`](./monitoring.md) |
+| Uptime (45+ endpoints) | **`oriz-status-app`** (custom; CF Worker + KV + Pages) — Better Stack (10 cap) is too small for the fleet | 45+ | Yes | [`monitoring.md`](./monitoring.md) |
 | Error tracking / logs | **Sentry Developer**, Axiom Personal | 5K errors/mo, 500 GB ingest/mo | Yes | [`monitoring.md`](./monitoring.md) |
 | AI inference | (see `oriz-ai-providers` data repo) | varies | Yes | n/a |
+
+## The 4-rail serverless fallback chain (production order)
+
+For any critical serverless path:
+
+```
+1. Cloudflare Worker  (primary;     100K req/day,  10 ms CPU, edge)
+2. Deno Deploy        (secondary;   1M req/mo,     50 ms CPU, edge)
+3. Render Free        (tertiary;    750h/mo,       15-min sleep)
+4. AWS Lambda         (quaternary;  1M req/mo,     400K GB-sec FOREVER — USER-APPROVED EXCEPTION)
+```
+
+AWS Lambda is admitted as a narrow exception to the [`no-card-on-file`](../../rules/no-card-on-file.md) rule via [`rules/aws-lambda-exception.md`](../../rules/aws-lambda-exception.md). Lambda ONLY — no S3, EC2, RDS, DynamoDB, etc.
+
+Possible 5th rail for **prototype/learning only** (NOT production): Azure Functions under the user's [Azure Student account](./azure-student.md).
 
 ## The DROP list (lie about being free OR died)
 
@@ -46,9 +62,10 @@ These appeared in earlier scoping but are out as of 2026-06-22:
 | Provider | Reason | Date killed |
 |---|---|---|
 | Fly.io | Perma-free killed; now trial-only, card required after trial | Oct 2024 |
-| AWS Lambda | 1M req/mo is real but **card required at AWS signup** | — (always) |
-| Google Cloud Run | 2M req/mo is real but **card required at GCP signup** | — (always) |
-| Oracle Cloud Always Free | Genuinely best free compute but **card required at signup** | — (always) |
+| AWS Lambda | 1M req/mo is real; **USER-APPROVED EXCEPTION** as 4th-rail fallback per [`rules/aws-lambda-exception.md`](../../rules/aws-lambda-exception.md). Lambda ONLY. | — (always) |
+| AWS (everything else: S3, EC2, RDS, DynamoDB, CloudFront, etc.) | Card required at signup; exception does NOT extend beyond Lambda | — (always) |
+| Google Cloud Run | 2M req/mo is real but **card required at GCP signup**; user aggressive about not using Google | — (always) |
+| Oracle Cloud Always Free | Genuinely best free compute but **card required at signup**; user cannot sign up for Oracle | — (always) |
 | Vercel Hobby | Commercial use **explicitly prohibited** (incl. AdSense, donations) | enforced 2025+ |
 | Cyclic.sh | Shut down | May 31 2024 |
 | Glitch hosting | App hosting discontinued (IDE remnants only) | Jul 8 2025 |
@@ -72,14 +89,15 @@ These appeared in earlier scoping but are out as of 2026-06-22:
 |---|---|---|
 | [`static-sites.md`](./static-sites.md) | Static site hosting | 9 |
 | [`web-services.md`](./web-services.md) | Web services / containers | 7 |
-| [`serverless-functions.md`](./serverless-functions.md) | Edge + functions | 7 |
+| [`serverless-functions.md`](./serverless-functions.md) | Edge + functions (incl. AWS Lambda exception + Azure Functions) | 8 |
 | [`databases.md`](./databases.md) | Relational + document + edge SQL + KV | 12 |
-| [`object-storage.md`](./object-storage.md) | S3-compat + IPFS storage | 6 |
-| [`image-cdn.md`](./image-cdn.md) | Image CDN + transforms | 5 |
+| [`object-storage.md`](./object-storage.md) | S3-compat + IPFS storage + GH Releases | 7 |
+| [`image-cdn.md`](./image-cdn.md) | Image CDN + transforms + 4-host replicate-everywhere | 7 |
 | [`queues-pubsub.md`](./queues-pubsub.md) | Async messaging / scheduled jobs | 5 |
-| [`monitoring.md`](./monitoring.md) | Uptime + errors + logs | 6 |
+| [`monitoring.md`](./monitoring.md) | Uptime (custom + 3rd party) + errors + logs | 6 |
+| [`azure-student.md`](./azure-student.md) | Azure for Students account — student-verified, NO card | — |
 
-Total: **8 sub-files**, ~57 providers vetted, ~30 keep / ~5 evaluate / ~22 drop.
+Total: **9 sub-files**, ~60 providers vetted.
 
 ## How to use this catalog
 

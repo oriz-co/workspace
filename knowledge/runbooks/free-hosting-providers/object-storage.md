@@ -24,8 +24,9 @@ The R2 vs B2 split. R2 has unbeatable economics (zero egress!) but Cloudflare ga
 | 2 | **Backblaze B2** ⭐ | 10 GB storage, 1 GB/day download, 2,500 Class B + 2,500 Class C tx/day | NO | NO | NO | **KEEP** (family default) |
 | 3 | **Storj DCS** ⭐ | 25 GB storage + 25 GB egress/mo (was 150 GB pre-Apr 2023) | NO | NO | NO | **KEEP** (decentralized) |
 | 4 | Filebase IPFS | 5 GB storage, 1,000 pinned files, IPFS pinning included | NO | NO | NO | **KEEP** (IPFS niche) |
-| 5 | IDrive E2 | 10 GB free **discontinued (~2023)**; trial-only now | — | — | — | **DROP (killed)** |
-| 6 | Wasabi | Trial only: ~1 TB for 30 days, no perma-free | NO trial / YES post-trial | YES | NO | **DROP** |
+| 5 | **GitHub Releases** ⭐ | Per-asset cap 2 GB; soft repo cap ~5 GB; unlimited public repos. Cold storage. Not CDN-fast. | NO | NO | NO | **KEEP** (cold storage + image durability rail) |
+| 6 | IDrive E2 | 10 GB free **discontinued (~2023)**; trial-only now | — | — | — | **DROP (killed)** |
+| 7 | Wasabi | Trial only: ~1 TB for 30 days, no perma-free | NO trial / YES post-trial | YES | NO | **DROP** |
 
 ## How the family uses object storage
 
@@ -47,6 +48,7 @@ Per the [no-card-on-file rule](../../rules/no-card-on-file.md): **don't activate
 - **R2 card-gate.** Cards / PayPal required to enable R2. The rest of Cloudflare (Pages, Workers, D1, KV, Queues, Workers AI) is no-card.
 - **B2 daily download cap (1 GB/day).** Fine for backup restores (rare); not fine for serving public assets. If you need to serve images, use Cloudinary / ImageKit (see [`image-cdn.md`](./image-cdn.md)), not B2.
 - **B2 transaction caps.** 2,500 Class B (downloads) + 2,500 Class C (delete/list) per day. Restic typically does <100 ops per backup run, so weekly backups are well under the cap.
+- **GitHub Releases as cold storage.** Each release asset is capped at 2 GB; total per-repo cap is soft (~5 GB is typical before GitHub raises eyebrows). Unlimited public repos = unlimited durability rails if you spread across multiple repos. Not CDN-fast (GH Releases edge is fine but not transform-aware), so use it as the **durability rail in the image replication strategy** (see [`image-cdn.md`](./image-cdn.md)) — not as a primary serving CDN.
 - **Storj DCS** had 150 GB free pre-April 2023. Cut to 25 GB. Still generous compared to B2.
 - **Filebase IPFS** is the only no-card option for IPFS pinning. 5 GB + 1,000 pinned files. Niche.
 - **IDrive E2** killed their 10 GB free tier (~2023). Now it's trial-only.
@@ -57,7 +59,17 @@ Per the [no-card-on-file rule](../../rules/no-card-on-file.md): **don't activate
 1. **Backups:** Backblaze B2 (already wired via restic).
 2. **Large media (when needed):** Storj DCS — 25 GB + 25 GB egress is plenty for one or two video-hosting apps.
 3. **IPFS archive (when needed):** Filebase — 5 GB + 1,000 pins.
-4. **Do not activate R2** until the no-card rule changes.
+4. **Image durability rail (cold):** GitHub Releases — part of the 4-host image replication strategy in [`image-cdn.md`](./image-cdn.md).
+5. **Do not activate R2** until the no-card rule changes.
+
+## Image-only object hosts (cross-link)
+
+For image-only assets, two no-card hosts live in this category but are documented in [`image-cdn.md`](./image-cdn.md) because their value proposition is image-specific (transforms, on-the-fly resize, image-only API):
+
+- **imgbb** — 32 MB/image cap, no expiry, no signup. Image-only, no general object support.
+- **GitHub Releases** — listed in this file's table above; also a node in the image replication strategy.
+
+See [`image-cdn.md`](./image-cdn.md) for the 4-host replicate-everywhere pattern.
 
 ## Sources
 
@@ -66,5 +78,6 @@ Per the [no-card-on-file rule](../../rules/no-card-on-file.md): **don't activate
 - [Backblaze B2 pricing](https://www.backblaze.com/cloud-storage/pricing) — 10 GB free
 - [Storj DCS pricing](https://www.storj.io/pricing) — 25 GB free
 - [Filebase pricing](https://filebase.com/pricing/) — 5 GB IPFS free
+- [GitHub Releases asset size limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases#storage-and-bandwidth-quotas)
 - [IDrive E2 pricing](https://www.idrive.com/e2/pricing) (trial-only now)
 - [Wasabi pricing](https://wasabi.com/pricing/)
