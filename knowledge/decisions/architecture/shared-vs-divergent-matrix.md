@@ -19,6 +19,29 @@ related:
 
 ## Fully shared (via packages)
 
+### SHARED ROUTES (every app must have these at the same path)
+
+Required:
+- `/` — each app's home page (route same; content per-app)
+- `/privacy` — `@chirag127/astro-chrome/legal/Privacy.astro`
+- `/terms` — `@chirag127/astro-chrome/legal/Terms.astro`
+- `/contact` — `@chirag127/astro-chrome/legal/Contact.astro`
+- `/about` — `@chirag127/astro-chrome/legal/About.astro` (slot for app-specific copy)
+- `/refunds` — `@chirag127/astro-chrome/legal/Refunds.astro`
+- `/disclaimer` — `@chirag127/astro-chrome/legal/Disclaimer.astro`
+- `/pricing` — `@chirag127/astro-billing/Pricing.astro` (3-tier table, same prices)
+- `/sign-in` — `@chirag127/auth-core/SignIn.astro`
+- `/sign-out` — `@chirag127/auth-core/SignOut.astro`
+- `/account` — `@chirag127/auth-core/Account.astro` (subscription state, profile)
+
+Optional but recommended (same code everywhere when present):
+- `/changelog` — auto from git tags + GH releases
+- `/status` — embedded UptimeRobot status badge
+- `/feedback` — form → posts to GH Issues
+- `/sponsors` — Ko-fi / GH Sponsors / BMC links
+
+### SHARED SHELL + INFRASTRUCTURE
+
 | Surface | Package | Why same |
 |---|---|---|
 | **Auth flow + chip** | `@chirag127/auth-core` | Cross-app SSO needs identical token handling |
@@ -34,6 +57,10 @@ related:
 | **Footer DATA** | `@chirag127/astro-shell/family-data` | `FAMILY_APPS`/`BOOKS`/`PACKAGES` arrays |
 
 ## Divergent per-app (each app's own)
+
+User caveat (2026-06-22 evening): "Only the things that don't make the experience of the app or website worse should be kept divergent." If divergence harms UX, keep it same instead.
+
+### Visual surfaces that DIVERGE per app
 
 | Surface | What differs | Why |
 |---|---|---|
