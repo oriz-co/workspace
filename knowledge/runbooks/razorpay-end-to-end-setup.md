@@ -22,6 +22,39 @@ with the test card before flipping to LIVE.
 
 ---
 
+## 0. Quick bootstrap (recommended)
+
+Run `node scripts/razorpay-bootstrap.mjs` once. It does all of
+sections 2-5 automatically: creates the 4 plans, the 4 offers, the
+webhook (with the 9-event set), and 4 subscription links — all
+idempotent (safe to re-run; skips what already exists, updates what
+changed).
+
+```bash
+cd c:/D/oriz
+node scripts/razorpay-bootstrap.mjs           # live, idempotent
+node scripts/razorpay-bootstrap.mjs --dry     # preview, no writes
+node scripts/razorpay-bootstrap.mjs --verbose # log every API call
+```
+
+After it succeeds, captured IDs / URLs are written back into `.env`
+(`RAZORPAY_PLAN_*`, `RAZORPAY_OFFER_*`, `RAZORPAY_LINK_*`). The
+script also tries to re-encrypt `.env.enc` via `sops`; if sops isn't
+on PATH it prints the one-liner to run manually.
+
+**Known limitation — Offers API**: the public `POST /v1/offers`
+endpoint requires the Magic Checkout / Promotions add-on enabled by
+Razorpay support. If it returns 404, the script prints a clear
+fallback (create the 4 offers manually in Dashboard → Promotions →
+Offers; re-run the script to pick them up — it matches by
+`notes.oriz_offer_id` or by `name === CODE`). Bootstrap continues
+through the remaining steps either way.
+
+After running the script, you can **skip to section 7 (E2E test)**.
+Sections 2-5 below are kept for reference / manual fallback.
+
+---
+
 ## 1. Generate TEST mode API keys
 
 - [ ] Login to [dashboard.razorpay.com](https://dashboard.razorpay.com)
