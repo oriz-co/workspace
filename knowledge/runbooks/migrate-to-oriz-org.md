@@ -1,11 +1,11 @@
 ---
 type: runbook
 title: "Migrate chirag127/* repos to oriz-co GitHub Organization (one-time)"
-description: "Step-by-step: create the `oriz-co` GH Organization (both `oriz` and `oriz-in` were taken), transfer all 58 chirag127/* repos under it, set org-level secrets ONCE (65 keys), delete per-repo duplicates. Eliminates the 3,770-API-call sync storm and enables true org-level env management."
+description: "Step-by-step: create the `oriz-co` GH Organization (both `oriz` and `oriz-in` were taken), transfer all 76 chirag127/* repos under it, set org-level secrets ONCE (61 keys), delete per-repo duplicates. Eliminates the 3,770-API-call sync storm and enables true org-level env management."
 tags: [runbook, github, org, migration, secrets, one-time]
 timestamp: 2026-06-22
 format_version: okf-v0.1
-status: pending-execution
+status: COMPLETED 2026-06-22 (76 transfers, 61 org secrets, 0 failures)
 related:
   - rules/org-level-secrets-only-no-per-repo
   - decisions/security/env-single-source-auto-push
@@ -13,6 +13,8 @@ related:
 ---
 
 # Migrate chirag127/* → oriz-co Organization
+
+**Status: COMPLETED 2026-06-22 evening.** 76 repos transferred (workspace + 75 oriz family submodules; the `Ai-rewrite` fork was excluded). 61 org-level secrets pushed to `oriz-co` with visibility=all. Per-repo cleanup script staged (`scripts/delete-per-repo-secrets.mjs`) but not yet run — schedule when convenient (~45 min wall clock).
 
 One-time migration. Plain English checklist. Do these in order.
 

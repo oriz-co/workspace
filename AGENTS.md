@@ -1,6 +1,6 @@
 # AGENTS.md — pointer to `knowledge/`
 
-> **Read [`knowledge/index.md`](./knowledge/index.md) first.** The bundle is the canonical source of truth for every rule, decision, service pick, design brief, runbook, and policy in the chirag127/oriz family. The "where to look" table + per-site knowledge convention live in [`knowledge/_navigation.md`](./knowledge/_navigation.md).
+> **Read [`knowledge/index.md`](./knowledge/index.md) first.** The bundle is the canonical source of truth for every rule, decision, service pick, design brief, runbook, and policy in the oriz-co family (migrated from chirag127/* on 2026-06-22). The "where to look" table + per-site knowledge convention live in [`knowledge/_navigation.md`](./knowledge/_navigation.md).
 
 ## The 16 hard rules (full versions in `knowledge/rules/`)
 

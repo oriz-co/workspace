@@ -3,13 +3,11 @@
  * sync-env-to-org-secrets.mjs
  *
  * Single source of truth for env vars: `c:/D/oriz/.env` (gitignored) →
- * encrypted as `.env.enc` via sops+age → decrypted here → pushed to every
- * chirag127/oriz* + workspace repo as repo-level Actions secrets.
+ * encrypted as `.env.enc` via sops+age → decrypted here → pushed to the
+ * `oriz-co` GitHub Organization as ORG-LEVEL Actions secrets (visibility=all).
  *
- * IMPORTANT: chirag127 is a GitHub USER account, not an Organization, so
- * org-level secrets are not available. We fan out to repo-level secrets
- * across the oriz family (~42 repos) instead. See knowledge/decisions/security/
- * env-single-source-auto-push.md for context.
+ * 2026-06-22: migrated from per-repo fan-out (~3,770 API calls) to org-level
+ * (~65 API calls). chirag127 was a USER account; oriz-co is the new Org.
  *
  * Inputs:
  *   - .env.enc            (committed, sops-encrypted)
@@ -19,29 +17,33 @@
  * Behavior:
  *   1. Decrypt .env.enc → in-memory key/value map
  *   2. Read templates/.env.example for canonical keys
- *   3. For each canonical key with a non-empty value, push to every target repo
- *   4. Skip empty values (placeholders)
- *   5. Report: keys pushed, repos touched, failures
+ *   3. For each canonical key with a non-empty value, push ONCE to org-level
+ *      with visibility=all
+ *   4. Skip empty values (placeholders) and reserved GH_/ACTIONS_ prefixed names
+ *   5. Sleep 200ms between calls to stay polite on the API
+ *   6. Report: keys pushed, failures
+ *
+ * Auth: requires GH_TOKEN (or gh auth) with `admin:org` scope. Use
+ *       GH_ADMIN_PAT locally (sourced from .env) or in CI.
  *
  * Flags:
  *   --dry-run        Print what would be pushed; no API calls
- *   --repo <name>    Restrict to one repo (debug)
  *   --keys <a,b,c>   Restrict to a subset of keys (debug)
  */
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync, existsSync, writeFileSync, unlinkSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve, join } from "node:path";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname.replace(/^\/([a-zA-Z]):/, "$1:"));
 const ENC_PATH = join(ROOT, ".env.enc");
 const EXAMPLE_PATH = join(ROOT, "templates", ".env.example");
 const SOPS_CONFIG = join(ROOT, ".sops.yaml");
 const LOCAL_KEY_PATH = join(ROOT, ".sops-age-key.txt");
+const LOCAL_ENV_PATH = join(ROOT, ".env");
 
-// Default scope: workspace + every repo whose name starts with `oriz`.
-const OWNER = "chirag127";
+// Target: org-level secrets on the `oriz-co` GH Organization with visibility=all.
+const ORG = "oriz-co";
 
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
@@ -50,22 +52,9 @@ const flagVal = (name) => {
   return i >= 0 ? args[i + 1] : null;
 };
 const DRY = flag("--dry-run");
-const ONLY_REPO = flagVal("--repo");
 const ONLY_KEYS = (flagVal("--keys") || "").split(",").map((s) => s.trim()).filter(Boolean);
 
-function sh(cmd, argv, opts = {}) {
-  const r = spawnSync(cmd, argv, { encoding: "utf8", ...opts });
-  if (r.status !== 0) {
-    const err = new Error(`${cmd} ${argv.join(" ")} -> exit ${r.status}\n${r.stderr || r.stdout}`);
-    err.stdout = r.stdout;
-    err.stderr = r.stderr;
-    throw err;
-  }
-  return r.stdout;
-}
-
 function findSops() {
-  // Try PATH first, then known winget install location.
   for (const c of ["sops", "sops.exe"]) {
     try {
       execFileSync(c, ["--version"], { stdio: "ignore" });
@@ -87,12 +76,11 @@ function decryptEnv() {
       throw new Error("Neither SOPS_AGE_KEY env nor .sops-age-key.txt available");
     }
   }
-  const out = execFileSync(
+  return execFileSync(
     sops,
     ["--config", SOPS_CONFIG, "--decrypt", "--input-type", "dotenv", "--output-type", "dotenv", ENC_PATH],
     { encoding: "utf8", env, maxBuffer: 32 * 1024 * 1024 }
   );
-  return out;
 }
 
 function parseDotenv(text) {
@@ -103,7 +91,6 @@ function parseDotenv(text) {
     const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
     if (!m) continue;
     let v = m[2];
-    // Strip surrounding single/double quotes
     if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
       v = v.slice(1, -1);
     }
@@ -124,28 +111,30 @@ function canonicalKeys() {
   return [...new Set(keys)];
 }
 
-function listTargetRepos() {
-  // workspace + oriz-* under chirag127
-  const json = sh("gh", ["repo", "list", OWNER, "--limit", "500", "--json", "name,isArchived"]);
-  const all = JSON.parse(json);
-  return all
-    .filter((r) => !r.isArchived)
-    .filter((r) => r.name === "workspace" || r.name.startsWith("oriz"))
-    .map((r) => r.name)
-    .filter((n) => !ONLY_REPO || n === ONLY_REPO)
-    .sort();
+function loadAdminPatFromEnv() {
+  if (process.env.GH_TOKEN) return process.env.GH_TOKEN;
+  if (process.env.GH_ADMIN_PAT) return process.env.GH_ADMIN_PAT;
+  if (!existsSync(LOCAL_ENV_PATH)) return null;
+  const m = readFileSync(LOCAL_ENV_PATH, "utf8").match(/^GH_ADMIN_PAT\s*=\s*(.+)$/m);
+  if (!m) return null;
+  let v = m[1].trim();
+  if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+    v = v.slice(1, -1);
+  }
+  return v;
 }
 
-function setSecret(repo, key, value) {
+function setOrgSecret(key, value, token) {
   if (DRY) {
-    console.log(`  [dry] ${OWNER}/${repo}: ${key}`);
-    return { ok: true, dry: true };
+    console.log(`  [dry] ${ORG} org-level: ${key}`);
+    return { ok: true };
   }
-  // Use stdin to avoid putting value on argv (process list leak).
+  const env = { ...process.env };
+  if (token) env.GH_TOKEN = token;
   const r = spawnSync(
     "gh",
-    ["secret", "set", key, "--repo", `${OWNER}/${repo}`, "--body", "-"],
-    { input: value, encoding: "utf8" }
+    ["secret", "set", key, "--org", ORG, "--visibility", "all", "--body", "-"],
+    { input: value, encoding: "utf8", env }
   );
   if (r.status !== 0) {
     return { ok: false, err: (r.stderr || r.stdout || "").trim() };
@@ -153,9 +142,17 @@ function setSecret(repo, key, value) {
   return { ok: true };
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function main() {
   console.log(`[env-sync] root=${ROOT}`);
-  console.log(`[env-sync] dry-run=${DRY} only-repo=${ONLY_REPO || "(all oriz)"} only-keys=${ONLY_KEYS.length || "(all)"}`);
+  console.log(`[env-sync] org=${ORG} dry-run=${DRY} only-keys=${ONLY_KEYS.length || "(all)"}`);
+
+  const token = loadAdminPatFromEnv();
+  if (!DRY && !token) {
+    console.error("[env-sync] FATAL: no GH_ADMIN_PAT in env or .env (need admin:org scope)");
+    process.exit(1);
+  }
 
   const decrypted = decryptEnv();
   const values = parseDotenv(decrypted);
@@ -164,13 +161,10 @@ async function main() {
   const canonical = canonicalKeys();
   console.log(`[env-sync] canonical: ${canonical.length} keys in templates/.env.example`);
 
-  // GitHub reserves these secret names — they cannot be set manually.
-  // GITHUB_TOKEN is auto-injected per-workflow; GITHUB_*/ACTIONS_* are reserved prefixes.
   const RESERVED = new Set(["GITHUB_TOKEN"]);
   const RESERVED_PREFIXES = ["GITHUB_", "ACTIONS_"];
   const isReserved = (k) => RESERVED.has(k) || RESERVED_PREFIXES.some((p) => k.startsWith(p));
 
-  // Filter: only keys that are canonical AND have non-empty values AND aren't reserved AND match --keys filter
   const toPush = canonical.filter((k) => {
     const v = values.get(k);
     if (v === undefined || v === "") return false;
@@ -180,41 +174,34 @@ async function main() {
   });
   const skipped = canonical.filter((k) => !toPush.includes(k));
 
-  console.log(`[env-sync] pushable: ${toPush.length} keys (skipped ${skipped.length} empty/missing)`);
+  console.log(`[env-sync] pushable: ${toPush.length} keys (skipped ${skipped.length} empty/missing/reserved)`);
 
-  // Warn about keys in .env that aren't in .env.example (drift)
   const orphans = [...values.keys()].filter((k) => !canonical.includes(k));
   if (orphans.length) {
     console.log(`[env-sync] WARN: ${orphans.length} keys in .env.enc not listed in .env.example (not pushed): ${orphans.slice(0, 10).join(", ")}${orphans.length > 10 ? "..." : ""}`);
   }
 
-  const repos = listTargetRepos();
-  console.log(`[env-sync] target repos: ${repos.length}`);
-  if (repos.length === 0) {
-    console.error("[env-sync] FATAL: no target repos found");
-    process.exit(1);
-  }
-
   let ok = 0, fail = 0;
   const failures = [];
-  for (const repo of repos) {
-    let repoOk = 0, repoFail = 0;
-    for (const key of toPush) {
-      const res = setSecret(repo, key, values.get(key));
-      if (res.ok) { ok++; repoOk++; } else {
-        fail++; repoFail++;
-        failures.push({ repo, key, err: res.err });
-      }
+  for (const key of toPush) {
+    const res = setOrgSecret(key, values.get(key), token);
+    if (res.ok) {
+      ok++;
+      console.log(`  ok  ${key}`);
+    } else {
+      fail++;
+      failures.push({ key, err: res.err });
+      console.log(`  FAIL ${key}: ${res.err.split("\n")[0]}`);
     }
-    console.log(`  ${OWNER}/${repo}: ${repoOk} ok, ${repoFail} fail`);
+    if (!DRY) await sleep(200);
   }
 
   console.log("");
-  console.log(`[env-sync] DONE: ${ok} secrets set, ${fail} failed across ${repos.length} repos`);
+  console.log(`[env-sync] DONE: ${ok} secrets set, ${fail} failed at org level (${ORG})`);
   if (failures.length) {
     console.log(`[env-sync] first 10 failures:`);
     for (const f of failures.slice(0, 10)) {
-      console.log(`  ${f.repo} ${f.key}: ${f.err.split("\n")[0]}`);
+      console.log(`  ${f.key}: ${f.err.split("\n")[0]}`);
     }
     process.exit(1);
   }

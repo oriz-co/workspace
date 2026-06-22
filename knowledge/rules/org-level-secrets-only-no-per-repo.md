@@ -1,11 +1,11 @@
 ---
 type: rule
 title: "Env vars live at GitHub ORG level only — per-repo secrets FORBIDDEN"
-description: "User mandate 2026-06-22 evening: 'Don't hit the GitHub API so many times. Requests have to be made only on the organization level, not to the individual repositories. The CI/CD pipelines will use the global environment variables only.' Per-repo secret writes are forbidden (cause 2,730+ API calls per sync; hit 5K/hr rate limit). Path forward: migrate chirag127/* repos to GH Org `oriz-co` (both `oriz` and `oriz-in` were taken; `oriz-co` locked) so org-level secrets become available. Until migration, env-sync cron is PAUSED. Repository transfer destination: github.com/oriz-co/<slug>."
+description: "User mandate 2026-06-22 evening: 'Don't hit the GitHub API so many times. Requests have to be made only on the organization level, not to the individual repositories. The CI/CD pipelines will use the global environment variables only.' Per-repo secret writes are forbidden (cause 2,730+ API calls per sync; hit 5K/hr rate limit). Migration to GH Org `oriz-co` COMPLETED 2026-06-22 (76 repos transferred, 61 org secrets pushed). Repository destination: github.com/oriz-co/<slug>."
 tags: [rule, env, secrets, org-level, rate-limit, no-per-repo, github]
 timestamp: 2026-06-22
 format_version: okf-v0.1
-status: active
+status: active (migration COMPLETED 2026-06-22)
 supersedes_in_part: decisions/security/env-single-source-auto-push
 related:
   - decisions/security/env-single-source-auto-push
@@ -27,15 +27,15 @@ Per-repo `gh secret set --repo <name>` is **FORBIDDEN** because:
 - Single sync run hits the limit + fails on 12% of repos
 - Per-repo secrets also create a fan-out maintenance burden (rotation = N×M API calls)
 
-CI/CD pipelines in any chirag127 repo MUST inherit from org-level secrets, not local repo secrets.
+CI/CD pipelines in any oriz-co repo MUST inherit from org-level secrets, not local repo secrets.
 
-## Pre-migration state (2026-06-22)
+## Migration status (COMPLETED 2026-06-22 evening)
 
-`chirag127` is currently a **User account**, not a GH Organization. User accounts can't have org-level secrets. The env-sync workflow was fanning out per-repo (3,068 calls/run, 88% success rate, 363 transient failures from rate limit).
-
-**Repository transfer destination:** `github.com/oriz-co/<slug>` — both `oriz` and `oriz-in` org names were taken; `oriz-co` was locked on 2026-06-22 evening.
-
-**Cron is PAUSED** as of 2026-06-22 evening (see `.github/workflows/sync-env-to-org-secrets.yml` — `schedule:` block commented out).
+- `oriz-co` GH Organization created (both `oriz` and `oriz-in` were taken)
+- 76 repos transferred from `chirag127/*` → `oriz-co/*` (workspace + 75 family submodules; `Ai-rewrite` fork excluded)
+- 61 org-level secrets pushed via `scripts/sync-env-to-org-secrets.mjs` (visibility=all)
+- Cron re-enabled: `.github/workflows/sync-env-to-org-secrets.yml` now runs daily at 01:30 UTC
+- Per-repo duplicate cleanup script staged: `scripts/delete-per-repo-secrets.mjs` (run when convenient; ~45 min wall clock for ~2,705 deletes; idempotent)
 
 ## Path forward: org migration
 

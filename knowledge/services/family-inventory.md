@@ -1,7 +1,7 @@
 ---
 type: service
 title: "Family inventory — canonical counts of apps, packages, books, APIs, submodules"
-description: "Single source of truth for the chirag127/oriz family count totals as of 2026-06-22. 26 apps (1 hub + 1 personal + 8 content + 16 tools), 23 npm packages, 5 books (Oriz Learnings first), 2 APIs scaffolded, 54 submodules total. Every other knowledge file pointing at counts MUST cite this file to avoid drift."
+description: "Single source of truth for the oriz-co family count totals as of 2026-06-22. 26 apps (1 hub + 1 personal + 8 content + 16 tools), 23 npm packages, 5 books (Oriz Learnings first), 2 APIs scaffolded, 54 submodules total. Every other knowledge file pointing at counts MUST cite this file to avoid drift. Repos migrated from chirag127/* → oriz-co/* on 2026-06-22 evening."
 tags: [service, inventory, counts, family, canonical-source-of-truth]
 timestamp: 2026-06-22
 format_version: okf-v0.1
@@ -114,7 +114,7 @@ The umbrella `api.oriz.in` Hono Worker is the inline (non-submodule) API and is 
 
 ## Browser extensions — 1 total
 
-- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `projects/forks/Ai-rewrite/` (moved 2026-06-22 from `projects/browser-extensions/`). Repo: `chirag127/Ai-rewrite`.
+- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `projects/forks/Ai-rewrite/` (moved 2026-06-22 from `projects/browser-extensions/`). Repo: `oriz-co/Ai-rewrite` (moved from `chirag127/Ai-rewrite` 2026-06-22).
 
 ## Submodules — 54 total
 
