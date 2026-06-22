@@ -43,6 +43,7 @@ a specific operational outcome. Runbooks are distinct from
 | [`install-and-bootstrap.md`](./install-and-bootstrap.md) | Fresh-clone OR existing-clone-update for the umbrella workspace — recursive submodule init + recursive pnpm install. THE canonical install procedure. | User (any session start), agent (any session start) |
 | [`npm-publish-token-setup.md`](./npm-publish-token-setup.md) | First-time npm Granular Access Token setup with bypass-2FA toggles for publish + unpublish; used by every `@chirag127/*` package release | User (one-time token gen), agent (per-publish flow) |
 | [`build-distributable.md`](./build-distributable.md) | Build PWA + Android APK (Bubblewrap TWA) + desktop EXE/dmg/AppImage (Tauri) from a single app via `@chirag127/astro-distribute` | Agent (CI), user (signing key setup) |
+| [`razorpay-end-to-end-setup.md`](./razorpay-end-to-end-setup.md) | After Razorpay signup: generate TEST API keys, verify the 4 pre-created plans, add webhook with 9 events, create 4 promo codes (FOUNDER50/LAUNCH30/BLOG20/STUDENT50), wire into `@chirag127/astro-billing`, E2E test with test card `4111…` via ngrok, then flip to LIVE. | User (dashboard clicks + push), agent (integration code in future task) |
 | [`migrate-okf-to-new-version.md`](./migrate-okf-to-new-version.md) | Placeholder for when OKF v0.1 → v0.2 happens | Agent + user |
 
 ## Where runbooks sit relative to the rest
