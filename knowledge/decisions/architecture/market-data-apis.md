@@ -1,13 +1,13 @@
 ---
 type: decision
-title: "Market-data APIs — FII/DII Activity + Tickertape MMI as Cloudflare Workers"
-description: "Two new India-market data APIs in the family, each a single Cloudflare Worker scraping/mirroring one upstream and serving cached JSON: flow-fii-dii.api.oriz.in (NSE/Moneycontrol FII/DII net activity) + mmi.api.oriz.in (Tickertape Market Mood Index). Hono router, KV cache per API, public CORS, no auth, free tier."
-tags: [decision, architecture, api, cloudflare-workers, hono, kv-cache, market-data, india, free-tier, superseded]
+title: "Market-data APIs — FII/DII Activity + Tickertape MMI as standalone repos (GH Actions + GH Pages)"
+description: "Two India-market data APIs in the family, each in its own GitHub repo: oriz-flow-fii-dii-activity-api (NSE/Moneycontrol FII/DII net activity) + oriz-mmi-tickertape-mmi-api (Tickertape Market Mood Index). GH Actions cron scrapes; GH Pages + raw.githubusercontent.com serve. The earlier CF Worker design (and the briefly-tried oriz-market-data aggregator) were both reverted on 2026-06-22; this file is now active again under the per-repo + GH-Pages shape."
+tags: [decision, architecture, api, market-data, github-actions, github-pages, india, free-tier]
 timestamp: 2026-06-21
 format_version: okf-v0.1
-status: superseded
-superseded_by: architecture/market-data-via-github
+status: active
 related:
+  - architecture/market-data-per-repo
   - architecture/market-data-via-github
   - architecture/hono-worker-api-umbrella
   - architecture/cf-worker-quota-mitigation
@@ -16,7 +16,7 @@ related:
   - rules/linux-ci-only
 ---
 
-> **SUPERSEDED 2026-06-22** by [`market-data-via-github`](./market-data-via-github.md). The two CF Worker APIs `flow-fii-dii.api.oriz.in` + `mmi.api.oriz.in` were never used in production; they are replaced by GitHub Actions scraping into `chirag127/oriz-market-data` and apps fetching `raw.githubusercontent.com` JSON. Both upstream repos are GitHub-archived (kept for audit trail) and unlinked from the master submodule set.
+> **Reactivated 2026-06-22** under a different mechanism. The original body below described two **Cloudflare Workers** (`flow-fii-dii.api.oriz.in`, `mmi.api.oriz.in`) backed by KV. That design was first replaced by an aggregator repo (`oriz-market-data`, see [`market-data-via-github`](./market-data-via-github.md)), then reverted same-day to the current shape: each API stays in its own repo, scraped by GH Actions, served via GitHub Pages + raw.githubusercontent.com. See [`market-data-per-repo`](./market-data-per-repo.md) for the current canonical decision. The CF Worker body below is preserved for audit trail and as the historical alternative — the repo slugs and product surfaces it locked are unchanged.
 
 # Market-data APIs — FII/DII Activity + Tickertape MMI
 

@@ -166,6 +166,9 @@
 [submodule "projects/npm-packages/oriz-ui-npm-pkg"]
 	path = projects/npm-packages/oriz-ui-npm-pkg
 	url = https://github.com/chirag127/oriz-ui-npm-pkg.git
-[submodule "projects/data/oriz-market-data"]
-	path = projects/data/oriz-market-data
-	url = https://github.com/chirag127/oriz-market-data.git
+[submodule "projects/apis/oriz-flow-fii-dii-activity-api"]
+	path = projects/apis/oriz-flow-fii-dii-activity-api
+	url = https://github.com/chirag127/oriz-flow-fii-dii-activity-api.git
+[submodule "projects/apis/oriz-mmi-tickertape-mmi-api"]
+	path = projects/apis/oriz-mmi-tickertape-mmi-api
+	url = https://github.com/chirag127/oriz-mmi-tickertape-mmi-api.git
