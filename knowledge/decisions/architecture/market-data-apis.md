@@ -2,17 +2,21 @@
 type: decision
 title: "Market-data APIs — FII/DII Activity + Tickertape MMI as Cloudflare Workers"
 description: "Two new India-market data APIs in the family, each a single Cloudflare Worker scraping/mirroring one upstream and serving cached JSON: flow-fii-dii.api.oriz.in (NSE/Moneycontrol FII/DII net activity) + mmi.api.oriz.in (Tickertape Market Mood Index). Hono router, KV cache per API, public CORS, no auth, free tier."
-tags: [decision, architecture, api, cloudflare-workers, hono, kv-cache, market-data, india, free-tier]
+tags: [decision, architecture, api, cloudflare-workers, hono, kv-cache, market-data, india, free-tier, superseded]
 timestamp: 2026-06-21
 format_version: okf-v0.1
-status: active
+status: superseded
+superseded_by: architecture/market-data-via-github
 related:
+  - architecture/market-data-via-github
   - architecture/hono-worker-api-umbrella
   - architecture/cf-worker-quota-mitigation
   - services/easy-free-tier
   - rules/cloudflare-pages-only
   - rules/linux-ci-only
 ---
+
+> **SUPERSEDED 2026-06-22** by [`market-data-via-github`](./market-data-via-github.md). The two CF Worker APIs `flow-fii-dii.api.oriz.in` + `mmi.api.oriz.in` were never used in production; they are replaced by GitHub Actions scraping into `chirag127/oriz-market-data` and apps fetching `raw.githubusercontent.com` JSON. Both upstream repos are GitHub-archived (kept for audit trail) and unlinked from the master submodule set.
 
 # Market-data APIs — FII/DII Activity + Tickertape MMI
 
