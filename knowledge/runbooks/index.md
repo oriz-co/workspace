@@ -47,6 +47,7 @@ a specific operational outcome. Runbooks are distinct from
 | [`migrate-okf-to-new-version.md`](./migrate-okf-to-new-version.md) | Placeholder for when OKF v0.1 → v0.2 happens | Agent + user |
 | [`dependabot-notification-tuning.md`](./dependabot-notification-tuning.md) | Kill Dependabot email noise without disabling alerts. Phase 1 user UI settings + Phase 2 per-repo `dependabot.yml` batching sweep. Drops email volume ~90%. | User (UI clicks), agent (sweep) |
 | [`github-apps-audit-2026-06-22.md`](./github-apps-audit-2026-06-22.md) | One-shot audit of 33 installed GitHub Apps on `chirag127`. 5 KEEP / 20 REMOVE-recommended / 8 REVIEW. Uninstall is manual (no API). | User (uninstall clicks), agent (audit only) |
+| [`free-hosting-providers/`](./free-hosting-providers/index.md) | Catalog of every free-tier hosting provider vetted under the no-card-on-file rule. 8 sub-files covering static sites / web services / serverless functions / databases / object storage / image CDN / queues + pub-sub / monitoring. KEEP / EVALUATE / DROP per provider. Re-verify quarterly. | Agent (research + write), user (re-verify on quarterly audit) |
 
 ## Where runbooks sit relative to the rest
 
