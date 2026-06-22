@@ -77,6 +77,7 @@ Per [[cross-post-engine]] the existing decision already named the family pattern
 
 - v0.1.0 — stub published 2026-06-21 (exports type + stub `publish()` function)
 - v0.1.1 — **5 working adapters + Telegram drafts queue + reusable workflow** (2026-06-21)
+- v0.1.2 — **telegram-announce adapter + dual-write drafts + 4-channel routes** (2026-06-22)
 - v0.2.0 — retry queue / rate-limit cache (fs-based, per-repo per-day)
 - v1.0.0 — all 5 auto + 4 drafts running in production for ≥1 month
 
@@ -109,6 +110,47 @@ For X, Reddit, LinkedIn, Medium — `omni-publish` generates per-platform AI-rew
 ### Bin entry
 
 v0.1.1 fixes the v0.1.0 bin bug by shipping a plain ESM `bin/omni-publish.mjs` (no TypeScript at runtime). Requires Node 22+ for native `fetch`. `npx @chirag127/omni-publish` now works.
+
+## v0.1.2 — 2026-06-22
+
+Added **4-channel routing** and **dual-write drafts**.
+
+### New adapters
+
+- `src/adapters/telegram-announce.ts` — posts to public `@oriz_announcements` channel. Also exports a generic `publishToChat(chatId, input, channelHandle?)` helper used by the paisa route.
+- `src/adapters/github-issues-drafts.ts` — mirrors drafts into `chirag127/oriz-drafts` Issues for searchable archival.
+
+### New types — `PublishRoutes`
+
+```ts
+export type PublishRoutes = {
+  announce?: boolean // default true  → @oriz_announcements
+  drafts?: boolean   // default true  → @oriz_drafts + chirag127/oriz-drafts Issues (dual-write)
+  paisa?: boolean    // default false → @oriz_paisa (also auto-on if tags include 'paisa' / 'finance')
+}
+```
+
+Pass via `publish({ ..., routes: { ... } })`. The CLI also reads `OMNI_ANNOUNCE` / `OMNI_DRAFTS` / `OMNI_PAISA` env vars.
+
+### Dual-write drafts
+
+The drafts route now writes to BOTH Telegram (4 per-platform messages) AND a GitHub Issue in `chirag127/oriz-drafts`, in parallel via `Promise.all`. Either backend failing is logged but does not fail the overall publish.
+
+### New env vars (v0.1.2)
+
+| Env var                       | Purpose                                                                |
+|-------------------------------|------------------------------------------------------------------------|
+| `TELEGRAM_BOT_TOKEN`          | Bot token for all Telegram channels. Falls back to `TELEGRAM_DRAFTS_BOT_TOKEN` (legacy). |
+| `TELEGRAM_ANNOUNCE_CHAT_ID`   | Public `@oriz_announcements` channel id.                               |
+| `TELEGRAM_DRAFTS_CHAT_ID`     | Private `@oriz_drafts` channel id (manual-platform queue, unchanged).  |
+| `TELEGRAM_OPS_CHAT_ID`        | Private `@oriz_ops` channel id (CI / mirror / health — reserved).      |
+| `TELEGRAM_PAISA_CHAT_ID`      | Public `@oriz_paisa` channel id (finance content, opt-in).             |
+| `OMNI_DRAFTS_GH_PAT`          | GitHub PAT for `chirag127/oriz-drafts` Issues dual-write.              |
+| `OMNI_ANNOUNCE` / `OMNI_DRAFTS` / `OMNI_PAISA` | Workflow-level route toggles consumed by the CLI.     |
+
+### Reusable workflow
+
+`.github/workflows/cross-post.yml` now exposes `announce` / `drafts` / `paisa` boolean inputs and forwards every new Telegram chat id + `OMNI_DRAFTS_GH_PAT` secret.
 
 ## Cross-refs
 
