@@ -191,6 +191,7 @@ This catalog runs at **4-level hierarchy** (`services/<role>/<file>.md`) — see
 | Dev — public hostname tunnel | Cloudflare Tunnel (cloudflared) | [dev-tools/cloudflare-tunnel.md](./dev-tools/cloudflare-tunnel.md) |
 | Time tracking — manual (non-coding) | Toggl Track | [productivity/toggl-track.md](./productivity/toggl-track.md) |
 | Time tracking — auto (coding) | Wakatime | [productivity/wakatime.md](./productivity/wakatime.md) |
+| Family inventory (canonical counts SSoT) | apps / packages / books / APIs / submodules | [family-inventory.md](./family-inventory.md) |
 
 ## Fallback picks
 

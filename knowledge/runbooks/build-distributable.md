@@ -7,7 +7,7 @@ timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
 related:
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - decisions/architecture/pwabuilder-as-primary-converter
   - decisions/architecture/distribution-and-queues-locked
   - services/pwa/vite-pwa-astro

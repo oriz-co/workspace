@@ -16,7 +16,7 @@ This is the **master umbrella repo** (`chirag127/workspace`). It is a meta-repo 
 | Family-wide knowledge (rules, decisions, services, architecture, runbooks, glossary, design, policy) | [`knowledge/`](./knowledge/) |
 | Per-app knowledge (one bundle per submodule) | each submodule's own `knowledge/` folder |
 | Fresh-clone + bootstrap commands | [`knowledge/runbooks/install-and-bootstrap.md`](./knowledge/runbooks/install-and-bootstrap.md) |
-| The 15 shared npm packages | [`knowledge/architecture/the-six-packages.md`](./knowledge/architecture/the-six-packages.md) |
+| The 17 shared npm packages | [`knowledge/architecture/the-17-packages.md`](./knowledge/architecture/the-17-packages.md) |
 | Repo layout + submodule mechanics | [`knowledge/architecture/repo-layout.md`](./knowledge/architecture/repo-layout.md) |
 
 ## Quick start

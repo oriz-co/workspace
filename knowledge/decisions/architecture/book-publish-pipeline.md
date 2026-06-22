@@ -9,7 +9,7 @@ status: active
 related:
   - decisions/architecture/revenue-channels-2026
   - decisions/architecture/omni-publish-package
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - decisions/architecture/mit-license-all-repos
 ---
 
@@ -105,7 +105,7 @@ PWYW handled by Gumroad's "pay what you want" toggle + LemonSqueezy custom prici
 
 ### 1. Oriz Stack
 
-- **Subject**: Astro 6 + Cloudflare Pages + Firebase Spark family architecture; how the 16 packages compose; the 5-tier analytics + payment matrix + omni-publish + book-build pipelines
+- **Subject**: Astro 6 + Cloudflare Pages + Firebase Spark family architecture; how the 17 packages compose; the 5-tier analytics + payment matrix + omni-publish + book-build pipelines
 - **Audience**: indie developers, hobbyist OSS authors, "$0/mo SaaS" builders
 - **Pricing**: $19 base / $39 Pro
 - **Channels**: Leanpub + Gumroad + LemonSqueezy + KDP + Google Play Books
@@ -205,7 +205,7 @@ omni-publish reads `book.json` from repo root, then dispatches each channel's ad
 
 - The fan-out matrix this pipeline plugs into → [[decisions/architecture/revenue-channels-2026]]
 - The npm package that orchestrates publish → [[decisions/architecture/omni-publish-package]]
-- The 16-package set (oriz-book-build is the 17th) → [[architecture/the-six-packages]]
+- The 17-package set (oriz-book-build is the 17th) → [[architecture/the-17-packages]]
 - The MIT relicense that allows code samples to ship MIT inside prose books → [[decisions/architecture/mit-license-all-repos]]
 - Repo slug convention (`-book` suffix) → [[branding/repo-naming-suffixes]]
 - Linux-only CI rule (Pandoc + tectonic stack) → [[rules/linux-ci-only]]

@@ -57,7 +57,7 @@ All 16: anonymous-first auth, free, opt-in sponsor footer.
 
 - Portfolio-of-products framing (one slug = one brand surface)
 - Each tool ranks independently on its subdomain
-- Maintenance cost is mitigated by shared chrome + shared `@chirag127/oriz-tools` package (see [[decisions/architecture/the-six-packages]] or current package set)
+- Maintenance cost is mitigated by shared chrome + shared `@chirag127/astro-tools` package (see [[decisions/architecture/the-17-packages]] or current package set)
 
 ## Cross-refs
 

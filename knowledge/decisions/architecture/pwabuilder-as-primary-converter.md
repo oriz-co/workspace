@@ -8,7 +8,7 @@ format_version: okf-v0.1
 status: active
 related:
   - decisions/architecture/distribution-and-queues-locked
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - runbooks/build-distributable
   - rules/no-card-on-file
   - rules/linux-ci-only
@@ -43,7 +43,7 @@ Tauri stays available as an opt-in escape hatch because PWABuilder MSIX binaries
 
 ## Implications
 
-- `@chirag127/astro-distribute` becomes a thin CLI wrapping PWABuilder CLI + (optional) Tauri. Both routes share the same `dist/` PWA build. See [the-six-packages.md](../../architecture/the-six-packages.md).
+- `@chirag127/astro-distribute` becomes a thin CLI wrapping PWABuilder CLI + (optional) Tauri. Both routes share the same `dist/` PWA build. See [the-17-packages.md](../../architecture/the-17-packages.md).
 - `astro-pwa` emits the manifest + service worker that PWABuilder reads — no per-app PWABuilder config needed.
 - CI workflow per app: `pnpm build` → `pnpm astro-distribute build` → uploads AAB/MSIX/APK/EXE to GitHub Releases. Stores publish manually from the release artefact (no API push — Play Console + Microsoft Partner Center don't reliably support unattended uploads on free tiers).
 - The runbook [build-distributable.md](../../runbooks/build-distributable.md) is updated to reflect PWABuilder primary + Tauri optional.
@@ -59,7 +59,7 @@ Tauri stays available as an opt-in escape hatch because PWABuilder MSIX binaries
 
 ## Cross-refs
 
-- The Six Packages (umbrella) → [../../architecture/the-six-packages.md](../../architecture/the-six-packages.md)
+- The 17 Packages (umbrella) → [../../architecture/the-17-packages.md](../../architecture/the-17-packages.md)
 - The build runbook → [../../runbooks/build-distributable.md](../../runbooks/build-distributable.md)
 - The previous distribution lock (PWA + Bubblewrap + Tauri) → [distribution-and-queues-locked.md](./distribution-and-queues-locked.md) — superseded in scope by this file (Tauri demoted to optional, Bubblewrap replaced by PWABuilder)
 - The cost discipline this fits → [`rules/no-card-on-file.md`](../../rules/no-card-on-file.md)

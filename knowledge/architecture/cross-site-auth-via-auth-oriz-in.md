@@ -10,7 +10,7 @@ related:
   - architecture/layer-3-auth-firebase-spark
   - architecture/extension-distribution
   - architecture/subscription-flow
-  - architecture/the-six-packages
+  - architecture/the-17-packages
 ---
 
 # Cross-site auth via auth.oriz.in
@@ -59,4 +59,4 @@ flow naturally.
 - The Spark plan that hosts this → [layer-3-auth-firebase-spark.md](layer-3-auth-firebase-spark.md)
 - How extensions plug in → [extension-distribution.md](extension-distribution.md)
 - What signing in unlocks → [subscription-flow.md](subscription-flow.md)
-- Where the shared auth UI lives → [the-six-packages.md](the-six-packages.md)
+- Where the shared auth UI lives → [the-17-packages.md](the-17-packages.md)

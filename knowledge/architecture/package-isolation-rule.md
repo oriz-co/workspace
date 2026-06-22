@@ -7,7 +7,7 @@ timestamp: 2026-06-20
 format_version: okf-v0.1
 status: active
 related:
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - architecture/api-routes-structure
   - architecture/hono-rpc-type-sharing
 ---
@@ -53,6 +53,6 @@ abstraction; the provider is a config detail.
 
 ## Cross-refs
 
-- The current packages → [the-six-packages.md](the-six-packages.md) (13 packages — 8 on disk + 5 planned)
+- The current packages → [the-17-packages.md](the-17-packages.md) (17 packages locked)
 - The server-side mirror of this rule → [api-routes-structure.md](api-routes-structure.md)
 - Why typed clients matter for the API package → [hono-rpc-type-sharing.md](hono-rpc-type-sharing.md)

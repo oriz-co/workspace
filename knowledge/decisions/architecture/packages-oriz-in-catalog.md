@@ -7,7 +7,7 @@ timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
 related:
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - decisions/architecture/mit-license-all-repos
   - decisions/architecture/pwabuilder-as-primary-converter
   - rules/cloudflare-pages-only
@@ -26,8 +26,8 @@ Marketing-flavoured overview. 5 new section routes added to `home-app`:
 
 | Route | Content |
 |---|---|
-| `oriz.in/apps` | All 24 apps as cards (per category: hub / personal / content / tools). Each card: brand wordmark + 1-line purpose + subdomain link + 'View packages on packages.oriz.in/<name>' cross-link |
-| `oriz.in/packages` | All 16 npm packages grouped by purpose (5 groups). Each card: name + 1-liner + 'Full docs → packages.oriz.in/<name>' button. Catalog-light. |
+| `oriz.in/apps` | All 26 apps as cards (per category: hub / personal / content / tools). Each card: brand wordmark + 1-line purpose + subdomain link + 'View packages on packages.oriz.in/<name>' cross-link |
+| `oriz.in/packages` | All 17 npm packages grouped by purpose (5 groups). Each card: name + 1-liner + 'Full docs → packages.oriz.in/<name>' button. Catalog-light. |
 | `oriz.in/mobile` | Per-app rows showing Play Store + sideload-APK channel buttons. 'Coming soon — Android via PWABuilder' badge for unreleased apps. |
 | `oriz.in/desktop` | Per-app rows showing Microsoft Store + direct-download MSIX/dmg/AppImage channel buttons. 'Coming soon' badges for unreleased channels. |
 | `oriz.in/extensions` | Chrome Web Store + Firefox Add-ons + Edge Add-ons + VS Code Marketplace + Open VSX channel buttons per extension repo. |
@@ -89,7 +89,7 @@ Tried earlier to do path-only under `oriz.in/packages` (no separate subdomain). 
 
 ## Cross-refs
 
-- The 16-package set both surfaces catalog → [[architecture/the-six-packages]]
+- The 17-package set both surfaces catalog → [[architecture/the-17-packages]]
 - The MIT relicense that enables free-for-OSS perks both surfaces tout → [[decisions/architecture/mit-license-all-repos]]
 - PWABuilder is the native-publish path the 'Coming soon' badges reference → [[decisions/architecture/pwabuilder-as-primary-converter]]
 - iOS PWA-only context (no Mac App Store) → memory [[ios-pwa-only-no-mac]]

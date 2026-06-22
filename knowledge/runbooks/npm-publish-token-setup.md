@@ -7,7 +7,7 @@ timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
 related:
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - rules/no-hardcoded-secrets
   - decisions/security/env-and-secrets-single-source
 ---
@@ -104,7 +104,7 @@ If any step fails with `403 ... Two-factor authentication or granular access tok
 
 ## Cross-refs
 
-- The 14-package set this enables → [[the-six-packages]]
+- The 17-package set this enables → [[the-17-packages]]
 - Secrets management pattern → [[env-and-secrets-single-source]]
 - Org-level secret setup → [[set-github-org-level-secrets]]
 - No-hardcoded-secrets rule → [[no-hardcoded-secrets]]

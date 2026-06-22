@@ -1,7 +1,7 @@
 ---
 type: decision
 title: "MIT license on all 41 chirag127/oriz* repos"
-description: "All 15 packages + 24 apps + 2 APIs relicensed from source-available-all-rights-reserved to MIT on 2026-06-21. Unlocks every free-for-OSS perk (Sentry for OSS, Crowdin for OSS, BrowserStack OSS, FOSSA, etc.) and clarifies commercial use is fine — the family still monetises via ads/affiliate/subscription, that's orthogonal to the source license."
+description: "All 17 packages + 26 apps + 2 APIs relicensed from source-available-all-rights-reserved to MIT on 2026-06-21. Unlocks every free-for-OSS perk (Sentry for OSS, Crowdin for OSS, BrowserStack OSS, FOSSA, etc.) and clarifies commercial use is fine — the family still monetises via ads/affiliate/subscription, that's orthogonal to the source license."
 tags: [decision, license, mit, oss-eligible]
 timestamp: 2026-06-21
 format_version: okf-v0.1
@@ -19,7 +19,7 @@ related:
 
 Every chirag127/oriz* repo is **MIT licensed** as of 2026-06-21.
 
-Scope: 15 npm packages (`projects/npm-packages/*-npm-pkg`) + 24 apps (`projects/apps/*/*/`) + 2 APIs (`projects/apis/*`) + any future submodule. The master umbrella (`chirag127/workspace`) is also MIT.
+Scope: 17 npm packages (`projects/npm-packages/*-npm-pkg`) + 26 apps (`projects/apps/*/*/`) + 2 APIs (`projects/apis/*`) + any future submodule. The master umbrella (`chirag127/workspace`) is also MIT.
 
 ## Why
 

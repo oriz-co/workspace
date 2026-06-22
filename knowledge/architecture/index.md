@@ -10,10 +10,10 @@ status: active
 
 # Architecture — the oriz family stack
 
-The family is one master repo (`chirag127/oriz`) that points at 11+ site
-submodules, an open-ended set of extension submodules, thirteen shared
-`@chirag127/astro-*` packages (8 on disk today + 5 planned — see
-[the-six-packages.md](the-six-packages.md)), and one inline Hono Worker. Everything is built on free tiers
+The family is one master repo (`chirag127/oriz`) that points at 26 app
+submodules, an open-ended set of extension submodules, seventeen shared
+`@chirag127/*` packages (see
+[the-17-packages.md](the-17-packages.md)), and one inline Hono Worker. Everything is built on free tiers
 of Cloudflare, GitHub, and Firebase Spark — no card on file anywhere.
 
 This bundle breaks the architecture into five orthogonal axes:
@@ -51,7 +51,7 @@ Git is authoritative; cloud DBs are caches rebuilt from git on deploy.
 - [Subscription flow (Razorpay → Firestore)](subscription-flow.md)
 - [Extension distribution (Chrome + Firefox + Edge)](extension-distribution.md)
 - [Package isolation rule](package-isolation-rule.md)
-- [The six packages](the-six-packages.md)
+- [The 17 packages](the-17-packages.md)
 
 ## 5. Repository structure
 

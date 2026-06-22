@@ -7,7 +7,7 @@ timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
 related:
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - decisions/architecture/cross-post-engine
   - decisions/architecture/mit-license-all-repos
 ---

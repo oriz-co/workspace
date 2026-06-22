@@ -8,7 +8,7 @@ format_version: okf-v0.1
 status: active
 related:
   - decisions/architecture/packages-oriz-in-catalog
-  - architecture/the-six-packages
+  - architecture/the-17-packages
 ---
 
 # Add a new chirag127/*-npm-pkg repo to packages.oriz.in catalog
@@ -92,5 +92,5 @@ If a published-on-npm package is unpublished, the catalog page renders with stal
 ## Cross-refs
 
 - The catalog decision → [[decisions/architecture/packages-oriz-in-catalog]]
-- The 16-package family list → [[architecture/the-six-packages]]
+- The 17-package family list → [[architecture/the-17-packages]]
 - The catalog repo → [`chirag127/oriz-packages-catalog-app`](https://github.com/chirag127/oriz-packages-catalog-app)

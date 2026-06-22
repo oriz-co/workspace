@@ -1,13 +1,13 @@
 ---
 type: decision
 title: "Revenue channels 2026 — every product fans out to every viable channel via omni-publish"
-description: "Every product surface in the chirag127/oriz family (24 apps + 16 packages + 5 books + future browser-/VS-Code-extensions + CLIs + MCP servers) auto-publishes to as many revenue channels as 2026's API reality allows. Orchestrated by @chirag127/omni-publish on every tag push. AI copy via NVIDIA NIM primary + OpenRouter free-models fallback. Drafts for manual-only platforms (X, Reddit, LinkedIn, Medium — all dead/closed APIs in 2026) land in a single Telegram channel split into 4 sections. Rate-limit ceiling: 1 auto-post per channel per day per repo."
+description: "Every product surface in the chirag127/oriz family (26 apps + 17 packages + 5 books + future browser-/VS-Code-extensions + CLIs + MCP servers) auto-publishes to as many revenue channels as 2026's API reality allows. Orchestrated by @chirag127/omni-publish on every tag push. AI copy via NVIDIA NIM primary + OpenRouter free-models fallback. Drafts for manual-only platforms (X, Reddit, LinkedIn, Medium — all dead/closed APIs in 2026) land in a single Telegram channel split into 4 sections. Rate-limit ceiling: 1 auto-post per channel per day per repo."
 tags: [decision, revenue, monetisation, distribution, omni-publish, ai-copy, nvidia-nim, openrouter, automation, channels]
 timestamp: 2026-06-21
 format_version: okf-v0.1
 status: active
 related:
-  - architecture/the-six-packages
+  - architecture/the-17-packages
   - decisions/architecture/mit-license-all-repos
   - decisions/architecture/pwabuilder-as-primary-converter
   - decisions/architecture/cross-post-engine
@@ -20,7 +20,7 @@ related:
 
 ## Decision summary
 
-Every product the family ships — **24 apps + 16 packages + 5 books + future browser/VS Code extensions + CLIs + MCP servers** — auto-publishes to **as many revenue channels as 2026's API reality allows**. Generated and orchestrated by [`@chirag127/omni-publish`](./omni-publish-package.md) on every tag push (`v*.*.*`) in every repo. AI-generated platform-specific copy uses **NVIDIA NIM** (primary, free 5K req/mo) with **OpenRouter free models** as quota-failure fallback. Channels with dead 2026 APIs (Reddit OAuth closed, X free-tier no public writes, LinkedIn /v2 sunset, Medium tokens deprecated) drop into a single Telegram drafts channel with 4 sections, not auto-posted.
+Every product the family ships — **26 apps + 17 packages + 5 books + future browser/VS Code extensions + CLIs + MCP servers** — auto-publishes to **as many revenue channels as 2026's API reality allows**. Generated and orchestrated by [`@chirag127/omni-publish`](./omni-publish-package.md) on every tag push (`v*.*.*`) in every repo. AI-generated platform-specific copy uses **NVIDIA NIM** (primary, free 5K req/mo) with **OpenRouter free models** as quota-failure fallback. Channels with dead 2026 APIs (Reddit OAuth closed, X free-tier no public writes, LinkedIn /v2 sunset, Medium tokens deprecated) drop into a single Telegram drafts channel with 4 sections, not auto-posted.
 
 ## Channel matrix per surface type
 
@@ -162,7 +162,7 @@ Status: **planning** (none have manuscripts yet). Locked names + scope in [book-
 
 ## Cross-refs
 
-- The 16 packages this catalog covers → [[architecture/the-six-packages]]
+- The 17 packages this catalog covers → [[architecture/the-17-packages]]
 - The MIT relicense that unlocks free-for-OSS distribution perks → [[decisions/architecture/mit-license-all-repos]]
 - The PWA → native pipeline behind Play / Microsoft Store rows → [[decisions/architecture/pwabuilder-as-primary-converter]]
 - The blog-post fan-out engine → [[decisions/architecture/cross-post-engine]]
