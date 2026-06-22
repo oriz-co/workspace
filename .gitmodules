@@ -151,3 +151,9 @@
 [submodule "projects_books_oriz-me-book"]
 	path = projects/books/oriz-me-book
 	url = https://github.com/chirag127/oriz-me-book.git
+[submodule "projects/npm-packages/oriz-ai-providers-npm-pkg"]
+	path = projects/npm-packages/oriz-ai-providers-npm-pkg
+	url = https://github.com/chirag127/oriz-ai-providers-npm-pkg.git
+[submodule "projects/data/oriz-ai-providers-data"]
+	path = projects/data/oriz-ai-providers-data
+	url = https://github.com/chirag127/oriz-ai-providers-data.git
