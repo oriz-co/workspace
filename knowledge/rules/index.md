@@ -52,8 +52,11 @@ wins, and the rule file is updated in the same conversation.
 
 - [`no-hardcoded-secrets.md`](./no-hardcoded-secrets.md) — everything via envpact.
 - [`no-firebase-admin-in-workers.md`](./no-firebase-admin-in-workers.md) — gRPC incompat; use `firebase-rest-firestore`.
+- [`no-firebase-functions-blaze.md`](./no-firebase-functions-blaze.md) — Cloud Functions require Blaze (card on file); banned. Use GH Actions / CF Workers / CF Pages Functions / Firestore client SDK instead.
+- [`no-self-hosting-outside-cf.md`](./no-self-hosting-outside-cf.md) — no VPS / Docker / k8s. Cloudflare Pages + Workers + KV/R2/D1 is the compute ceiling.
 - [`no-web3forms-server-side.md`](./no-web3forms-server-side.md) — browser-side only.
 - [`no-ad-slots-in-markup.md`](./no-ad-slots-in-markup.md) — AdSense / Ezoic / Mediavine inject at runtime.
+- [`ads-allowed-everywhere-except.md`](./ads-allowed-everywhere-except.md) — AdSense + AdMob on every app except `oriz-cs-me-app` and `oriz-janaushdhi-app`.
 
 ## Tooling / dependencies
 
