@@ -60,10 +60,46 @@ Optional but recommended (same code everywhere when present):
 
 User caveat (2026-06-22 evening): "Only the things that don't make the experience of the app or website worse should be kept divergent." If divergence harms UX, keep it same instead.
 
-### Visual surfaces that DIVERGE per app
+## Nav surfaces ARE mandatory everywhere (re-instated 2026-06-22 evening)
 
-| Surface | What differs | Why |
+User clarified (final, 2026-06-22 evening): every app has all 4 nav surfaces (Header + Footer + Sidebar + BottomBar). This reverses the "conditional" wording from earlier in this file. The 4-nav-surfaces decision STANDS, with the per-app visual design caveat.
+
+| Surface | Required? | Visual treatment |
 |---|---|---|
+| Header | YES | DIFFERENT per app (bespoke design) |
+| Footer | YES | DIFFERENT per app (bespoke design) |
+| Sidebar | YES | DIFFERENT per app (drawer/column/dock — per content) |
+| BottomBar | YES | DIFFERENT per app (icons + style per content) |
+
+The legal pages, /pricing, /sign-in etc. routes are mounted on every app per the SAME-routes list above. The 4 surfaces wrap all of them.
+
+## Footer is DIFFERENT per app (not shared)
+
+Reversal: footer is NOT shared. Each app draws its own footer with its own theme. The `FAMILY_APPS`/`BOOKS`/`PACKAGES` arrays are still available from `@chirag127/astro-shell/family-data` for apps that want to surface family-wide links — but the visual is each app's own choice.
+
+## Theme tokens: NAMES same, VALUES per-app
+
+CSS custom property names locked family-wide (via `@chirag127/astro-shell/tokens.css`):
+
+```css
+:root {
+  --color-bg: ...;
+  --color-fg: ...;
+  --color-accent: ...;
+  --color-muted: ...;
+  --color-border: ...;
+  --space-1 ... --space-8;
+  --motion-fast / --motion-medium / --motion-slow;
+  --font-display / --font-body / --font-utility;
+  --radius-sm / --radius-md / --radius-lg;
+}
+```
+
+Each app OVERRIDES the values per its design brief (subject-driven palette + type). The semantic NAMES never change, so components from packages work in every app.
+
+---
+
+
 | **Theme** | ONE forced theme per app (no toggle) | Per `per-app-distinctive-frontend-design` |
 | **Color palette** | 4–6 hex per app (overrides token VALUES; keeps token NAMES) | Per content domain |
 | **Type stack** | Display + body + utility chosen per-app | Per content domain |
