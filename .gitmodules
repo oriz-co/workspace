@@ -214,3 +214,9 @@
 [submodule "projects_apps_hub_auth-app"]
 	path = projects/apps/hub/oriz-auth-app
 	url = https://github.com/oriz-co/oriz-auth-app.git
+[submodule "projects/apis/oriz-india-train-schedules-api"]
+	path = projects/apis/oriz-india-train-schedules-api
+	url = https://github.com/oriz-co/oriz-india-train-schedules-api.git
+[submodule "projects/apis/oriz-india-weather-api"]
+	path = projects/apis/oriz-india-weather-api
+	url = https://github.com/oriz-co/oriz-india-weather-api.git
