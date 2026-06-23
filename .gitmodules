@@ -205,8 +205,8 @@
 [submodule "projects/oriz/own/svc/api/oriz-india-budget-numbers-api"]
 	path = projects/oriz/own/svc/api/oriz-india-budget-numbers-api
 	url = https://github.com/oriz-org/oriz-india-budget-numbers-api.git
-[submodule "projects/oriz/forks/Ai-rewrite"]
-	path = projects/oriz/forks/Ai-rewrite
+[submodule "projects/oriz/frk/Ai-rewrite"]
+	path = projects/oriz/frk/Ai-rewrite
 	url = https://github.com/oriz-org/Ai-rewrite.git
 [submodule "projects/oriz/own/prod/apps/hub/oriz-status-app"]
 	path = projects/oriz/own/prod/apps/hub/oriz-status-app
@@ -220,6 +220,6 @@
 [submodule "projects/oriz/own/svc/api/oriz-india-weather-api"]
 	path = projects/oriz/own/svc/api/oriz-india-weather-api
 	url = https://github.com/oriz-org/oriz-india-weather-api.git
-[submodule "projects/c127/forks/prod/bs-ext/DeArrow"]
-	path = projects/c127/forks/prod/bs-ext/DeArrow
+[submodule "projects/c127/frk/prod/bs-ext/DeArrow"]
+	path = projects/c127/frk/prod/bs-ext/DeArrow
 	url = https://github.com/chirag127/DeArrow.git

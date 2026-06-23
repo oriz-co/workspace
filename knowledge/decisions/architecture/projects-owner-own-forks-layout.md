@@ -68,12 +68,12 @@ projects/
 │   │       ├── rules/<repo>/
 │   │       ├── skills/<repo>/
 │   │       └── data/<repo>/
-│   └── forks/                         ← forks maintained for the brand
+│   └── frk/                              ← forks maintained for the brand
 │       └── {prod,svc,lib,content}/<category>/<repo>/
 └── c127/                              ← owner: chirag127 personal account
     ├── own/                           ← personal projects (cs-me-app, etc.)
     │   └── {prod,svc,lib,content}/<category>/<repo>/
-    └── forks/                         ← drive-by forks (most forks land here)
+    └── frk/                           ← drive-by forks (most forks land here)
         └── {prod,svc,lib,content}/<category>/<repo>/
 ```
 
@@ -120,8 +120,8 @@ of `forks/`.
 - `projects/py-pkg-cli/` → `projects/oriz/own/prod/clis/`
   (`py-pkg-cli/` was empty; the name conflated language + format +
   role; pluralised to match other category folders)
-- `projects/forks/` → `projects/oriz/forks/` (existing forks
-  under oriz-org) and `projects/c127/forks/` (drive-bys go here
+- `projects/forks/` → `projects/oriz/frk/` (existing forks
+  under oriz-org) and `projects/c127/frk/` (drive-bys go here
   going forward)
 
 ## What this replaces

@@ -1,9 +1,9 @@
 ---
 type: rule
-title: "Self-update on every decision"
-description: "Every architectural / naming / stack decision the user makes in chat MUST be reflected in knowledge/ before the conversation ends."
+title: "Self-update on every decision (durable info only)"
+description: "Every durable architectural / naming / stack / external-fact decision the user makes in chat MUST be reflected in knowledge/ before the conversation ends. But DO NOT write count bumps, migration timestamps, step logs, or restatements of the diff — those waste tokens and add noise. Capture only what future-you cannot easily re-derive from code + git history."
 tags: [rules, agent, knowledge, process]
-timestamp: 2026-06-20
+timestamp: 2026-06-24
 format_version: okf-v0.1
 status: active
 related:
@@ -13,41 +13,47 @@ related:
 
 # Self-update on every decision
 
-Every architectural / naming / stack decision the user makes in chat
-MUST be reflected in `knowledge/` (or `AGENTS.md` if family-wide
-foundational) **in the same conversation**, before the agent's final
-response.
+Every **durable** decision the user makes in chat MUST be reflected
+in `knowledge/` (or `AGENTS.md` if family-wide foundational) **in the
+same conversation**, before the agent's final response.
 
-## Why
+## What COUNTS as a durable decision
 
-The bundle is a living wiki. If a decision lands in chat but never
-makes it to a file, the next agent (or the next chat) doesn't know it
-exists, and we re-litigate decisions weekly. That wastes the user's
-time and produces inconsistent code.
+Capture only **non-recoverable** information:
 
-The agent that took the decision is the one with full context for it.
-Capturing it later is strictly worse: details get lost, the wording
-drifts, the rationale evaporates.
+- A choice between architecturally distinct options + the reason
+  (e.g. "Razorpay not Stripe because INR rail")
+- A constraint or taste rule the user has stated (e.g. "no card on
+  file", "free for users")
+- An external fact future-you cannot easily re-derive (e.g.
+  GPL-3.0 obligations for shipping a fork to a store)
 
-## The protocol
+## What does NOT count (do NOT write)
 
-1. Identify the decision in the user's message.
-2. Pick the right home: `rules/`, `decisions/`, `services/`,
-   `architecture/`, etc. Per [`_okf.md`](../_okf.md) taxonomy.
-3. Pick a `kebab-case.md` filename that names the concept clearly.
-4. Write the file with full OKF frontmatter.
-5. Append a one-line entry to `knowledge/log.md` with the date + path.
-6. If it supersedes an older concept, set `superseded_by` on the old
-   one and `supersedes` on the new one. Don't delete the old file.
-7. Commit with `docs(knowledge): <one-line summary>` (don't push —
-   see [`no-push-without-say-so.md`](./no-push-without-say-so.md)).
+- **Count bumps.** "72 submodules → 73" is recoverable from
+  `git submodule status`. Update count files (`family-inventory`)
+  only when the **composition** changes (a new bucket appears, a
+  category disappears), not on every routine add.
+- **Migration timestamps + step logs.** Git history already records
+  what happened when. Don't write "renamed X to Y on date Z" files
+  unless the rename embodies a durable rule.
+- **Re-statements of what's in the diff.** A commit already says
+  "added DeArrow as submodule." A knowledge file repeating that
+  fact wastes tokens for every future agent.
+- **Status updates.** "Task complete" belongs in commit messages.
 
-## Exceptions
+## Protocol
 
-None. If the agent doesn't update the bundle, the agent has failed.
+1. Identify durable info in the user's message (see "What COUNTS").
+2. If nothing durable was decided, do NOT write to knowledge.
+3. Otherwise, pick the right home per [`_okf.md`](../_okf.md) taxonomy.
+4. `kebab-case.md` filename. Concise OKF frontmatter + body.
+5. If it supersedes an older concept, set `superseded_by` on the
+   old + `supersedes` on the new. Don't delete.
+6. Commit `docs(knowledge): <one-line summary>` (don't push — see
+   [`no-push-without-say-so.md`](./no-push-without-say-so.md)).
 
 ## See also
 
-- [`future-overrides-past.md`](./future-overrides-past.md) — paired rule
+- [`future-overrides-past.md`](./future-overrides-past.md)
 - [`_okf.md`](../_okf.md) §"Update protocol"
-- AGENTS.md "Self-update rule"

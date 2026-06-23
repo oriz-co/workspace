@@ -28,7 +28,7 @@ journal.oriz.in          →  oriz-roam-journal-app (flagship Pro/Max app)
 | **APIs** (GH Pages JSON + Path D Astro page) | 15 | `projects/oriz/own/svc/api/` |
 | **npm packages** | 23 | `projects/oriz/own/lib/npm/` (published as `@chirag127/*`) |
 | **Books** | 5 | `projects/oriz/own/content/books/` |
-| **Forks** (upstreams we patched) | 2 | `projects/oriz/forks/` |
+| **Forks** (upstreams we patched) | 2 | `projects/oriz/frk/` |
 | **Knowledge** | 58 rules + 181 decisions + 43 runbooks | `knowledge/` |
 
 ---
@@ -62,26 +62,7 @@ c:/D/oriz/
 │       │       ├── data/                  # oriz-ai-providers-data
 │       │       ├── skills/                # 2 agent skills
 │       │       └── rules/                 # placeholder
-│       └── forks/                         # forks maintained for the brand (Ai-rewrite, oriz-api-docs-template)
-├── knowledge/                             # the canonical brain — read this before changing anything
-│   ├── rules/                             # hard rules that govern every decision
-│   ├── decisions/                         # locked architecture + service + pricing decisions
-│   ├── runbooks/                          # step-by-step ops procedures
-│   ├── services/                          # per-service free-tier evaluation
-│   ├── architecture/                      # cross-cutting topology
-│   ├── design/                            # design tokens + per-app briefs
-│   ├── policy/                            # legal + ToS + privacy framework
-│   ├── glossary/                          # family vocabulary
-│   ├── index.md                           # canonical entry point
-│   └── _navigation.md                     # "where to look" map
-├── scripts/                               # automation (env sync, CF/GH ops, mirrors, audits)
-├── templates/                             # per-site-ci + per-lifestream-cron skeletons
-├── AGENTS.md                              # 30-line pointer for AI agents → links here
-├── CLAUDE.md                              # pointer for Claude Code → links to AGENTS.md
-├── .env                                   # SINGLE SOURCE OF TRUTH (gitignored, decrypted)
-├── .env.enc                               # sops+age encrypted version (committed)
-└── README.md                              # this file
-```
+│       └── frk/                          # forks maintained for the brand (Ai-rewrite, oriz-api-docs-template)
 ├── knowledge/                             # the canonical brain — read this before changing anything
 │   ├── rules/                             # hard rules that govern every decision
 │   ├── decisions/                         # locked architecture + service + pricing decisions
