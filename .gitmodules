@@ -196,33 +196,15 @@
 [submodule "projects/apis/oriz-gold-silver-rates-api"]
 	path = projects/apis/oriz-gold-silver-rates-api
 	url = https://github.com/oriz-co/oriz-gold-silver-rates-api.git
-[submodule "projects/apis/oriz-irctc-train-pnr-api"]
-	path = projects/apis/oriz-irctc-train-pnr-api
-	url = https://github.com/oriz-co/oriz-irctc-train-pnr-api.git
 [submodule "projects/apis/oriz-air-quality-india-api"]
 	path = projects/apis/oriz-air-quality-india-api
 	url = https://github.com/oriz-co/oriz-air-quality-india-api.git
-[submodule "projects/apis/oriz-aqi-cities-api"]
-	path = projects/apis/oriz-aqi-cities-api
-	url = https://github.com/oriz-co/oriz-aqi-cities-api.git
 [submodule "projects/apis/oriz-india-petrol-diesel-api"]
 	path = projects/apis/oriz-india-petrol-diesel-api
 	url = https://github.com/oriz-co/oriz-india-petrol-diesel-api.git
-[submodule "projects/apis/oriz-india-exam-portal-status-api"]
-	path = projects/apis/oriz-india-exam-portal-status-api
-	url = https://github.com/oriz-co/oriz-india-exam-portal-status-api.git
-[submodule "projects/apis/oriz-india-rti-api"]
-	path = projects/apis/oriz-india-rti-api
-	url = https://github.com/oriz-co/oriz-india-rti-api.git
-[submodule "projects/apis/oriz-india-court-judgments-api"]
-	path = projects/apis/oriz-india-court-judgments-api
-	url = https://github.com/oriz-co/oriz-india-court-judgments-api.git
 [submodule "projects/apis/oriz-india-budget-numbers-api"]
 	path = projects/apis/oriz-india-budget-numbers-api
 	url = https://github.com/oriz-co/oriz-india-budget-numbers-api.git
-[submodule "projects/apis/oriz-stackoverflow-trending-api"]
-	path = projects/apis/oriz-stackoverflow-trending-api
-	url = https://github.com/oriz-co/oriz-stackoverflow-trending-api.git
 [submodule "projects/forks/Ai-rewrite"]
 	path = projects/forks/Ai-rewrite
 	url = https://github.com/oriz-co/Ai-rewrite.git
