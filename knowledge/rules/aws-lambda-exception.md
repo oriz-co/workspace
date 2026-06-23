@@ -22,10 +22,12 @@ The 4-rail fallback chain for serverless functions:
 
 1. **Cloudflare Worker** (primary; 100K req/day, 10 ms CPU)
 2. **Deno Deploy** (secondary; 1M req/mo, 50 ms CPU)
-3. **Render Free** (tertiary; with 15-min sleep)
-4. **AWS Lambda** (quaternary; user-approved exception — 1M req/mo + 400K GB-sec FOREVER-FREE)
+3. **AWS Lambda** (tertiary; user-approved exception — 1M req/mo + 400K GB-sec FOREVER-FREE; no cold-sleep)
+4. **Render Free** (quaternary; 15-min cold sleep makes it last-resort)
 
-Four independent rails give the family meaningful resilience for critical serverless paths. Three rails leave a one-vendor failure mode (CF + Deno + Render are independent companies, but all three are small relative to AWS). The fourth rail is AWS, which makes the chain genuinely uncorrelated.
+**Order changed 2026-06-23:** Lambda was 4th; promoted to 3rd because (a) no cold-sleep penalty (Render sleeps after 15 min idle), (b) Lambda 1M req/mo is the family's biggest free quota, (c) AWS infrastructure is genuinely uncorrelated with CF/Deno. Render stays in the chain as the truly-last-resort rail when even Lambda is unreachable (rare but possible — AWS region-wide outage).
+
+Four independent rails give the family meaningful resilience for critical serverless paths.
 
 ## The specific compromise
 
