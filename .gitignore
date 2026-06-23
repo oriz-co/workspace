@@ -17,3 +17,24 @@ firebase-debug.log
 projects/npm-packages/astro-test-utils-npm-pkg
 pnpm-lock.yaml
 .tmp-*
+logs
+
+# Obsidian — local notebook surface, not for repo
+.obsidian/
+*.base
+*.canvas
+
+# Scratch markdown — daily notes / scratch files outside knowledge/
+/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md
+/a.md
+/p.md
+/Untitled*.md
+
+# Local scratch scripts — one-offs, never CI
+/cf_cleanup.py
+/scripts/fix-gh-pages-certs*.mjs
+/scripts/fix-gh-pages-certs*.json
+/scripts/rollout-api-docs.sh
+
+# Playwright CLI sandbox (created by smoke runs, not source)
+.playwright-cli/
