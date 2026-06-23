@@ -12,11 +12,11 @@
  * Inputs:
  *   - .env.enc            (committed, sops-encrypted)
  *   - .sops-age-key.txt   (LOCAL only) OR env var SOPS_AGE_KEY (CI)
- *   - templates/.env.example  (canonical key list — only push keys listed there)
+ *   - .env.example  (canonical key list — only push keys listed there)
  *
  * Behavior:
  *   1. Decrypt .env.enc → in-memory key/value map
- *   2. Read templates/.env.example for canonical keys
+ *   2. Read .env.example for canonical keys
  *   3. For each canonical key with a non-empty value, push ONCE to org-level
  *      with visibility=all
  *   4. Skip empty values (placeholders) and reserved GH_/ACTIONS_ prefixed names
@@ -37,7 +37,7 @@ import { resolve, join } from "node:path";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname.replace(/^\/([a-zA-Z]):/, "$1:"));
 const ENC_PATH = join(ROOT, ".env.enc");
-const EXAMPLE_PATH = join(ROOT, "templates", ".env.example");
+const EXAMPLE_PATH = join(ROOT, ".env.example");
 const SOPS_CONFIG = join(ROOT, ".sops.yaml");
 const LOCAL_KEY_PATH = join(ROOT, ".sops-age-key.txt");
 const LOCAL_ENV_PATH = join(ROOT, ".env");
@@ -159,7 +159,7 @@ async function main() {
   console.log(`[env-sync] decrypted: ${values.size} key=value pairs in .env.enc`);
 
   const canonical = canonicalKeys();
-  console.log(`[env-sync] canonical: ${canonical.length} keys in templates/.env.example`);
+  console.log(`[env-sync] canonical: ${canonical.length} keys in .env.example`);
 
   const RESERVED = new Set(["GITHUB_TOKEN"]);
   const RESERVED_PREFIXES = ["GITHUB_", "ACTIONS_"];
