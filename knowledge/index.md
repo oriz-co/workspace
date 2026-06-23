@@ -3,16 +3,19 @@ type: index
 title: "oriz family knowledge bundle"
 description: "The canonical home for every durable rule, decision, service pick, design brief, runbook, and policy across the oriz family. Read this first."
 tags: [okf, index, family]
-timestamp: 2026-06-20
+timestamp: 2026-06-24
 format_version: okf-v0.1
 status: active
 ---
 
 # oriz family knowledge bundle
 
-This is the canonical knowledge bundle for the chirag127/oriz family
-of websites and Chrome extensions. Format: [Open Knowledge Format
-v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md).
+This is the canonical knowledge bundle for the `oriz-org/workspace`
+family (renamed from `chirag127/oriz` 2026-06-22, then `oriz-co/workspace`
+→ `oriz-org/workspace` 2026-06-24 — see
+[`decisions/branding/oriz-org-rename-from-co`](./decisions/branding/oriz-org-rename-from-co.md)).
+Format: [Open Knowledge Format v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md),
+published 2026-06-13 by Google Cloud.
 
 The pre-OKF state of this content lived in `AGENTS.md` and
 `design-briefs/` at the repo root. Those locations are now thin pointers
@@ -22,7 +25,7 @@ wins.**
 
 If you're an agent reading this for the first time, start with:
 
-1. [`_okf.md`](./_okf.md) — the conventions every concept file follows
+1. [`_okf.md`](./_okf.md) — the conventions every concept file follows + the code-editing workflow
 2. [`rules/index.md`](./rules/index.md) — the 5 non-negotiable rules
 3. [`decisions/index.md`](./decisions/index.md) — chronological log of locked decisions
 4. The relevant subdirectory below for the topic you care about
@@ -31,20 +34,36 @@ If you're an agent reading this for the first time, start with:
 
 | Directory | What's in it | Files |
 |---|---|---|
-| [`rules/`](./rules/) | Non-negotiable family-wide constraints | 12 |
-| [`decisions/`](./decisions/) | Architectural / naming / stack decisions, chronological | 38 |
-| [`services/`](./services/) | One file per external service: role, free tier, alternative, swap cost | 49 |
-| [`architecture/`](./architecture/) | The 5-layer stack, API umbrella, canonical store, repo layout | 21 |
-| [`design/`](./design/) | v2 design briefs per site + family design rules | 14 |
-| [`policy/`](./policy/) | Age-gating, public/private line, monetisation, ingester contract, etc. | 11 |
-| [`runbooks/`](./runbooks/) | Step-by-step actionable sequences (auth setup, add a site, etc.) | 4 |
-| [`glossary/`](./glossary/) | Definitions of family-specific terms | 28 |
-| [`sites/`](./sites/) | Per-site bundles (concepts that only apply to one site) | varies |
+| [`rules/`](./rules/) | Non-negotiable family-wide constraints | 63 |
+| [`decisions/`](./decisions/) | Architectural / naming / stack decisions, chronological | 195 |
+| [`services/`](./services/) | One file per external service: role, free tier, alternative, swap cost | 203 |
+| [`architecture/`](./architecture/) | The 5-layer stack, API umbrella, canonical store, repo layout | 22 |
+| [`design/`](./design/) | v2 design briefs per site + family design rules | 12 |
+| [`policy/`](./policy/) | Age-gating, public/private line, monetisation, ingester contract, etc. | 12 |
+| [`runbooks/`](./runbooks/) | Step-by-step actionable sequences (auth setup, add a site, etc.) | 36 |
+| [`glossary/`](./glossary/) | Definitions of family-specific terms | 33 |
 
-**Total: 164 concept files + 3 root files (`_okf.md`, this file, `log.md`).**
+**Total: ~591 concept files** + root files (`_okf.md`, `_navigation.md`, this file).
 
-Hierarchy depth: `knowledge/<area>/<file>.md` — never deeper. This
-limit is enforced in `_okf.md`'s convention rules.
+(Counts as of 2026-06-24 via `find knowledge -type f -name '*.md' | wc -l` per category.)
+
+Hierarchy depth: `knowledge/<area>/<file>.md` — never deeper unless folder exceeds 15 files. Depth rules in `_okf.md`.
+
+## Agent entry points
+
+These root files each point AI agents to this bundle:
+
+| File | Agent |
+|---|---|
+| [`../AGENTS.md`](../AGENTS.md) | Generic (Cursor, Cline, Aider, any agent) — primary entry point with full OKF spec |
+| [`../CLAUDE.md`](../CLAUDE.md) | Claude Code |
+| [`../GEMINI.md`](../GEMINI.md) | Gemini / Antigravity |
+| [`../COPILOT.md`](../COPILOT.md) | GitHub Copilot |
+| [`../CURSOR.md`](../CURSOR.md) | Cursor |
+| [`../AIDER.md`](../AIDER.md) | Aider |
+| [`../knowledge.md`](../knowledge.md) | Root redirect for flat knowledge.md queries |
+
+All of those files are thin pointers. **No rules or decisions live in them** — everything durable is here.
 
 ## Per-site knowledge
 
@@ -52,7 +71,7 @@ Per-app knowledge lives INSIDE each app submodule under its own `knowledge/` fol
 
 Richest example of a per-app bundle:
 
-- [`projects/apps/personal/oriz-cs-me-app/knowledge/`](../projects/apps/personal/oriz-cs-me-app/knowledge/) — lifestream + 100-year strategy + age-gating + ingester contract (lives inside the oriz-cs-me-app submodule)
+- [`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`](../projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/) — lifestream + 100-year strategy + age-gating + ingester contract (lives inside the cs-me-app submodule; moved from oriz-org → chirag127 on 2026-06-24, slug dropped the `oriz-` prefix)
 
 ## Update protocol
 

@@ -199,7 +199,7 @@ live under `projects/oriz-org/own/products/apps/` and `projects/oriz-org/own/ser
 
 | Local path |
 |---|
-| `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app` |
+| `projects/chirag127/own/products/apps/personal/cs-me-app` |
 | `projects/oriz-org/own/products/apps/content/oriz-pages-blog-app` |
 | `projects/oriz-org/own/products/apps/content/oriz-roam-journal-app` |
 | `projects/oriz-org/own/products/apps/content/oriz-lore-app` |

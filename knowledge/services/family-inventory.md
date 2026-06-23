@@ -1,9 +1,9 @@
 ---
 type: service
 title: "Family inventory — canonical counts of apps, packages, books, APIs, submodules"
-description: "Single source of truth for the oriz-org family count totals as of 2026-06-22. 26 apps (1 hub + 1 personal + 8 content + 16 tools), 23 npm packages, 5 books (Oriz Learnings first), 2 APIs scaffolded, 54 submodules total. Every other knowledge file pointing at counts MUST cite this file to avoid drift. Repos migrated from chirag127/* → oriz-org/* on 2026-06-22 evening."
+description: "Single source of truth for the oriz-org family count totals as of 2026-06-24. 27 apps, 23 npm packages, 5 books, 15 APIs, 74 submodules total. Every other knowledge file pointing at counts MUST cite this file to avoid drift. Repos migrated from chirag127/* → oriz-co/* on 2026-06-22; org renamed oriz-co → oriz-org on 2026-06-24 (GitHub auto-redirects)."
 tags: [service, inventory, counts, family, canonical-source-of-truth]
-timestamp: 2026-06-22
+timestamp: 2026-06-24
 format_version: okf-v0.1
 status: active
 related:
@@ -14,6 +14,8 @@ related:
   - decisions/architecture/book-publish-pipeline
   - decisions/architecture/market-data-apis
   - decisions/architecture/oriz-ai-providers-package
+  - decisions/architecture/projects-owner-own-forks-layout
+  - decisions/branding/oriz-org-rename-from-co
   - architecture/repo-layout
 ---
 
@@ -105,27 +107,45 @@ Per [[decisions/architecture/first-book-oriz-learnings.md]] — the first book t
 
 Note: earlier docs reference *Oriz Me* as the first-to-draft full book; that was superseded on 2026-06-22 — `oriz-learnings` is now first. Confirm with the user before changing the ordering.
 
-## APIs — 2 scaffolded (more planned)
+## APIs — 15 deployed (free, on Cloudflare Workers + Pages)
 
-- `oriz-flow-fii-dii-api` — `flow-fii-dii.api.oriz.in` daily FII/DII net activity (NSE primary, Moneycontrol fallback)
-- `oriz-mmi-tickertape-api` — `mmi.api.oriz.in` Tickertape Market Mood Index mirror
+Indian-data APIs. Each is a submodule under `projects/oriz-org/own/services/apis/`:
+
+- `oriz-air-quality-india-api`
+- `oriz-currency-rates-api`
+- `oriz-flow-fii-dii-activity-api` — daily FII/DII net activity
+- `oriz-gold-silver-rates-api`
+- `oriz-ifsc-api`
+- `oriz-india-budget-numbers-api`
+- `oriz-india-holidays-api`
+- `oriz-india-petrol-diesel-api`
+- `oriz-india-train-schedules-api`
+- `oriz-india-weather-api`
+- `oriz-mf-nav-api` — Indian mutual fund NAV snapshots (proxies api.mfapi.in)
+- `oriz-mmi-tickertape-mmi-api` — Tickertape Market Mood Index mirror
+- `oriz-nse-bse-tickers-api` — Sensex / Nifty / sector indices daily 18:30 IST
+- `oriz-pincode-api` — Indian PIN → district + state
+- `oriz-rbi-rates-api` — RBI policy rates (repo, reverse-repo, bank rate, WACR, MCLR)
 
 The umbrella `api.oriz.in` Hono Worker is the inline (non-submodule) API and is not counted here.
 
 ## Browser extensions — 1 total
 
-- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `projects/oriz-org/forks/Ai-rewrite/` (moved 2026-06-22 from `projects/oriz-org/own/products/browser-extensions/`). Repo: `oriz-org/Ai-rewrite` (moved from `chirag127/Ai-rewrite` 2026-06-22).
+- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `projects/oriz-org/forks/Ai-rewrite/` (moved 2026-06-22 from `projects/oriz-org/own/products/browser-extensions/`; further moved 2026-06-24 from `projects/forks/` to `projects/oriz-org/forks/` per [`projects-owner-own-forks-layout`](../decisions/architecture/projects-owner-own-forks-layout.md)). Repo: `oriz-org/Ai-rewrite` (renamed from `oriz-co/Ai-rewrite` 2026-06-24).
 
-## Submodules — 54 total
+## Submodules — 74 total
 
-`git submodule status | wc -l` from `c:/D/oriz/` should return 54. Composition:
+`git submodule status | wc -l` from `c:/D/oriz/` should return 74. Composition:
 
-- 26 app submodules (under `projects/oriz-org/own/products/apps/`)
-- 23 npm-package submodules (under `projects/oriz-org/own/libraries/npm-packages/`)
-- 2 API submodules (under `projects/oriz-org/own/services/apis/`)
-- 1 data submodule (under `projects/oriz-org/own/content/data/` — `oriz-ai-providers-data`)
-- 1 fork submodule (under `projects/oriz-org/forks/` — `Ai-rewrite`, fork of `SupratimRK/Ai-rewrite`)
-- 6 other / book / skill submodules
+- 26 app submodules under `projects/oriz-org/own/products/apps/{content,hub,personal,tools}/`
+- 1 personal app under `projects/chirag127/own/products/apps/personal/cs-me-app/` (moved from oriz-org 2026-06-24)
+- 23 npm-package submodules under `projects/oriz-org/own/libraries/npm-packages/`
+- 15 API submodules under `projects/oriz-org/own/services/apis/`
+- 1 worker submodule under `projects/oriz-org/own/services/workers/` (oriz-flags-worker; folder exists but no GitHub repo yet, so NOT actually in `.gitmodules`)
+- 5 book submodules under `projects/oriz-org/own/content/books/`
+- 2 skill submodules under `projects/oriz-org/own/content/skills/`
+- 1 data submodule under `projects/oriz-org/own/content/data/` — `oriz-ai-providers-data`
+- 1 fork submodule under `projects/oriz-org/forks/` — `Ai-rewrite`
 
 Re-verify on each count change with: `cd /c/D/oriz && git submodule status | wc -l`.
 

@@ -5,12 +5,26 @@ description: The master chirag127/oriz repo layout: sites/ for public websites, 
 tags: [architecture, repo, layout, structure]
 timestamp: 2026-06-20
 format_version: okf-v0.1
-status: active
+status: SUPERSEDED 2026-06-24 — repo is now oriz-org/workspace with projects/<owner>/<own|forks>/<bucket>/<category>/<repo>/ hierarchy. See [`decisions/architecture/projects-owner-own-forks-layout`](../decisions/architecture/projects-owner-own-forks-layout.md) for the current layout. This file is kept as historical record of the pre-migration shape.
+superseded_by: decisions/architecture/projects-owner-own-forks-layout
 related:
   - architecture/submodule-pattern
   - architecture/master-pointer-as-production-sha
   - architecture/api-umbrella-hono-worker
   - architecture/the-23-packages
+  - decisions/architecture/projects-owner-own-forks-layout
+  - decisions/branding/oriz-org-rename-from-co
+---
+
+> **⚠️ SUPERSEDED 2026-06-24.** The repo's structure has changed materially since this doc was written:
+> - The umbrella repo is now `oriz-org/workspace` (not `chirag127/oriz`)
+> - Submodules sit at `projects/<owner>/<own|forks>/<bucket>/<category>/<repo>/`, not `sites/`, `packages/`, etc.
+> - There are 74 submodules across 27 apps, 23 npm packages, 15 APIs, 5 books, 2 skills, 1 data, 1 worker placeholder, 2 forks, and 1 personal app on chirag127.
+>
+> For the current layout, read [`decisions/architecture/projects-owner-own-forks-layout`](../decisions/architecture/projects-owner-own-forks-layout.md).
+>
+> The content below is kept as historical record of the pre-migration shape.
+
 ---
 
 # Repository layout — sites, packages, apps, extensions, knowledge

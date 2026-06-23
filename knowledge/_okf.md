@@ -3,29 +3,33 @@ type: convention
 title: "How the oriz family uses the Open Knowledge Format"
 description: "The shared conventions every concept file in this knowledge/ bundle follows. OKF v0.1 spec + a small set of family-specific rules so producers and consumers stay in lockstep."
 tags: [okf, convention, meta]
-timestamp: 2026-06-20
+timestamp: 2026-06-23
 format_version: okf-v0.1
-# 2026-06-20 update: depth scales with folder size, ceiling 5.
-# Tiny dirs stay at 2-3 levels; big dirs (>50 files) deepen to 5 so any
-# one read is the smallest possible leaf. See
-# decisions/architecture/knowledge-bundle/depth/5-level-hierarchy.md.
+status: active
 ---
 
 # How the oriz family uses the Open Knowledge Format
 
-This file is the contract for every other file in this `knowledge/`
-bundle. If you're an agent or a human about to add or edit a concept
-file, read this first.
+This file is the contract for every other file in this `knowledge/` bundle.
+If you're an agent or a human about to add or edit a concept file, read this first.
+
+---
 
 ## The format we follow
 
-[OKF v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md), published 2026-06-13 by Google Cloud Data Cloud team.
+[OKF v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md), published 2026-06-13 by Google Cloud Data Cloud team. The full family-specific application of this spec is explained in [`AGENTS.md`](../AGENTS.md) §"The Open Knowledge Format (OKF v0.1)".
 
-Each file represents one concept. Plain markdown body, YAML
-frontmatter at the top with the small set of structured fields that
-need to be queryable.
+OKF is intentionally minimal: a directory of markdown files with YAML frontmatter at the top.
+- No schema registry, no central authority, no required SDK.
+- If you can `cat` a file, you can read OKF.
+- If you can `git clone` a repo, you can ship it.
+- Standard Markdown links create an implicit knowledge graph.
+
+---
 
 ## Required frontmatter on every concept file
+
+Per OKF v0.1, only `type` is strictly required. The family adds `title`, `description`, and `tags` as also-required because they make agent retrieval significantly better.
 
 ```yaml
 ---
@@ -34,28 +38,25 @@ title: <human-readable title>
 description: <one-line summary, used by agents during retrieval>
 tags: [<topic tag>, <topic tag>, ...]
 timestamp: <ISO-8601, last meaningful update>
+format_version: okf-v0.1
+status: active | deprecated | superseded | draft
 ---
 ```
 
-Per OKF v0.1, only `type` is strictly required. The family adds
-`title`, `description`, and `tags` as also-required because they
-make agent retrieval significantly better.
-
-Optional frontmatter fields:
+### Optional frontmatter fields
 
 ```yaml
 resource: <canonical URL the concept points at, when applicable>
 supersedes: <slug or path of an older concept this replaces>
 superseded_by: <slug or path of a newer concept that replaces this>
-status: active | deprecated | superseded | draft
-format_version: okf-v0.1     # default; bump when family adopts a newer OKF version
-related: [<slug>, <slug>]    # cross-references for graph navigation
+related: [<slug>, <slug>]    # cross-references for graph navigation — used by agents to build the graph
 ```
+
+---
 
 ## Allowed `type` values (the family taxonomy)
 
-Keep this list short and stable. Add new types only when an existing
-one genuinely doesn't fit, and update this section in the same edit.
+Keep this list short and stable. Add new types only when an existing one genuinely doesn't fit, and update this section in the same edit.
 
 | Type | What it is | Example |
 |---|---|---|
@@ -73,15 +74,16 @@ one genuinely doesn't fit, and update this section in the same edit.
 | `index` | Per-OKF spec, an `index.md` overview file at any directory level | `knowledge/index.md` |
 | `log` | Per-OKF spec, chronological history of changes | `knowledge/log.md` |
 
+---
+
 ## File naming + directory layout
 
 Every concept file is `kebab-case.md`. The path IS the identity:
-`knowledge/rules/never-enable-blaze.md` is a stable reference.
+`knowledge/rules/never-enable-blaze.md` is a stable reference. **Never rename a concept file** unless you update every inbound link and log the migration.
 
 ### Hierarchy depth — scales with folder size, ceiling 5
 
-Depth follows the size of the L1 folder. Goal: any single agent read
-pulls the smallest possible leaf.
+Depth follows the size of the L1 folder. Goal: any single agent read pulls the smallest possible leaf.
 
 | L1 file count | Depth | Path shape |
 |---|---|---|
@@ -90,81 +92,80 @@ pulls the smallest possible leaf.
 | 51–150 | 4 | `knowledge/<L1>/<L2>/<L3>/<file>.md` |
 | 151+ | **5** | `knowledge/<L1>/<L2>/<L3>/<L4>/<file>.md` |
 
-Apply the deepest tier the folder qualifies for; never go past 5 — the
-path stops being a stable, memorable identity. When an L_n grows past
-~15 siblings, split into multiple L_n peers, not a deeper L_{n+1}.
+Apply the deepest tier the folder qualifies for; never go past 5 — the path stops being a stable, memorable identity. When an L_n grows past ~15 siblings, split into multiple L_n peers, not a deeper L_{n+1}.
 
-`index.md` lives at every directory level and only lists its direct
-children.
+`index.md` lives at every directory level and only lists its direct children.
 
-Migration: touch-and-deepen, not big-bang. When a file is edited, move
-it to the depth its parent now warrants.
+Migration: touch-and-deepen, not big-bang. When a file is edited, move it to the depth its parent now warrants.
 
-The master `oriz/knowledge/` is structured as:
+---
 
+## Reserved filenames (per OKF spec)
+
+| Filename | Purpose |
+|---|---|
+| `index.md` | Directory listing for progressive disclosure. Agents read this first at each level before opening concept files. |
+| `log.md` | Chronological log of changes to that bundle. Every new/updated concept appends one line: `<date> — <path> — <summary>`. |
+| `_okf.md` | Family-specific convention extension (this file). Underscore prefix flags it as meta, not a regular concept. |
+
+These MUST NOT be used as concept documents.
+
+---
+
+## How agents load and traverse OKF (context injection)
+
+**Producer agents (enrichment):** When a decision is made in chat, write/update the concept file immediately. You are the enrichment agent.
+
+**Consumer agents (retrieval):**
+1. Start at `knowledge/index.md` — read the bundle overview and directory table.
+2. Use `knowledge/_navigation.md` for the "where to look" quick-reference.
+3. Follow links to relevant subdirectory `index.md` files (progressive disclosure).
+4. Open specific concept files for full detail.
+5. Use `related` frontmatter + inline links to traverse the graph.
+6. Filter cross-cutting topics using `tags`.
+
+**Never** scan the directory tree blindly. Always start at `knowledge/index.md`.
+
+---
+
+## How agents use OKF when editing code
+
+Before modifying **any** code:
+
+1. **Rules check** — `knowledge/rules/`: is there a rule that constrains this change? If yes, that rule wins.
+2. **Decision check** — `knowledge/decisions/`: has this choice been locked? If yes, follow it.
+3. **Service check** — `knowledge/services/`: are you adding a third-party integration? Check the free-tier file first.
+4. **After locking a decision** — write the concept file, append to `knowledge/log.md`, commit: `docs(knowledge): <one-line summary>`.
+
+---
+
+## Cross-linking conventions
+
+Use plain markdown links, relative to the linking file. Per OKF spec, this is what builds the implicit knowledge graph:
+
+```markdown
+This site follows the [no-card-on-file rule](../../knowledge/rules/no-card-on-file.md).
 ```
-knowledge/
-├── _okf.md                      ← this file (convention)
-├── index.md                     ← bundle overview (OKF reserved name)
-├── log.md                       ← chronological change history (OKF reserved name)
-├── rules/                       ← 3-level (flat)
-│   ├── index.md                 ← what rules are, the 5 non-negotiables
-│   ├── never-hit-quotas.md
-│   ├── no-card-on-file.md
-│   ├── self-update-rule.md
-│   └── ...
-├── decisions/                   ← 4-level (grouped by topic)
-│   ├── index.md
-│   ├── architecture/
-│   ├── branding/
-│   ├── content/
-│   ├── infrastructure/
-│   ├── monetisation/
-│   ├── process/
-│   └── tooling/
-├── services/                    ← 4-level (grouped by role)
-│   ├── index.md                 ← the service catalog table
-│   ├── hosting/                 ← cloudflare-pages, github-pages, vercel, ...
-│   ├── auth/                    ← firebase-spark, app-check-firebase, recaptcha-enterprise, ...
-│   ├── database/                ← turso
-│   ├── compute/                 ← cloudflare-workers, cloudflare-r2, github-actions
-│   ├── email/                   ← resend, email-octopus, mailerlite
-│   ├── forms/                   ← web3forms, tally, formspree
-│   ├── monitoring/              ← better-stack, healthchecks-io, glitchtip
-│   ├── analytics/               ← cloudflare-web-analytics, microsoft-clarity, posthog
-│   ├── ai/                      ← puter-js, openrouter
-│   ├── domain/                  ← cloudflare-dns, cloudflare-registrar
-│   ├── ads/                     ← ezoic, mediavine
-│   ├── payment/                 ← razorpay
-│   ├── search/                  ← pagefind
-│   ├── tooling/                 ← envpact, imagekit, axiom, hypertune, hookdeck, azure-for-students
-│   └── code-quality/            ← dependabot, coderabbit, sonarcloud
-├── architecture/                ← 3-level (flat)
-│   ├── index.md
-│   ├── layer-1-static-hosting.md
-│   └── ...
-├── design/                      ← 3-level (flat, one per site)
-│   ├── index.md
-│   ├── _family-rules.md
-│   └── ...
-├── policy/                      ← 3-level (flat)
-│   ├── index.md
-│   └── ...
-├── runbooks/                    ← 3-level (flat)
-│   ├── index.md
-│   └── ...
-└── glossary/                    ← 4-level (grouped alphabetically)
-    ├── index.md
-    ├── a-c/
-    ├── d-h/
-    ├── i-n/
-    ├── o-r/
-    └── s-z/
+
+When a concept needs many cross-references, list them in frontmatter `related:` so consumers can build the graph without parsing prose:
+
+```yaml
+---
+type: decision
+title: "Stay on Firebase Spark forever — never Blaze"
+related:
+  - rules/never-hit-quotas
+  - rules/no-card-on-file
+  - architecture/layer-3-firebase-spark
+  - services/firebase-spark
+---
 ```
+
+---
 
 ## Per-app knowledge bundles
 
-Every app submodule under `projects/apps/**/<app>/` has its own `knowledge/` folder following an OKF-light shape:
+Every app submodule under `projects/oriz-org/own/products/apps/**/<app>/` has its own `knowledge/` folder following an OKF-light shape:
 
 ```text
 <app-submodule>/
@@ -179,37 +180,37 @@ The per-app bundle only carries facts specific to that app. Cross-cutting family
 
 Cross-link to family-wide concepts via relative paths (e.g. `../../../../knowledge/rules/no-card-on-file.md` from an app's runbook at depth 3 in a submodule that's at depth 4 from master root).
 
-Richest example: [`projects/apps/personal/oriz-cs-me-app/knowledge/`](../projects/apps/personal/oriz-cs-me-app/knowledge/) — lifestream architecture, age-gating, ingester contract, 100-year strategy.
+Richest example: [`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`](../projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/) — lifestream architecture, age-gating, ingester contract, 100-year strategy.
 
-## Cross-linking conventions
-
-Use plain markdown links, relative to the linking file. Per OKF spec,
-this is what builds the implicit knowledge graph:
-
-```markdown
-This site follows the [no-card-on-file rule](../../knowledge/rules/no-card-on-file.md).
-```
-
-When a concept needs many cross-references, list them in frontmatter
-`related:` so consumers can build the graph without parsing prose:
-
-```yaml
 ---
-type: decision
-title: "Stay on Firebase Spark forever — never Blaze"
-related:
-  - rules/never-hit-quotas
-  - rules/no-card-on-file
-  - architecture/layer-3-firebase-spark
-  - services/firebase-spark
+
+## Update protocol — the most important rule
+
+The family AGENTS.md `self-update rule` applies HERE more than anywhere else: **every architectural decision the user makes in chat must be reflected in the relevant concept file (or a new one) in the same conversation.**
+
+When a new decision lands:
+
+1. Decide which directory it belongs in (`rules/`, `decisions/`, etc.).
+2. Pick a kebab-case filename that names the concept clearly.
+3. Write the file with full frontmatter.
+4. Append a one-line entry to `knowledge/log.md` with the date + path.
+5. If it supersedes an older concept, set `superseded_by` on the old one and `supersedes` on the new one. Don't delete the old file.
+6. Commit with `docs(knowledge): <one-line summary>`.
+
+The bundle is a living wiki. Outdated concepts get marked `status: superseded`, not deleted.
+
 ---
-```
 
-## Reserved filenames (per OKF spec)
+## Producers + consumers
 
-- `index.md` — overview / progressive disclosure for an entire directory
-- `log.md` — chronological log of changes for that directory's bundle
-- `_okf.md` — family-specific convention extension (this file). Underscore prefix flags it as meta, not a regular concept.
+Per the OKF "producer/consumer independence" principle:
+
+- **Producers**: Claude Code, Gemini/Antigravity, Cursor, Aider, Copilot, the user (manually), build-time scripts, future ingest agents. None should require special tooling beyond a markdown editor.
+- **Consumers**: any LLM-backed agent (Claude, Gemini, ChatGPT, Copilot, Cursor, Aider), the static visualizer Google ships, future search/dashboard tools, the user reading directly.
+
+If you find yourself reaching for a custom tool to read or write a concept file, you've left OKF. Stop and reconsider.
+
+---
 
 ## When the spec moves
 
@@ -221,36 +222,4 @@ OKF v0.1 was published 2026-06-13. It will evolve. When it does:
 4. Update concept files where the new spec demands changes
 5. Log the migration in `knowledge/log.md`
 
-Until the spec hits 1.0, prefer **additive** frontmatter changes
-(adding fields) over **structural** ones (renaming or removing
-fields). Backward compatibility is a feature.
-
-## Update protocol — the most important rule
-
-The family AGENTS.md `self-update rule` applies HERE more than
-anywhere else: **every architectural decision the user makes in chat
-must be reflected in the relevant concept file (or a new one) in the
-same conversation.**
-
-When a new decision lands:
-
-1. Decide which directory it belongs in (`rules/`, `decisions/`, etc).
-2. Pick a kebab-case filename that names the concept clearly.
-3. Write the file with full frontmatter.
-4. Append a one-line entry to `knowledge/log.md` with the date + path.
-5. If it supersedes an older concept, set `superseded_by` on the old
-   one and `supersedes` on the new one. Don't delete the old file.
-6. Commit with `docs(knowledge): <one-line summary>`.
-
-The bundle is a living wiki. Outdated concepts get marked
-`status: superseded`, not deleted.
-
-## Producers + consumers
-
-Per the OKF "producer/consumer independence" principle:
-
-- **Producers**: Claude Code (this agent), the user (manually), build-time scripts, future ingest agents. None should require special tooling beyond a markdown editor.
-- **Consumers**: any LLM-backed agent (Claude, Gemini, ChatGPT), the static visualizer Google ships, future search/dashboard tools, the user reading directly.
-
-If you find yourself reaching for a custom tool to read or write a
-concept file, you've left OKF. Stop and reconsider.
+Until the spec hits 1.0, prefer **additive** frontmatter changes (adding fields) over **structural** ones (renaming or removing fields). Backward compatibility is a feature.

@@ -3,7 +3,7 @@ type: navigation
 title: "Knowledge navigation — where to look in knowledge/"
 description: "Extracted from AGENTS.md 2026-06-22 to keep AGENTS.md tight. This file maps user-intent ('looking for X') to the right knowledge/ path. Includes the per-site knowledge convention."
 tags: [navigation, index, meta]
-timestamp: 2026-06-22
+timestamp: 2026-06-24
 format_version: okf-v0.1
 status: active
 ---
@@ -24,6 +24,11 @@ status: active
 | Family-specific term definitions | [`glossary/`](./glossary/) |
 | Multi-engine "Search the web" button — every site ships one (in `@chirag127/oriz-kit` as `<MultiSearch />`) | [`decisions/architecture/multi-engine-search-button.md`](./decisions/architecture/multi-engine-search-button.md) |
 | Repo naming — sites are `<subdomain-prefix>-site`; extensions `-ext`, VS Code extensions `-vsc-ext`, CLIs `-cli`, MCP servers `-mcp`, Workers `-worker`, Cloud Functions `-fn`, data repos `-data`, agent skills `-skill`, rule bundles `-rules`. NPM packages stay clean (no suffix). | [`decisions/branding/repo-naming-suffixes.md`](./decisions/branding/repo-naming-suffixes.md) |
+| Workspace layout — `projects/<owner>/<own\|forks>/<bucket>/<category>/<repo>/` 5-level hierarchy. Owner is `oriz-org/` or `chirag127/`. Buckets are products / services / libraries / content. | [`decisions/architecture/projects-owner-own-forks-layout.md`](./decisions/architecture/projects-owner-own-forks-layout.md) |
+| Org rename oriz-co → oriz-org (2026-06-24) — GitHub auto-redirects; supersedes the 2026-06-22 migrate-to-oriz-org runbook | [`decisions/branding/oriz-org-rename-from-co.md`](./decisions/branding/oriz-org-rename-from-co.md) |
+| cs-me-app moved from oriz-org → chirag127 (personal, puter.js auth, no brand auth) | [`decisions/branding/cs-me-app-moved-to-chirag127.md`](./decisions/branding/cs-me-app-moved-to-chirag127.md) |
+| Recruiter strategy — pinned repos + contribution graph carry the signal; repo list is a tiebreaker | [`rules/recruiter-strategy.md`](./rules/recruiter-strategy.md) |
+| Profile README must cross-link — chirag127 ↔ oriz-org both surfaces lead to the other in one click | [`rules/profile-readme-cross-link.md`](./rules/profile-readme-cross-link.md) |
 | Geo-routed payment matrix — Razorpay (India) + Lemon Squeezy (international, MoR) + keygen.sh (licenses) + six donation rails | [`decisions/monetisation/max-payment-methods.md`](./decisions/monetisation/max-payment-methods.md) |
 | Razorpay donation button (one-time) — pl_T4iEPIDcALKLPk, mounted on every app's `/sponsors` route + oriz-cs-me-app footer | [`decisions/architecture/razorpay-donation-button.md`](./decisions/architecture/razorpay-donation-button.md) |
 | RSS → every-platform cross-poster — `@chirag127/oriz-omnipost` watches `blog.oriz.in/rss.xml` | [`decisions/architecture/cross-post-engine.md`](./decisions/architecture/cross-post-engine.md) |
@@ -44,14 +49,14 @@ status: active
 | No Firebase Cloud Functions (Blaze required, card on file banned) | [`rules/no-firebase-functions-blaze.md`](./rules/no-firebase-functions-blaze.md) |
 | Fork discipline — minimum-diff, rebase-friendly, `projects/oriz-org/forks/<upstream-name>/` | [`rules/fork-discipline.md`](./rules/fork-discipline.md) |
 | CF Pages branch-deploys (100-project mitigation) | [`runbooks/cf-pages-branch-deploys.md`](./runbooks/cf-pages-branch-deploys.md) |
-| Family inventory (canonical counts SSoT) — 26 apps + 23 npm packages + 5 books + 2 APIs + 53 submodules | [`services/family-inventory.md`](./services/family-inventory.md) |
+| Family inventory (canonical counts SSoT) — 27 apps + 23 npm packages + 5 books + 15 APIs + 74 submodules | [`services/family-inventory.md`](./services/family-inventory.md) |
 
 ## Per-site knowledge
 
 Per-app knowledge lives INSIDE each app submodule under its own
 `knowledge/` folder (OKF-light: `index.md` + `decisions/` + `runbooks/` +
 `services/`). The richest example is
-[`projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/`](../projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/)
+[`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`](../projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/)
 — lifestream architecture, age-gating, ingester contract, 100-year
 strategy. Each per-app bundle follows the same OKF contract
 ([`_okf.md`](./_okf.md)). Master `knowledge/` holds family-wide rules /

@@ -1,13 +1,14 @@
 ---
 type: rule
 title: "Fork discipline — minimum diff, rebase-friendly, upstream-aligned"
-description: "Forks live under projects/oriz-org/forks/<original-upstream-name>/. Repo slug on GitHub is NOT renamed (matches upstream for easier rebase). Submodule path on disk = upstream name. All changes must be minimum-diff with upstream so git rebase upstream/main applies cleanly."
+description: "Forks live under projects/<owner>/forks/<original-upstream-name>/. <owner> is oriz-org for forks maintained for oriz.in brand work (kept on the brand org), chirag127 for drive-by forks (personal account). Repo slug on GitHub is NOT renamed (matches upstream for easier rebase). Submodule path on disk = upstream name. All changes must be minimum-diff with upstream so git rebase upstream/main applies cleanly."
 tags: [rule, forks, git, rebase, submodule]
-timestamp: 2026-06-22
+timestamp: 2026-06-24
 format_version: okf-v0.1
 status: active
 related:
   - rules/repo-naming
+  - decisions/architecture/projects-owner-own-forks-layout
   - decisions/architecture/submodule-pattern
 ---
 
@@ -18,10 +19,25 @@ related:
 Forked repos in the family follow strict discipline so upstream
 updates rebase cleanly. **NEVER apply this rule to non-fork repos.**
 
+## Owner — which org / account holds the fork
+
+A fork is **brand-maintained** if any of these apply:
+- It's used by one or more `oriz-org/*` repos as a dependency / template
+- We actively patch it (per the minimum-diff rule below)
+- It hosts a customized version of upstream that the brand ships
+
+Brand-maintained forks → **`oriz-org/<upstream-name>`**.
+Drive-by forks (one-line PR forks, personal experiments, archived
+exploration) → **`chirag127/<upstream-name>`**.
+
+The on-disk submodule path mirrors the owner:
+- Brand: `projects/oriz-org/forks/<upstream-name>/`
+- Personal: `projects/chirag127/forks/<upstream-name>/`
+
 ## Layout
 
-- **Disk path:** `projects/oriz-org/forks/<original-upstream-name>/`
-- **GitHub slug:** NOT renamed — matches upstream slug (`<our-org>/<upstream-name>`)
+- **Disk path:** `projects/<owner>/forks/<original-upstream-name>/`
+- **GitHub slug:** NOT renamed — matches upstream slug (`<owner>/<upstream-name>`)
 - **Submodule path on disk:** matches upstream name (which matches GH slug)
 - **Internal `package.json` `name`:** MAY be customized via additive override (e.g. `@chirag127/oriz-<upstream-name>-fork`) but only as a thin patch
 
