@@ -165,7 +165,7 @@ related:
 
 ## Per-app knowledge bundles
 
-Every app submodule under `projects/oriz-org/own/products/apps/**/<app>/` has its own `knowledge/` folder following an OKF-light shape:
+Every app submodule under `projects/oriz/own/prod/apps/**/<app>/` has its own `knowledge/` folder following an OKF-light shape:
 
 ```text
 <app-submodule>/
@@ -180,7 +180,7 @@ The per-app bundle only carries facts specific to that app. Cross-cutting family
 
 Cross-link to family-wide concepts via relative paths (e.g. `../../../../knowledge/rules/no-card-on-file.md` from an app's runbook at depth 3 in a submodule that's at depth 4 from master root).
 
-Richest example: [`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`](../projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/) — lifestream architecture, age-gating, ingester contract, 100-year strategy.
+Richest example: [`projects/c127/own/prod/apps/personal/cs-me-app/knowledge/`](../projects/c127/own/prod/apps/personal/cs-me-app/knowledge/) — lifestream architecture, age-gating, ingester contract, 100-year strategy.
 
 ---
 

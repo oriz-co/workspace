@@ -18,7 +18,7 @@ related:
 ## Decision
 
 The 16-point 100-year strategy doc — full text at
-[`projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md`](../../../../projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md) (in the oriz-cs-me-app submodule)
+[`projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md`](../../../../projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md) (in the oriz-cs-me-app submodule)
 — is the locked strategic contract for `me.oriz.in` and informs
 every architecture decision across the family. Its 16 sections
 cover: 50-year time horizon, posthumous public archive, 10-min/day
@@ -41,7 +41,7 @@ decision conflicts with anything in the strategy, the strategy wins
 
 ## Implications
 
-- The full 16-point strategy lives in [`projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md`](../../../../projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md) (in the oriz-cs-me-app submodule) — this file is just the family-level pointer + headline rationale.
+- The full 16-point strategy lives in [`projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md`](../../../../projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md) (in the oriz-cs-me-app submodule) — this file is just the family-level pointer + headline rationale.
 - Several strategy points cascade into separate locked decisions across the family: [lifestream-jsonl-canonical](../architecture/lifestream-jsonl-canonical.md), [github-pages-mirror-per-site](../infrastructure/github-pages-mirror-per-site.md), [journal-stays-auth-gated](./journal-stays-auth-gated.md), [age-gating-policy-adopted](./age-gating-policy-adopted.md).
 - Annual review on Chirag's birthday: re-read the strategy doc, audit auto-paused ingesters, run the GitHub Pages mirror fire-drill, run the JSONL repo fire-drill, re-read age-gating policy against current jurisdictional rules.
 - The "everything public including journal" line was reversed at adoption — see [journal-stays-auth-gated](./journal-stays-auth-gated.md). The reversal is annotated in the strategy doc itself.
@@ -49,7 +49,7 @@ decision conflicts with anything in the strategy, the strategy wins
 
 ## Cross-refs
 
-- [Full 100-year strategy doc (in the oriz-cs-me-app submodule)](../../../../projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md)
+- [Full 100-year strategy doc (in the oriz-cs-me-app submodule)](../../../../projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/100-year-strategy.md)
 - [Lifestream JSONL canonical](../architecture/lifestream-jsonl-canonical.md)
 - [GitHub Pages mirror per site](../infrastructure/github-pages-mirror-per-site.md)
 - [Journal stays auth-gated](./journal-stays-auth-gated.md)

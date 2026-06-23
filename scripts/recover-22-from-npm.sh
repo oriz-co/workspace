@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # recover-22-from-npm.sh — pull each of 22 @chirag127/astro-* tarballs from
-# npm, unpack into projects/oriz-org/own/libraries/npm-packages/<name>-npm-pkg/. Pre-existing .gitignore
+# npm, unpack into projects/oriz/own/lib/npm/<name>-npm-pkg/. Pre-existing .gitignore
 # may resurrect — we'll prune. Restores stub source from npm authoritatively.
 
 set -euo pipefail

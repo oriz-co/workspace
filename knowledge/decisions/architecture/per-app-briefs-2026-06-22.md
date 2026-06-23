@@ -148,7 +148,7 @@ Per `tools-shape-and-priority.md`: 16 separate subdomains, each is its own repo 
 Rename `oriz-lore-app` → `oriz-lore-app`:
 1. `gh repo rename chirag127/oriz-lore-app oriz-lore-app`
 2. Update submodule URL in `.gitmodules`
-3. Update submodule path: `git mv projects/oriz-org/own/products/apps/content/oriz-lore-app projects/oriz-org/own/products/apps/content/oriz-lore-app`
+3. Update submodule path: `git mv projects/oriz/own/prod/apps/content/oriz-lore-app projects/oriz/own/prod/apps/content/oriz-lore-app`
 4. Update CNAME from lore.oriz.in → lore.oriz.in (if any DNS exists)
 5. Update knowledge cross-refs (10+ files)
 6. Update FAMILY_APPS list in astro-shell

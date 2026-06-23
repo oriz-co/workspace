@@ -1,7 +1,7 @@
 ---
 type: decision
 title: "oriz-cs-me-app moved from oriz-org → chirag127, renamed cs-me-app"
-description: "The personal-site app cs-me-app is moved out of the brand org to chirag127/* because it doesn't use the brand's central auth (only puter.js, not auth.oriz.in). Slug drops the oriz- prefix to clearly read as a personal repo. On-disk path becomes projects/chirag127/own/products/apps/personal/cs-me-app/."
+description: "The personal-site app cs-me-app is moved out of the brand org to chirag127/* because it doesn't use the brand's central auth (only puter.js, not auth.oriz.in). Slug drops the oriz- prefix to clearly read as a personal repo. On-disk path becomes projects/c127/own/prod/apps/personal/cs-me-app/."
 tags: [branding, github, transfer, personal, cs-me-app, identity]
 timestamp: 2026-06-24
 format_version: okf-v0.1
@@ -20,7 +20,7 @@ related:
 The personal-site app currently at `oriz-org/oriz-cs-me-app` is
 transferred to the personal account as `chirag127/cs-me-app`. The
 on-disk submodule path changes to
-`projects/chirag127/own/products/apps/personal/cs-me-app/`.
+`projects/c127/own/prod/apps/personal/cs-me-app/`.
 
 ## Why move it off the brand org
 
@@ -51,12 +51,12 @@ no brand claim.
 2. `gh repo rename chirag127/oriz-cs-me-app cs-me-app` (after transfer)
 3. `.gitmodules` URL: `https://github.com/oriz-org/oriz-cs-me-app.git`
    → `https://github.com/chirag127/cs-me-app.git`
-4. `.gitmodules` path: `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app` →
-   `projects/chirag127/own/products/apps/personal/cs-me-app`
+4. `.gitmodules` path: `projects/oriz/own/prod/apps/personal/oriz-cs-me-app` →
+   `projects/c127/own/prod/apps/personal/cs-me-app`
 5. The `me.oriz.in` and `cs.oriz.in` DNS records stay on Cloudflare
    Pages; the Pages project re-binds to the chirag127-owned repo
 6. The per-app knowledge bundle at
-   `projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`
+   `projects/c127/own/prod/apps/personal/cs-me-app/knowledge/`
    travels with the repo (it's inside the submodule)
 
 ## What does NOT change

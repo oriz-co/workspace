@@ -37,7 +37,7 @@ function gh(argv, opts = {}) {
 }
 
 function readGitmodulesSlugs() {
-  // Parse [submodule] blocks; capture path + url; skip projects/oriz-org/forks/* entries.
+  // Parse [submodule] blocks; capture path + url; skip projects/oriz/forks/* entries.
   const text = readFileSync(`${ROOT}/.gitmodules`, "utf8");
   const slugs = new Set();
   const blocks = text.split(/^\[submodule /m).slice(1);
@@ -46,7 +46,7 @@ function readGitmodulesSlugs() {
     const urlMatch = block.match(/^\s*url\s*=\s*https:\/\/github\.com\/chirag127\/([^.\s]+)\.git\s*$/m);
     if (!pathMatch || !urlMatch) continue;
     const path = pathMatch[1].trim();
-    if (path.startsWith("projects/oriz-org/forks/")) {
+    if (path.startsWith("projects/oriz/forks/")) {
       console.log(`[migrate] skip fork: ${path} (${urlMatch[1]})`);
       continue;
     }

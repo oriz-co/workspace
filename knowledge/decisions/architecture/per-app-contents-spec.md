@@ -1,7 +1,7 @@
 ---
 type: decision
 title: "Per-app contents specification — sidebar + pages + CI/CD"
-description: "Every app in projects/oriz-org/own/products/apps/* follows this contents spec. 4-config split (site/nav/sidebar/footer) lives in src/config/. Common pages (landing, about, changelog, admin) + per-tool pages + 24 legal pages from astro-chrome. CI/CD via reusable workflow from astro-shell-npm-pkg + separate test.yml."
+description: "Every app in projects/oriz/own/prod/apps/* follows this contents spec. 4-config split (site/nav/sidebar/footer) lives in src/config/. Common pages (landing, about, changelog, admin) + per-tool pages + 24 legal pages from astro-chrome. CI/CD via reusable workflow from astro-shell-npm-pkg + separate test.yml."
 tags: [architecture, apps, scaffold, ci-cd, sidebar, pages]
 timestamp: 2026-06-21
 format_version: okf-v0.1
@@ -195,41 +195,41 @@ jobs:
 ## Local submodule path = full brand slug
 
 Local submodule disk paths mirror the full GitHub slug. Apps and APIs
-live under `projects/oriz-org/own/products/apps/` and `projects/oriz-org/own/services/apis/`:
+live under `projects/oriz/own/prod/apps/` and `projects/oriz/own/svc/api/`:
 
 | Local path |
 |---|
-| `projects/chirag127/own/products/apps/personal/cs-me-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-pages-blog-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-roam-journal-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-lore-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-financial-cards-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-omni-post-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-ncert-app` |
-| `projects/oriz-org/own/products/apps/content/oriz-janaushdhi-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-slice-pdf-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-pixie-image-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-paisa-finance-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-forge-dev-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-scribe-text-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-shift-convert-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-grid-qr-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-pivot-data-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-echo-audio-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-reel-video-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-rank-seo-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-cipher-crypto-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-vitals-health-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-dice-random-tools-app` |
-| `projects/oriz-org/own/products/apps/tools/oriz-paper-print-tools-app` |
-| `projects/oriz-org/own/services/apis/oriz-mmi-tickertape-mmi-api` |
-| `projects/oriz-org/own/services/apis/oriz-flow-fii-dii-activity-api` |
+| `projects/c127/own/prod/apps/personal/cs-me-app` |
+| `projects/oriz/own/prod/apps/content/oriz-pages-blog-app` |
+| `projects/oriz/own/prod/apps/content/oriz-roam-journal-app` |
+| `projects/oriz/own/prod/apps/content/oriz-lore-app` |
+| `projects/oriz/own/prod/apps/content/oriz-financial-cards-app` |
+| `projects/oriz/own/prod/apps/content/oriz-omni-post-app` |
+| `projects/oriz/own/prod/apps/content/oriz-ncert-app` |
+| `projects/oriz/own/prod/apps/content/oriz-janaushdhi-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-slice-pdf-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-pixie-image-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-paisa-finance-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-forge-dev-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-scribe-text-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-shift-convert-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-grid-qr-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-pivot-data-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-echo-audio-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-reel-video-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-rank-seo-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-cipher-crypto-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-vitals-health-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-dice-random-tools-app` |
+| `projects/oriz/own/prod/apps/tools/oriz-paper-print-tools-app` |
+| `projects/oriz/own/svc/api/oriz-mmi-tickertape-mmi-api` |
+| `projects/oriz/own/svc/api/oriz-flow-fii-dii-activity-api` |
 
 Kept short (vendor-convention or category-IS-brand):
-- `projects/oriz-org/own/products/apps/hub/home-app`
-- `projects/oriz-org/own/content/skills/agents-md-sync-skill`
-- `projects/oriz-org/own/content/skills/claude-code-mcq-notes-skill`
-- All 8 `projects/oriz-org/own/libraries/npm-packages/astro-*-npm-pkg`
+- `projects/oriz/own/prod/apps/hub/home-app`
+- `projects/oriz/own/content/skills/agents-md-sync-skill`
+- `projects/oriz/own/content/skills/claude-code-mcq-notes-skill`
+- All 8 `projects/oriz/own/lib/npm/astro-*-npm-pkg`
 
 ## Cross-refs
 

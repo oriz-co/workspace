@@ -56,7 +56,7 @@ Trade-off accepted: a small eventual-consistency window (apps see data up to 1h 
 
 ## Implications
 
-- **Submodules restored.** `projects/oriz-org/own/services/apis/oriz-flow-fii-dii-activity-api` + `projects/oriz-org/own/services/apis/oriz-mmi-tickertape-mmi-api` are wired back into master `.gitmodules`. The shared `projects/oriz-org/own/content/data/oriz-market-data` submodule and its upstream repo were deleted on 2026-06-22.
+- **Submodules restored.** `projects/oriz/own/svc/api/oriz-flow-fii-dii-activity-api` + `projects/oriz/own/svc/api/oriz-mmi-tickertape-mmi-api` are wired back into master `.gitmodules`. The shared `projects/oriz/own/content/data/oriz-market-data` submodule and its upstream repo were deleted on 2026-06-22.
 - **CF Worker code removed.** `src/index.ts` (Hono routes) + `wrangler.toml` + `tsconfig.json` + `vitest.config.ts` + `test/` were deleted from both repos. Subdomains `flow-fii-dii.api.oriz.in` and `mmi.api.oriz.in` are unused; the canonical fetch URL is now the GH Pages URL above.
 - **Apps consume via URL constants.** First user: `oriz-paisa-finance-tools-app/src/data/market-data-urls.ts` — both `FII_DII_LATEST_URL` and `MMI_LATEST_URL` point at `raw.githubusercontent.com` per-repo URLs.
 - **GH Pages enabled** on both repos via REST API (`build_type=workflow`).

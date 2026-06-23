@@ -109,7 +109,7 @@ Note: earlier docs reference *Oriz Me* as the first-to-draft full book; that was
 
 ## APIs — 15 deployed (free, on Cloudflare Workers + Pages)
 
-Indian-data APIs. Each is a submodule under `projects/oriz-org/own/services/apis/`:
+Indian-data APIs. Each is a submodule under `projects/oriz/own/svc/api/`:
 
 - `oriz-air-quality-india-api`
 - `oriz-currency-rates-api`
@@ -131,21 +131,21 @@ The umbrella `api.oriz.in` Hono Worker is the inline (non-submodule) API and is 
 
 ## Browser extensions — 1 total
 
-- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `projects/oriz-org/forks/Ai-rewrite/` (moved 2026-06-22 from `projects/oriz-org/own/products/browser-extensions/`; further moved 2026-06-24 from `projects/forks/` to `projects/oriz-org/forks/` per [`projects-owner-own-forks-layout`](../decisions/architecture/projects-owner-own-forks-layout.md)). Repo: `oriz-org/Ai-rewrite` (renamed from `oriz-co/Ai-rewrite` 2026-06-24).
+- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `projects/oriz/forks/Ai-rewrite/` (moved 2026-06-22 from `projects/oriz/own/prod/bs-ext/`; further moved 2026-06-24 from `projects/forks/` to `projects/oriz/forks/` per [`projects-owner-own-forks-layout`](../decisions/architecture/projects-owner-own-forks-layout.md)). Repo: `oriz-org/Ai-rewrite` (renamed from `oriz-co/Ai-rewrite` 2026-06-24).
 
 ## Submodules — 74 total
 
 `git submodule status | wc -l` from `c:/D/oriz/` should return 74. Composition:
 
-- 26 app submodules under `projects/oriz-org/own/products/apps/{content,hub,personal,tools}/`
-- 1 personal app under `projects/chirag127/own/products/apps/personal/cs-me-app/` (moved from oriz-org 2026-06-24)
-- 23 npm-package submodules under `projects/oriz-org/own/libraries/npm-packages/`
-- 15 API submodules under `projects/oriz-org/own/services/apis/`
-- 1 worker submodule under `projects/oriz-org/own/services/workers/` (oriz-flags-worker; folder exists but no GitHub repo yet, so NOT actually in `.gitmodules`)
-- 5 book submodules under `projects/oriz-org/own/content/books/`
-- 2 skill submodules under `projects/oriz-org/own/content/skills/`
-- 1 data submodule under `projects/oriz-org/own/content/data/` — `oriz-ai-providers-data`
-- 1 fork submodule under `projects/oriz-org/forks/` — `Ai-rewrite`
+- 26 app submodules under `projects/oriz/own/prod/apps/{content,hub,personal,tools}/`
+- 1 personal app under `projects/c127/own/prod/apps/personal/cs-me-app/` (moved from oriz-org 2026-06-24)
+- 23 npm-package submodules under `projects/oriz/own/lib/npm/`
+- 15 API submodules under `projects/oriz/own/svc/api/`
+- 1 worker submodule under `projects/oriz/own/svc/workers/` (oriz-flags-worker; folder exists but no GitHub repo yet, so NOT actually in `.gitmodules`)
+- 5 book submodules under `projects/oriz/own/content/books/`
+- 2 skill submodules under `projects/oriz/own/content/skills/`
+- 1 data submodule under `projects/oriz/own/content/data/` — `oriz-ai-providers-data`
+- 1 fork submodule under `projects/oriz/forks/` — `Ai-rewrite`
 
 Re-verify on each count change with: `cd /c/D/oriz && git submodule status | wc -l`.
 

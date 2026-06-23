@@ -17,7 +17,7 @@ related:
 
 ## When to use
 
-You have an app under `projects/oriz-org/own/products/apps/**/<brand>-app/` and you want it distributed as a PWA + Android app (Play Store or sideload APK) + Windows app (Microsoft Store or sideload MSIX) + optional desktop EXE/dmg/AppImage from the same source. iOS is PWA-only; no App Store path. See [decisions/architecture/pwabuilder-as-primary-converter.md](../decisions/architecture/pwabuilder-as-primary-converter.md) for the rationale.
+You have an app under `projects/oriz/own/prod/apps/**/<brand>-app/` and you want it distributed as a PWA + Android app (Play Store or sideload APK) + Windows app (Microsoft Store or sideload MSIX) + optional desktop EXE/dmg/AppImage from the same source. iOS is PWA-only; no App Store path. See [decisions/architecture/pwabuilder-as-primary-converter.md](../decisions/architecture/pwabuilder-as-primary-converter.md) for the rationale.
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ You have an app under `projects/oriz-org/own/products/apps/**/<brand>-app/` and 
 ## The single command
 
 ```bash
-cd projects/oriz-org/own/products/apps/<category>/<brand>-app
+cd projects/oriz/own/prod/apps/<category>/<brand>-app
 pnpm build                            # Astro → dist/ (this IS the PWA)
 pnpm astro-distribute build           # PWABuilder fetches <brand>.oriz.in, emits packages
 ```

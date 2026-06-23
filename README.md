@@ -24,11 +24,11 @@ journal.oriz.in          →  oriz-roam-journal-app (flagship Pro/Max app)
 
 | Layer | Count | Lives at |
 |---|---|---|
-| **Apps** (CF Pages) | 27 | `projects/oriz-org/own/products/apps/{hub,content,personal,tools}/` |
-| **APIs** (GH Pages JSON + Path D Astro page) | 15 | `projects/oriz-org/own/services/apis/` |
-| **npm packages** | 23 | `projects/oriz-org/own/libraries/npm-packages/` (published as `@chirag127/*`) |
-| **Books** | 5 | `projects/oriz-org/own/content/books/` |
-| **Forks** (upstreams we patched) | 2 | `projects/oriz-org/forks/` |
+| **Apps** (CF Pages) | 27 | `projects/oriz/own/prod/apps/{hub,content,personal,tools}/` |
+| **APIs** (GH Pages JSON + Path D Astro page) | 15 | `projects/oriz/own/svc/api/` |
+| **npm packages** | 23 | `projects/oriz/own/lib/npm/` (published as `@chirag127/*`) |
+| **Books** | 5 | `projects/oriz/own/content/books/` |
+| **Forks** (upstreams we patched) | 2 | `projects/oriz/forks/` |
 | **Knowledge** | 58 rules + 181 decisions + 43 runbooks | `knowledge/` |
 
 ---
@@ -38,31 +38,50 @@ journal.oriz.in          →  oriz-roam-journal-app (flagship Pro/Max app)
 ```
 c:/D/oriz/
 ├── projects/                              # submodules — 74 total
-│   ├── chirag127/                         # personal-account repos
-│   │   └── own/products/apps/personal/cs-me-app/   # me.oriz.in / cs.oriz.in (puter.js auth)
-│   └── oriz-org/                          # brand-org repos (the family)
+│   ├── c127/                              # chirag127 personal-account repos
+│   │   └── own/prod/apps/personal/cs-me-app/   # me.oriz.in / cs.oriz.in (puter.js auth)
+│   └── oriz/                              # oriz-org brand-org repos (the family)
 │       ├── own/
-│       │   ├── products/
+│       │   ├── prod/                      # products: user-facing artifacts
 │       │   │   ├── apps/                  # 26 Astro apps (Cloudflare Pages)
 │       │   │   │   ├── hub/               # home-app, oriz-auth-app, oriz-status-app
 │       │   │   │   ├── content/           # journal, blog, books, ncert, lore, financial-cards, …
-│       │   │   │   ├── personal/          # (cs-me-app moved to chirag127/ 2026-06-24)
+│       │   │   │   ├── personal/          # (cs-me-app moved to c127/ 2026-06-24)
 │       │   │   │   └── tools/             # 15 single-purpose tool apps
-│       │   │   ├── browser-extensions/    # placeholder
-│       │   │   ├── ide-extensions/        # placeholder
-│       │   │   └── clis/                  # placeholder (renamed from py-pkg-cli)
-│       │   ├── services/
-│       │   │   ├── apis/                  # 15 free India-data APIs (CF Workers + Pages)
+│       │   │   ├── bs-ext/                # browser extensions (placeholder)
+│       │   │   ├── ide-ext/               # IDE / VS Code extensions (placeholder)
+│       │   │   └── clis/                  # CLIs (renamed from py-pkg-cli; placeholder)
+│       │   ├── svc/                       # services: server-side runtimes
+│       │   │   ├── api/                   # 15 free India-data APIs (CF Workers + Pages)
 │       │   │   ├── workers/               # oriz-flags-worker (no repo yet)
-│       │   │   └── mcp-servers/           # placeholder
-│       │   ├── libraries/
-│       │   │   └── npm-packages/          # 23 packages published as @chirag127/*
-│       │   └── content/
+│       │   │   └── mcp/                   # MCP servers (placeholder)
+│       │   ├── lib/                       # libraries: reusable published code
+│       │   │   └── npm/                   # 23 packages published as @chirag127/*
+│       │   └── content/                   # non-runnable assets
 │       │       ├── books/                 # 5 long-form works
 │       │       ├── data/                  # oriz-ai-providers-data
 │       │       ├── skills/                # 2 agent skills
 │       │       └── rules/                 # placeholder
-│       └── forks/                         # 2 forks maintained for the brand (Ai-rewrite, oriz-api-docs-template)
+│       └── forks/                         # forks maintained for the brand (Ai-rewrite, oriz-api-docs-template)
+├── knowledge/                             # the canonical brain — read this before changing anything
+│   ├── rules/                             # hard rules that govern every decision
+│   ├── decisions/                         # locked architecture + service + pricing decisions
+│   ├── runbooks/                          # step-by-step ops procedures
+│   ├── services/                          # per-service free-tier evaluation
+│   ├── architecture/                      # cross-cutting topology
+│   ├── design/                            # design tokens + per-app briefs
+│   ├── policy/                            # legal + ToS + privacy framework
+│   ├── glossary/                          # family vocabulary
+│   ├── index.md                           # canonical entry point
+│   └── _navigation.md                     # "where to look" map
+├── scripts/                               # automation (env sync, CF/GH ops, mirrors, audits)
+├── templates/                             # per-site-ci + per-lifestream-cron skeletons
+├── AGENTS.md                              # 30-line pointer for AI agents → links here
+├── CLAUDE.md                              # pointer for Claude Code → links to AGENTS.md
+├── .env                                   # SINGLE SOURCE OF TRUTH (gitignored, decrypted)
+├── .env.enc                               # sops+age encrypted version (committed)
+└── README.md                              # this file
+```
 ├── knowledge/                             # the canonical brain — read this before changing anything
 │   ├── rules/                             # hard rules that govern every decision
 │   ├── decisions/                         # locked architecture + service + pricing decisions

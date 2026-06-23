@@ -46,7 +46,7 @@ placeholder, commits, and bumps the master pointer.
 | `sites/oriz-urls-to-md` | `chirag127/oriz-urls-to-md` |
 | `sites/oriz-image-tools` | `chirag127/oriz-image-tools` |
 | `sites/oriz-pdf-tools` | `chirag127/oriz-pdf-tools` |
-| `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app` | `chirag127/oriz-cs-me-app` |
+| `projects/oriz/own/prod/apps/personal/oriz-cs-me-app` | `chirag127/oriz-cs-me-app` |
 
 6 packages (CI without the Cloudflare Pages + GitHub Pages mirror jobs — see step 7):
 

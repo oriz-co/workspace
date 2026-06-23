@@ -194,7 +194,7 @@ needed — but having them in env makes promo analytics easier.)
 ## 5. Implement in `@chirag127/astro-billing`
 
 Library code lives at:
-`c:/D/oriz/projects/oriz-org/own/libraries/npm-packages/astro-billing-npm-pkg/src/`
+`c:/D/oriz/projects/oriz/own/lib/npm/astro-billing-npm-pkg/src/`
 
 This runbook **doesn't write the code** — that's a separate task.
 The expected file layout is:
@@ -232,7 +232,7 @@ The expected file layout is:
 
 ## 6. Webhook handler — sketch
 
-`c:/D/oriz/projects/oriz-org/own/libraries/npm-packages/astro-billing-npm-pkg/src/pages/api/billing-webhook/razorpay.ts`
+`c:/D/oriz/projects/oriz/own/lib/npm/astro-billing-npm-pkg/src/pages/api/billing-webhook/razorpay.ts`
 
 ```ts
 import type { APIRoute } from 'astro';
@@ -301,7 +301,7 @@ Full list: [razorpay.com/docs/payments/payments/test-card-details](https://razor
 - [ ] Start the dev server in any app that mounts `<Pricing />`
   (e.g. home-app):
   ```bash
-  cd c:/D/oriz/projects/oriz-org/own/products/apps/hub/home-app && pnpm dev
+  cd c:/D/oriz/projects/oriz/own/prod/apps/hub/home-app && pnpm dev
   ```
   Default Astro port is `4321`.
 

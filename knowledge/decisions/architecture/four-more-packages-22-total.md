@@ -114,7 +114,7 @@ For each new package:
 1. `gh repo create chirag127/<slug>-npm-pkg --public --license MIT --description "..."`
 2. Scaffold per `oriz-app-template` for packages (or hand-scaffold)
 3. Initial v0.1.0 stub publish to npm (reserve the slug)
-4. Add as submodule under `projects/oriz-org/own/libraries/npm-packages/`
+4. Add as submodule under `projects/oriz/own/lib/npm/`
 5. Real implementation in v0.2.0 once consumed by a real app
 
 ## Cross-refs

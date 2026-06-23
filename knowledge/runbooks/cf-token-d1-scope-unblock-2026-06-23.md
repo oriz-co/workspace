@@ -39,7 +39,7 @@ KV creation works (we already created `oriz-flags-kv` = `88abdc6dd41e4ec18b12802
 ## After fix — run these (5 minutes, automated)
 
 ```bash
-cd c:/D/oriz/projects/oriz-org/own/services/workers/oriz-flags-worker
+cd c:/D/oriz/projects/oriz/own/svc/workers/oriz-flags-worker
 export CLOUDFLARE_API_TOKEN=$(grep "^CLOUDFLARE_API_TOKEN=" /c/D/oriz/.env | cut -d= -f2)
 
 # 1. Create D1 database

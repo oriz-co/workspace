@@ -16,7 +16,7 @@ related:
 
 ## Domains
 
-`me.oriz.in` AND `cs.oriz.in` — both DNS-aliased to the same site (`projects/chirag127/own/products/apps/personal/cs-me-app/`). Two URLs, one app, identical content. `me.oriz.in` is the canonical; `cs.oriz.in` is the personal-initials variant.
+`me.oriz.in` AND `cs.oriz.in` — both DNS-aliased to the same site (`projects/c127/own/prod/apps/personal/cs-me-app/`). Two URLs, one app, identical content. `me.oriz.in` is the canonical; `cs.oriz.in` is the personal-initials variant.
 
 ## What lives here
 
@@ -45,4 +45,4 @@ This is the "everything about me, in one place" site. When in doubt about whethe
 
 - The single-site-not-split lock → [[decisions/architecture/oriz-me-single-site-not-split]]
 - home-app links here as section 5 of the grid → [[decisions/architecture/home-app-shape]]
-- Per-app knowledge bundle for this app (richest in the family) → `projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`
+- Per-app knowledge bundle for this app (richest in the family) → `projects/c127/own/prod/apps/personal/cs-me-app/knowledge/`

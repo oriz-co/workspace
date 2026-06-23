@@ -19,7 +19,7 @@ related:
 
 On 2026-06-19, `oriz-me` was added to the master `chirag127/oriz`
 repo as the 11th site, mounted as a git submodule at
-`projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/`. It hosts at `me.oriz.in` and serves as Chirag's
+`projects/oriz/own/prod/apps/personal/oriz-cs-me-app/`. It hosts at `me.oriz.in` and serves as Chirag's
 personal digital-twin / lifestream — career, code, books, music,
 numeric-only journal aggregates per [journal-stays-auth-gated](../content/journal-stays-auth-gated.md).
 
@@ -39,7 +39,7 @@ single mental model covers everything.
 - `me.oriz.in` deploys to Cloudflare Pages free; static GitHub Pages mirror at `chirag127.github.io/oriz-me-site` (per the 100-year strategy §16).
 - `oriz-me` carries a separate canonical-store concept: the `chirag127/oriz-me-data` git repo (JSONL year-files), distinct from any other site.
 - `oriz-me` brings the locked 100-year strategy doc into the family. The doc's 16 points cascade into family-wide decisions where they apply (e.g. GitHub Pages mirror everywhere).
-- The site has its own v2 design brief at `knowledge/design/oriz-me.md` and its own per-app `knowledge/` bundle inside the submodule at `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/`.
+- The site has its own v2 design brief at `knowledge/design/oriz-me.md` and its own per-app `knowledge/` bundle inside the submodule at `projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/`.
 - `me.oriz.in` does NOT publish journal entries — entries live at `journal.oriz.in` (separate site). Journal numeric aggregates surface on `me.oriz.in/me`.
 
 ## Cross-refs

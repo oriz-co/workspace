@@ -19,7 +19,7 @@ related:
 
 Every chirag127/oriz* repo is **MIT licensed** as of 2026-06-21.
 
-Scope: 17 npm packages (`projects/oriz-org/own/libraries/npm-packages/*-npm-pkg`) + 26 apps (`projects/oriz-org/own/products/apps/*/*/`) + 2 APIs (`projects/oriz-org/own/services/apis/*`) + any future submodule. The master umbrella (`chirag127/workspace`) is also MIT.
+Scope: 17 npm packages (`projects/oriz/own/lib/npm/*-npm-pkg`) + 26 apps (`projects/oriz/own/prod/apps/*/*/`) + 2 APIs (`projects/oriz/own/svc/api/*`) + any future submodule. The master umbrella (`chirag127/workspace`) is also MIT.
 
 ## Why
 

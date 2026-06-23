@@ -1,7 +1,7 @@
 ---
 type: decision
 title: "Workspace layout: projects/<owner>/<own|forks>/<bucket>/<category>/<repo>"
-description: "The workspace umbrella organizes submodules in a 5-level hierarchy: GitHub owner (oriz-org or chirag127) → own/ vs forks/ → 4 artifact-type buckets (products, services, libraries, content) → category folder → repo. Shape B grouping (4 buckets) chosen over flat. Forks live under their owner. py-pkg-cli/ renamed to clis/."
+description: "The workspace umbrella organizes submodules in a 5-level hierarchy: GitHub owner (oriz/ for oriz-org or c127/ for chirag127) → own/ vs forks/ → 4 artifact-type buckets (prod, svc, lib, content) → category folder → repo. Shape B grouping (4 buckets) chosen over flat. Forks live under their owner. Folder names shortened 2026-06-24 (prod/svc/lib/api/npm/mcp/bs-ext/ide-ext) for shorter paths."
 tags: [layout, monorepo, submodules, workspace, hierarchy, branding]
 timestamp: 2026-06-24
 format_version: okf-v0.1
@@ -19,7 +19,7 @@ related:
 
 ## Decision
 
-The `oriz-org/workspace` umbrella organizes all 74+ submodules in a
+The `oriz-org/workspace` umbrella organizes all 74 submodules in a
 5-level path hierarchy. Top level partitions by **GitHub owner**, so
 `oriz-org/*` repos and `chirag127/*` repos sit side-by-side on disk.
 Second level partitions `own/` (we authored) from `forks/` (we
@@ -27,38 +27,58 @@ forked). Third level groups by **artifact type** (Shape B, 4 buckets).
 Fourth level is the existing **category folder**. Fifth is the
 **repo slug** itself.
 
+Folder names use short forms (decided 2026-06-24 to keep paths
+typeable):
+
+| Folder | Short | What |
+|---|---|---|
+| `chirag127/` | `c127/` | Personal account owner |
+| `oriz-org/` | `oriz/` | Brand org owner |
+| `products/` | `prod/` | User-facing artifacts |
+| `services/` | `svc/` | Server-side runtimes |
+| `libraries/` | `lib/` | Reusable published code |
+| `browser-extensions/` | `bs-ext/` | Browser extensions |
+| `ide-extensions/` | `ide-ext/` | VS Code / IDE extensions |
+| `mcp-servers/` | `mcp/` | MCP servers |
+| `npm-packages/` | `npm/` | npm packages |
+| `apis/` | `api/` | HTTP APIs |
+| `content/`, `apps/`, `books/`, `data/`, `rules/`, `skills/`, `clis/`, `workers/`, `forks/`, `own/`, `hub/`, `tools/`, `personal/` | unchanged | Already short enough |
+
 ```
 projects/
-├── oriz-org/                              ← owner
-│   ├── own/                               ← we authored
-│   │   ├── products/                      ← user-facing things we ship
-│   │   │   ├── apps/                      ← Astro / SvelteKit / etc. sites
-│   │   │   │   ├── content/<repo>/        ← (existing sub-bucket inside apps)
+├── oriz/                              ← owner (oriz-org on GitHub)
+│   ├── own/                           ← we authored
+│   │   ├── prod/                      ← products: user-facing artifacts
+│   │   │   ├── apps/                  ← Astro / SvelteKit / etc. sites
+│   │   │   │   ├── content/<repo>/    ← (existing sub-bucket inside apps)
 │   │   │   │   ├── hub/<repo>/
 │   │   │   │   ├── personal/<repo>/
 │   │   │   │   └── tools/<repo>/
-│   │   │   ├── browser-extensions/<repo>/
-│   │   │   ├── ide-extensions/<repo>/
-│   │   │   └── clis/<repo>/               ← renamed from py-pkg-cli/
-│   │   ├── services/                      ← server-side runtimes
-│   │   │   ├── apis/<repo>/
-│   │   │   ├── workers/<repo>/
-│   │   │   └── mcp-servers/<repo>/
-│   │   ├── libraries/                     ← reusable code we publish
-│   │   │   └── npm-packages/<repo>/
-│   │   └── content/                       ← non-runnable assets
+│   │   │   ├── bs-ext/<repo>/         ← browser extensions
+│   │   │   ├── ide-ext/<repo>/        ← VS Code / IDE extensions
+│   │   │   └── clis/<repo>/           ← renamed from py-pkg-cli/
+│   │   ├── svc/                       ← services: server-side runtimes
+│   │   │   ├── api/<repo>/            ← HTTP APIs (CF Workers)
+│   │   │   ├── workers/<repo>/        ← non-API workers
+│   │   │   └── mcp/<repo>/            ← MCP servers
+│   │   ├── lib/                       ← libraries: reusable published code
+│   │   │   └── npm/<repo>/            ← npm packages
+│   │   └── content/                   ← non-runnable assets
 │   │       ├── books/<repo>/
 │   │       ├── rules/<repo>/
 │   │       ├── skills/<repo>/
 │   │       └── data/<repo>/
-│   └── forks/                             ← forks under oriz-org (maintained for oriz.in)
-│       └── {products,services,libraries,content}/<category>/<repo>/
-└── chirag127/                             ← owner: personal account
-    ├── own/                               ← personal projects (cs-me-app, agents-md, etc.)
-    │   └── {products,services,libraries,content}/<category>/<repo>/
-    └── forks/                             ← drive-by forks (most forks land here)
-        └── {products,services,libraries,content}/<category>/<repo>/
+│   └── forks/                         ← forks maintained for the brand
+│       └── {prod,svc,lib,content}/<category>/<repo>/
+└── c127/                              ← owner: chirag127 personal account
+    ├── own/                           ← personal projects (cs-me-app, etc.)
+    │   └── {prod,svc,lib,content}/<category>/<repo>/
+    └── forks/                         ← drive-by forks (most forks land here)
+        └── {prod,svc,lib,content}/<category>/<repo>/
 ```
+
+Concrete example: the `cs-me-app` submodule lives at
+`projects/c127/own/prod/apps/personal/cs-me-app/`.
 
 ## Why two top-level owner folders
 
@@ -97,11 +117,11 @@ of `forks/`.
 
 ## Renames in this migration
 
-- `projects/py-pkg-cli/` → `projects/oriz-org/own/products/clis/`
+- `projects/py-pkg-cli/` → `projects/oriz/own/prod/clis/`
   (`py-pkg-cli/` was empty; the name conflated language + format +
   role; pluralised to match other category folders)
-- `projects/forks/` → `projects/oriz-org/forks/` (existing forks
-  under oriz-org) and `projects/chirag127/forks/` (drive-bys go here
+- `projects/forks/` → `projects/oriz/forks/` (existing forks
+  under oriz-org) and `projects/c127/forks/` (drive-bys go here
   going forward)
 
 ## What this replaces

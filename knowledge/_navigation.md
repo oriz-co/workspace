@@ -24,7 +24,7 @@ status: active
 | Family-specific term definitions | [`glossary/`](./glossary/) |
 | Multi-engine "Search the web" button — every site ships one (in `@chirag127/oriz-kit` as `<MultiSearch />`) | [`decisions/architecture/multi-engine-search-button.md`](./decisions/architecture/multi-engine-search-button.md) |
 | Repo naming — sites are `<subdomain-prefix>-site`; extensions `-ext`, VS Code extensions `-vsc-ext`, CLIs `-cli`, MCP servers `-mcp`, Workers `-worker`, Cloud Functions `-fn`, data repos `-data`, agent skills `-skill`, rule bundles `-rules`. NPM packages stay clean (no suffix). | [`decisions/branding/repo-naming-suffixes.md`](./decisions/branding/repo-naming-suffixes.md) |
-| Workspace layout — `projects/<owner>/<own\|forks>/<bucket>/<category>/<repo>/` 5-level hierarchy. Owner is `oriz-org/` or `chirag127/`. Buckets are products / services / libraries / content. | [`decisions/architecture/projects-owner-own-forks-layout.md`](./decisions/architecture/projects-owner-own-forks-layout.md) |
+| Workspace layout — `projects/<owner>/<own\|forks>/<bucket>/<category>/<repo>/` 5-level hierarchy. Owner is `oriz/` (oriz-org) or `c127/` (chirag127). Buckets are `prod` / `svc` / `lib` / `content`. Folder names shortened 2026-06-24 (bs-ext, ide-ext, mcp, npm, api). | [`decisions/architecture/projects-owner-own-forks-layout.md`](./decisions/architecture/projects-owner-own-forks-layout.md) |
 | Org rename oriz-co → oriz-org (2026-06-24) — GitHub auto-redirects; supersedes the 2026-06-22 migrate-to-oriz-org runbook | [`decisions/branding/oriz-org-rename-from-co.md`](./decisions/branding/oriz-org-rename-from-co.md) |
 | cs-me-app moved from oriz-org → chirag127 (personal, puter.js auth, no brand auth) | [`decisions/branding/cs-me-app-moved-to-chirag127.md`](./decisions/branding/cs-me-app-moved-to-chirag127.md) |
 | Recruiter strategy — pinned repos + contribution graph carry the signal; repo list is a tiebreaker | [`rules/recruiter-strategy.md`](./rules/recruiter-strategy.md) |
@@ -47,7 +47,7 @@ status: active
 | Telegram is banned in India — drafts via GH Issues; no Telegram bots | [`rules/no-telegram-india-banned.md`](./rules/no-telegram-india-banned.md) |
 | No PAID self-hosting — free providers (Supabase / Render / Fly / Oracle Always-Free / etc.) are FINE | [`rules/no-paid-self-hosting-only.md`](./rules/no-paid-self-hosting-only.md) |
 | No Firebase Cloud Functions (Blaze required, card on file banned) | [`rules/no-firebase-functions-blaze.md`](./rules/no-firebase-functions-blaze.md) |
-| Fork discipline — minimum-diff, rebase-friendly, `projects/oriz-org/forks/<upstream-name>/` | [`rules/fork-discipline.md`](./rules/fork-discipline.md) |
+| Fork discipline — minimum-diff, rebase-friendly, `projects/<owner>/forks/<upstream-name>/` (owner = `oriz/` for brand-maintained, `c127/` for drive-by) | [`rules/fork-discipline.md`](./rules/fork-discipline.md) |
 | CF Pages branch-deploys (100-project mitigation) | [`runbooks/cf-pages-branch-deploys.md`](./runbooks/cf-pages-branch-deploys.md) |
 | Family inventory (canonical counts SSoT) — 27 apps + 23 npm packages + 5 books + 15 APIs + 74 submodules | [`services/family-inventory.md`](./services/family-inventory.md) |
 
@@ -56,7 +56,7 @@ status: active
 Per-app knowledge lives INSIDE each app submodule under its own
 `knowledge/` folder (OKF-light: `index.md` + `decisions/` + `runbooks/` +
 `services/`). The richest example is
-[`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`](../projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/)
+[`projects/c127/own/prod/apps/personal/cs-me-app/knowledge/`](../projects/c127/own/prod/apps/personal/cs-me-app/knowledge/)
 — lifestream architecture, age-gating, ingester contract, 100-year
 strategy. Each per-app bundle follows the same OKF contract
 ([`_okf.md`](./_okf.md)). Master `knowledge/` holds family-wide rules /

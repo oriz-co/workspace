@@ -18,7 +18,7 @@ declare -A TOPICS=(
   [auth-cli]="auth cli node device-flow"
 )
 for name in "${NAMES[@]}"; do
-  dir="c:/D/oriz/projects/oriz-org/own/libraries/npm-packages/${name}-npm-pkg"
+  dir="c:/D/oriz/projects/oriz/own/lib/npm/${name}-npm-pkg"
   [[ ! -f "$dir/package.json" ]] && { echo "skip $name"; continue; }
   desc=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$dir/package.json','utf8')).description)")
   echo "=== $name ==="

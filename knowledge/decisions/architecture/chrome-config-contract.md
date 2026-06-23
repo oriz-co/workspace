@@ -172,7 +172,7 @@ require a chrome version bump + family-wide `pnpm update --recursive`.
 
 `pnpm-workspace.yaml` lives at the existing `chirag127/workspace`
 umbrella root. Workspace members:
-- `projects/oriz-org/own/libraries/npm-packages/*` (8 astro-* packages)
+- `projects/oriz/own/lib/npm/*` (8 astro-* packages)
 - `projects/websites/*` (9 single-name sites)
 - `projects/websites/tools/*` (15 tool sites)
 

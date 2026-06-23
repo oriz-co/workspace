@@ -25,7 +25,7 @@ lifestream events reads through this schema.
 ## How it works
 
 The canonical event row carries the following columns. Field-level
-detail and indexes belong in the per-app `knowledge/` bundle inside the cs-me-app submodule (`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`) — this file
+detail and indexes belong in the per-app `knowledge/` bundle inside the cs-me-app submodule (`projects/c127/own/prod/apps/personal/cs-me-app/knowledge/`) — this file
 captures the family-wide contract.
 
 | Column | Type | Purpose |

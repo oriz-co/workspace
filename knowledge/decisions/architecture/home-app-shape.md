@@ -17,7 +17,7 @@ related:
 
 ## The decision
 
-`oriz.in` (the home-app at `projects/oriz-org/own/products/apps/hub/home-app/`) is a **marketing landing page**: single hero + 5-section grid. Minimal copy. Optimised for first impression.
+`oriz.in` (the home-app at `projects/oriz/own/prod/apps/hub/home-app/`) is a **marketing landing page**: single hero + 5-section grid. Minimal copy. Optimised for first impression.
 
 ## The 5 sections (grid cards)
 

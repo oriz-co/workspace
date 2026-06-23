@@ -3,9 +3,9 @@
 **Scope:** Read-only audit. No records were modified.
 **Source of truth:**
 - Live DNS via Cloudflare API (`/zones/{id}/dns_records`), zone `oriz.in` = `fe8da3c9dd0cb1f1d964e3a94d6098b3`.
-- API submodule CNAMEs at `projects/oriz-org/own/services/apis/*/CNAME` (19 files, GH Pages targets).
-- `FAMILY_APPS`, `FAMILY_APIS` in `projects/oriz-org/own/libraries/npm-packages/astro-shell-npm-pkg/src/family-data.ts`.
-- App Pages-project names from `projects/oriz-org/own/products/apps/**/wrangler.toml`.
+- API submodule CNAMEs at `projects/oriz/own/svc/api/*/CNAME` (19 files, GH Pages targets).
+- `FAMILY_APPS`, `FAMILY_APIS` in `projects/oriz/own/lib/npm/astro-shell-npm-pkg/src/family-data.ts`.
+- App Pages-project names from `projects/oriz/own/prod/apps/**/wrangler.toml`.
 
 **Method:** Pulled live CF DNS records, joined against (a) the 19 `apis/*/CNAME` files, (b) `FAMILY_APPS` canonical URLs, (c) `FAMILY_APIS` canonical URLs, and (d) Pages project names declared in `wrangler.toml`. Anything in DNS that does not appear in any of those four lists is flagged "orphan candidate" — meaning **investigate before deletion**, not "delete now".
 
@@ -17,7 +17,7 @@
 |---|---|
 | Live DNS records (all types) | 73 |
 | `*.api.oriz.in` CNAMEs in DNS | 19 |
-| API CNAME files in `projects/oriz-org/own/services/apis/*/CNAME` | 19 |
+| API CNAME files in `projects/oriz/own/svc/api/*/CNAME` | 19 |
 | API DNS records that match a CNAME file | 19 (100% covered) |
 | API CNAME files with no matching DNS record | 0 |
 | App-level (non-`api`) CNAMEs in DNS | 31 |
@@ -32,31 +32,31 @@
 
 ## 1. `*.api.oriz.in` CNAMEs — full coverage (no orphans, no missing)
 
-All 19 live API CNAMEs point to `chirag127.github.io` and have a matching `projects/oriz-org/own/services/apis/<slug>/CNAME` file. This is the expected GH-Pages JSON-API rail.
+All 19 live API CNAMEs point to `chirag127.github.io` and have a matching `projects/oriz/own/svc/api/<slug>/CNAME` file. This is the expected GH-Pages JSON-API rail.
 
 | DNS hostname | DNS target | Matching CNAME file | Status |
 |---|---|---|---|
-| `aqi.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-aqi-cities-api/CNAME` | OK |
-| `aqi-india.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-air-quality-india-api/CNAME` | OK |
-| `budget.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-india-budget-numbers-api/CNAME` | OK |
-| `currency.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-currency-rates-api/CNAME` | OK |
-| `exams.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-india-exam-portal-status-api/CNAME` | OK |
-| `fii-dii.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-flow-fii-dii-activity-api/CNAME` | OK |
-| `fuel.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-india-petrol-diesel-api/CNAME` | OK |
-| `gold-silver.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-gold-silver-rates-api/CNAME` | OK |
-| `holidays.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-india-holidays-api/CNAME` | OK |
-| `ifsc.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-ifsc-api/CNAME` | OK |
-| `irctc.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-irctc-train-pnr-api/CNAME` | OK |
-| `judgments.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-india-court-judgments-api/CNAME` | OK |
-| `mf-nav.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-mf-nav-api/CNAME` | OK |
-| `mmi.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-mmi-tickertape-mmi-api/CNAME` | OK |
-| `pincode.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-pincode-api/CNAME` | OK |
-| `rbi-rates.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-rbi-rates-api/CNAME` | OK |
-| `rti.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-india-rti-api/CNAME` | OK |
-| `so-trending.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-stackoverflow-trending-api/CNAME` | OK |
-| `tickers.api.oriz.in` | `chirag127.github.io` | `projects/oriz-org/own/services/apis/oriz-nse-bse-tickers-api/CNAME` | OK |
+| `aqi.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-aqi-cities-api/CNAME` | OK |
+| `aqi-india.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-air-quality-india-api/CNAME` | OK |
+| `budget.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-india-budget-numbers-api/CNAME` | OK |
+| `currency.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-currency-rates-api/CNAME` | OK |
+| `exams.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-india-exam-portal-status-api/CNAME` | OK |
+| `fii-dii.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-flow-fii-dii-activity-api/CNAME` | OK |
+| `fuel.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-india-petrol-diesel-api/CNAME` | OK |
+| `gold-silver.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-gold-silver-rates-api/CNAME` | OK |
+| `holidays.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-india-holidays-api/CNAME` | OK |
+| `ifsc.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-ifsc-api/CNAME` | OK |
+| `irctc.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-irctc-train-pnr-api/CNAME` | OK |
+| `judgments.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-india-court-judgments-api/CNAME` | OK |
+| `mf-nav.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-mf-nav-api/CNAME` | OK |
+| `mmi.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-mmi-tickertape-mmi-api/CNAME` | OK |
+| `pincode.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-pincode-api/CNAME` | OK |
+| `rbi-rates.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-rbi-rates-api/CNAME` | OK |
+| `rti.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-india-rti-api/CNAME` | OK |
+| `so-trending.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-stackoverflow-trending-api/CNAME` | OK |
+| `tickers.api.oriz.in` | `chirag127.github.io` | `projects/oriz/own/svc/api/oriz-nse-bse-tickers-api/CNAME` | OK |
 
-**Note — `FAMILY_APIS` mismatch:** `family-data.ts` declares 14 APIs whose canonical hostnames do **not** match the 19 live API subdomains. The live rail follows the `projects/oriz-org/own/services/apis/*/CNAME` files (e.g. `fii-dii`, `mf-nav`, `rbi-rates`). `FAMILY_APIS` references aspirational names (`sip-emi`, `tax-india`, `gst`, `bmi`, `qr.api`, `shorten`, `convert.api`, `timezones`, plus the only two it gets right: `fii-dii.api.oriz.in` and `janaushdhi.api.oriz.in` — but `janaushdhi.api.oriz.in` is **not in DNS**). This is a registry-vs-reality drift; fix is out of scope for this audit.
+**Note — `FAMILY_APIS` mismatch:** `family-data.ts` declares 14 APIs whose canonical hostnames do **not** match the 19 live API subdomains. The live rail follows the `projects/oriz/own/svc/api/*/CNAME` files (e.g. `fii-dii`, `mf-nav`, `rbi-rates`). `FAMILY_APIS` references aspirational names (`sip-emi`, `tax-india`, `gst`, `bmi`, `qr.api`, `shorten`, `convert.api`, `timezones`, plus the only two it gets right: `fii-dii.api.oriz.in` and `janaushdhi.api.oriz.in` — but `janaushdhi.api.oriz.in` is **not in DNS**). This is a registry-vs-reality drift; fix is out of scope for this audit.
 
 ---
 
@@ -190,4 +190,4 @@ The `image.oriz.in` row is the most actionable: registry says "live" but DNS sho
 
 - DNS data: Cloudflare API live pull at audit time, paged through `dns_records?per_page=100`.
 - Token loaded from `c:/D/oriz/.env` `CLOUDFLARE_API_TOKEN`. No records were created, modified, or deleted.
-- 73 total records read. Mapping logic matched (host, target) tuples against (a) `projects/oriz-org/own/services/apis/*/CNAME` literal content, (b) `FAMILY_APPS[].url` host, (c) `FAMILY_APIS[].url` host.
+- 73 total records read. Mapping logic matched (host, target) tuples against (a) `projects/oriz/own/svc/api/*/CNAME` literal content, (b) `FAMILY_APPS[].url` host, (c) `FAMILY_APIS[].url` host.

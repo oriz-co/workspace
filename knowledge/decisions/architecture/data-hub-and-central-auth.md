@@ -17,7 +17,7 @@ related:
 
 ## data.oriz.in aggregator
 
-NEW app `oriz-data-aggregator-app` at `c:/D/oriz/projects/oriz-org/own/products/apps/content/oriz-data-aggregator-app/`. Hosted on Cloudflare Pages (one-level subdomain — Universal SSL works).
+NEW app `oriz-data-aggregator-app` at `c:/D/oriz/projects/oriz/own/prod/apps/content/oriz-data-aggregator-app/`. Hosted on Cloudflare Pages (one-level subdomain — Universal SSL works).
 
 ### Scope
 
@@ -59,7 +59,7 @@ NEW app `oriz-data-aggregator-app` at `c:/D/oriz/projects/oriz-org/own/products/
 
 ### Implementation
 
-`@chirag127/auth-core` package gains a `<SignInButton />` component that always redirects to `https://auth.oriz.in/sign-in?return=<current-url>`. The `oriz-auth-app` (NEW; at `projects/oriz-org/own/products/apps/hub/oriz-auth-app/`) hosts the sign-in UI itself, mounted at `auth.oriz.in`.
+`@chirag127/auth-core` package gains a `<SignInButton />` component that always redirects to `https://auth.oriz.in/sign-in?return=<current-url>`. The `oriz-auth-app` (NEW; at `projects/oriz/own/prod/apps/hub/oriz-auth-app/`) hosts the sign-in UI itself, mounted at `auth.oriz.in`.
 
 ## Phone Auth gating
 

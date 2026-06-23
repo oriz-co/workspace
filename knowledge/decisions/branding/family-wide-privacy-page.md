@@ -79,7 +79,7 @@ covers it.
   site / extension / worker references it; missing page = broken
   links across the family.
 - **Source of truth** lives in
-  `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/src/content/legal/privacy.md` (apex site
+  `projects/oriz/own/prod/apps/personal/oriz-cs-me-app/src/content/legal/privacy.md` (apex site
   hosts oriz.in per
   [`decisions/branding/oriz-me-added-to-family.md`](./oriz-me-added-to-family.md)).
 - **Per-surface addendum template** lives in

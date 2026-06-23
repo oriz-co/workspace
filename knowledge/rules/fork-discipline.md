@@ -31,8 +31,8 @@ Drive-by forks (one-line PR forks, personal experiments, archived
 exploration) → **`chirag127/<upstream-name>`**.
 
 The on-disk submodule path mirrors the owner:
-- Brand: `projects/oriz-org/forks/<upstream-name>/`
-- Personal: `projects/chirag127/forks/<upstream-name>/`
+- Brand: `projects/oriz/forks/<upstream-name>/`
+- Personal: `projects/c127/forks/<upstream-name>/`
 
 ## Layout
 
@@ -54,7 +54,7 @@ ALL changes must be minimum-diff with upstream:
 
 ## Per-fork knowledge folder
 
-Every fork has `projects/oriz-org/forks/<name>/knowledge/`:
+Every fork has `projects/oriz/forks/<name>/knowledge/`:
 
 - `index.md` — what we changed + why
 - `rebase.md` — how to pull upstream updates (commands + conflict-resolution notes)
@@ -78,7 +78,7 @@ a rebase PR if anything new lands.
 
 GH API `GET /repos/<owner>/<name>` returns `fork: true` + `parent.full_name`.
 A monthly audit job sweeps every repo in the family, flags mis-categorized
-forks (e.g. a repo marked `fork: true` but not under `projects/oriz-org/forks/`),
+forks (e.g. a repo marked `fork: true` but not under `projects/oriz/forks/`),
 and opens an issue.
 
 ## Cross-refs

@@ -24,7 +24,7 @@ learning from the patterns is permitted; using the code is not.
 For licensing inquiries, contact the author at chirag@oriz.in.'
 
 for name in astro-pwa astro-distribute astro-widgets; do
-  dir="$ROOT/projects/oriz-org/own/libraries/npm-packages/${name}-npm-pkg"
+  dir="$ROOT/projects/oriz/own/lib/npm/${name}-npm-pkg"
   desc="${DESC[$name]}"
   echo "=== ${name} ==="
 

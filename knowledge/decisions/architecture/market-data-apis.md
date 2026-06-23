@@ -37,7 +37,7 @@ Each gets its own 100K req/day free envelope per [cf-worker-quota-mitigation](./
 
 ## Implications
 
-- 2 new submodules under `projects/oriz-org/own/services/apis/` — already wired into `.gitmodules`.
+- 2 new submodules under `projects/oriz/own/svc/api/` — already wired into `.gitmodules`.
 - DNS: 2 new CNAME records under `oriz.in` zone pointing at `*.workers.dev` — set via Cloudflare API on first deploy (handled by `wrangler deploy --custom-domain`).
 - Both Workers fit the [easy-free-tier catalog](../../services/easy-free-tier.md) — CF Workers free 100K req/day + KV 1K writes/day + 100K reads/day per namespace, no card on file.
 - Upstream resilience: FII/DII has NSE → Moneycontrol fallback in-Worker; MMI is single-upstream (Tickertape) — if Tickertape drops, we serve stale-while-error from KV until manual intervention.

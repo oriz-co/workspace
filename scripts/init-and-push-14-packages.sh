@@ -12,7 +12,7 @@ ROOT="C:/D/oriz"
 NAMES=(astro-distribute astro-pwa astro-content astro-billing astro-search astro-mdx astro-toc astro-comments astro-share astro-newsletter astro-affiliate astro-keyboard astro-feedback astro-test-utils)
 
 for name in "${NAMES[@]}"; do
-  dir="$ROOT/projects/oriz-org/own/libraries/npm-packages/${name}-npm-pkg"
+  dir="$ROOT/projects/oriz/own/lib/npm/${name}-npm-pkg"
   echo "=== $name ==="
   (
     cd "$dir" || exit 1

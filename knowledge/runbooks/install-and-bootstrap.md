@@ -74,10 +74,10 @@ pnpm install -r
 
 `pnpm-workspace.yaml` already includes glob patterns for every category dir, so a new submodule auto-joins the workspace if it sits in one of these:
 
-- `projects/oriz-org/own/libraries/npm-packages/*`
-- `projects/oriz-org/own/products/apps/hub/*`, `apps/personal/*`, `apps/content/*`, `apps/tools/*`
-- `projects/oriz-org/own/services/apis/*`
-- `projects/oriz-org/own/products/browser-extensions/*`, `ide-extensions/*`, `mcp-servers/*`, `skills/*`
+- `projects/oriz/own/lib/npm/*`
+- `projects/oriz/own/prod/apps/hub/*`, `apps/personal/*`, `apps/content/*`, `apps/tools/*`
+- `projects/oriz/own/svc/api/*`
+- `projects/oriz/own/prod/bs-ext/*`, `ide-extensions/*`, `mcp-servers/*`, `skills/*`
 
 If you add a new category, also update [`pnpm-workspace.yaml`](../../pnpm-workspace.yaml).
 

@@ -29,7 +29,7 @@ Every public landing page in the family gets the CFWA beacon. ONE site_tag cover
 | npm package landing pages on GH Pages | YES | HTML pages where the user lands when clicking a package link |
 | Books on GH Pages | YES | HTML landing page |
 | Skills (private repos) | NO | No public landing |
-| Forks (under projects/oriz-org/forks/) | NO | Not user-facing |
+| Forks (under projects/oriz/forks/) | NO | Not user-facing |
 
 ## Implementation
 

@@ -37,7 +37,7 @@ Three pressures converged:
 - `_okf.md` is updated to document the new max-depth rule and the "when to nest" criteria (a) flat list >15 files AND (b) categorisation genuinely helps navigation.
 - Cross-link references that used `services/firebase-spark.md` now resolve to `services/auth/firebase-spark.md`. All in-bundle links updated in the same edit; the [self-update rule](../../rules/self-update-rule.md) carries the obligation.
 - New service / decision / glossary files MUST land in the appropriate subdir, not at the root.
-- Per-app `knowledge/` bundles (e.g. `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/`, inside each submodule) MAY adopt 4-level once they hit the same threshold. Until then, they stay flat.
+- Per-app `knowledge/` bundles (e.g. `projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/`, inside each submodule) MAY adopt 4-level once they hit the same threshold. Until then, they stay flat.
 - Adding a new role to `services/` is a new subdirectory + index.md + concept files; the top-level [services/index.md](../../services/index.md) gets a new row in the subdirectories table.
 
 ## Cross-refs

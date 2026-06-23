@@ -86,7 +86,7 @@ For now: **all 5 locked books are brand-first.**
 
 ## Slug suffix
 
-Repo slug: `chirag127/<slug>-book` (matches family `<role>-suffix` convention per [`repo-naming-suffixes`](../branding/repo-naming-suffixes.md)). On-disk path: `projects/oriz-org/own/content/books/<slug>-book/`.
+Repo slug: `chirag127/<slug>-book` (matches family `<role>-suffix` convention per [`repo-naming-suffixes`](../branding/repo-naming-suffixes.md)). On-disk path: `projects/oriz/own/content/books/<slug>-book/`.
 
 ## Pricing
 
@@ -109,7 +109,7 @@ PWYW handled by Gumroad's "pay what you want" toggle + LemonSqueezy custom prici
 - **Audience**: indie developers, hobbyist OSS authors, "$0/mo SaaS" builders
 - **Pricing**: $19 base / $39 Pro
 - **Channels**: Leanpub + Gumroad + LemonSqueezy + KDP + Google Play Books
-- **Repo**: `chirag127/oriz-stack-book` → `projects/oriz-org/own/content/books/oriz-stack-book/`
+- **Repo**: `chirag127/oriz-stack-book` → `projects/oriz/own/content/books/oriz-stack-book/`
 
 ### 2. Oriz Paisa: Credit Cards India 2026
 
@@ -117,7 +117,7 @@ PWYW handled by Gumroad's "pay what you want" toggle + LemonSqueezy custom prici
 - **Audience**: Indian consumers
 - **Pricing**: ₹499 base / ₹999 Pro (includes spreadsheet templates + monthly card-rec email)
 - **Channels**: KDP (primary — Amazon India dominant) + Gumroad (UPI support) + D2D (international Indian-diaspora via B&N/Kobo/Apple) + Google Play Books (large in India)
-- **Repo**: `chirag127/oriz-paisa-book` → `projects/oriz-org/own/content/books/oriz-paisa-book/`
+- **Repo**: `chirag127/oriz-paisa-book` → `projects/oriz/own/content/books/oriz-paisa-book/`
 
 ### 3. Oriz PDF: From Browser to Native
 
@@ -125,7 +125,7 @@ PWYW handled by Gumroad's "pay what you want" toggle + LemonSqueezy custom prici
 - **Audience**: developers shipping their first PWA-as-native
 - **Pricing**: $14 (single-tier; deliberately cheaper than Oriz Stack — narrower scope)
 - **Channels**: Leanpub + Gumroad + LemonSqueezy + KDP
-- **Repo**: `chirag127/oriz-pdf-book` → `projects/oriz-org/own/content/books/oriz-pdf-book/`
+- **Repo**: `chirag127/oriz-pdf-book` → `projects/oriz/own/content/books/oriz-pdf-book/`
 
 ### 4. Oriz Janaushdhi: Generic Medicines India
 
@@ -133,7 +133,7 @@ PWYW handled by Gumroad's "pay what you want" toggle + LemonSqueezy custom prici
 - **Audience**: Indian patients / caregivers, particularly Tier-2/3 cities
 - **Pricing**: ₹299 single-tier (deliberately cheap — public-health utility)
 - **Channels**: KDP (Amazon India) + Gumroad (UPI) + Google Play Books
-- **Repo**: `chirag127/oriz-janaushdhi-book` → `projects/oriz-org/own/content/books/oriz-janaushdhi-book/`
+- **Repo**: `chirag127/oriz-janaushdhi-book` → `projects/oriz/own/content/books/oriz-janaushdhi-book/`
 
 ### 5. Oriz Me: 100-Year Strategy
 
@@ -141,7 +141,7 @@ PWYW handled by Gumroad's "pay what you want" toggle + LemonSqueezy custom prici
 - **Audience**: longform-essay readers, lifestream-curious devs, friends + family
 - **Pricing**: $9 PWYW from $0 floor (free if requested; suggested $9)
 - **Channels**: Gumroad + LemonSqueezy + Leanpub + Substack (manual mirror — Substack has no automated publish API for paid posts)
-- **Repo**: `chirag127/oriz-me-book` → `projects/oriz-org/own/content/books/oriz-me-book/`
+- **Repo**: `chirag127/oriz-me-book` → `projects/oriz/own/content/books/oriz-me-book/`
 
 ## License
 

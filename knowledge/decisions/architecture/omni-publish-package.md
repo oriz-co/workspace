@@ -20,9 +20,9 @@ A new npm package `@chirag127/omni-publish` (v0.1.0 published 2026-06-21) handle
 
 - npm: <https://www.npmjs.com/package/@chirag127/omni-publish>
 - GitHub: <https://github.com/chirag127/omni-publish-npm-pkg>
-- Disk: `c:/D/oriz/projects/oriz-org/own/libraries/npm-packages/omni-publish-npm-pkg/`
+- Disk: `c:/D/oriz/projects/oriz/own/lib/npm/omni-publish-npm-pkg/`
 
-The existing `oriz-omni-post-app` (`projects/oriz-org/own/products/apps/content/oriz-omni-post-app/`) stays — it's the orchestrator + UI + catalog of past cross-posts. The new package is the **engine** that the app (and any GitHub Actions workflow) calls.
+The existing `oriz-omni-post-app` (`projects/oriz/own/prod/apps/content/oriz-omni-post-app/`) stays — it's the orchestrator + UI + catalog of past cross-posts. The new package is the **engine** that the app (and any GitHub Actions workflow) calls.
 
 ## Platforms supported
 
@@ -157,4 +157,4 @@ The drafts route now writes to BOTH Telegram (4 per-platform messages) AND a Git
 - The original cross-post decision → [[decisions/architecture/cross-post-engine]]
 - The MIT license decision that makes this freely usable → [[decisions/architecture/mit-license-all-repos]]
 - The catalog of which env vars set which platforms → [[templates/.env.example]] + [[services/easy-free-tier]]
-- The oriz-omni-post-app submodule → `projects/oriz-org/own/products/apps/content/oriz-omni-post-app/`
+- The oriz-omni-post-app submodule → `projects/oriz/own/prod/apps/content/oriz-omni-post-app/`

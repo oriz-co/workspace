@@ -1,7 +1,7 @@
 ---
 type: rule
 title: "Cloudflare Pages = apps only. Everything else = GitHub Pages"
-description: "Locked 2026-06-23. CF Pages hosts the 25 apps under projects/oriz-org/own/products/apps/ ONLY (content + hub + personal + tools). All other surface area — npm package READMEs, API JSON catalogs, books, extensions, skills, forks — uses GitHub Pages with the repo's CNAME pointing to its <repo>.github.io target. Any subdomain that surfaces 'more information' style content for a non-app links to oriz.in. Removes confusion about which CF Pages projects should exist; bounds the 100-project CF Pages soft cap; matches the 'subdomain per app, GH Pages for everything else' shape."
+description: "Locked 2026-06-23. CF Pages hosts the 25 apps under projects/oriz/own/prod/apps/ ONLY (content + hub + personal + tools). All other surface area — npm package READMEs, API JSON catalogs, books, extensions, skills, forks — uses GitHub Pages with the repo's CNAME pointing to its <repo>.github.io target. Any subdomain that surfaces 'more information' style content for a non-app links to oriz.in. Removes confusion about which CF Pages projects should exist; bounds the 100-project CF Pages soft cap; matches the 'subdomain per app, GH Pages for everything else' shape."
 tags: [rule, hosting, cloudflare-pages, github-pages, apps, scope]
 timestamp: 2026-06-23
 format_version: okf-v0.1
@@ -17,54 +17,54 @@ related:
 
 ## Rule
 
-A submodule gets a CF Pages project **if and only if** it lives under `projects/oriz-org/own/products/apps/`. Everything else — npm packages, APIs, books, extensions, skills, forks, data repos — hosts on GitHub Pages instead. Stale CF Pages projects for non-apps must be deleted.
+A submodule gets a CF Pages project **if and only if** it lives under `projects/oriz/own/prod/apps/`. Everything else — npm packages, APIs, books, extensions, skills, forks, data repos — hosts on GitHub Pages instead. Stale CF Pages projects for non-apps must be deleted.
 
 ## The 25 apps that get CF Pages projects
 
 ### hub (2)
-- `projects/oriz-org/own/products/apps/hub/home-app` → `oriz.in` + `www.oriz.in`
-- `projects/oriz-org/own/products/apps/hub/oriz-status-app` → `status.oriz.in`
+- `projects/oriz/own/prod/apps/hub/home-app` → `oriz.in` + `www.oriz.in`
+- `projects/oriz/own/prod/apps/hub/oriz-status-app` → `status.oriz.in`
 
 ### personal (1)
-- `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app` → `me.oriz.in`
+- `projects/oriz/own/prod/apps/personal/oriz-cs-me-app` → `me.oriz.in`
 
 ### content (8)
-- `projects/oriz-org/own/products/apps/content/oriz-financial-cards-app` → `financial-cards.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-janaushdhi-app` → `janaushdhi.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-lore-app` → `book-lore.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-ncert-app` → `books.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-omni-post-app` → `omni.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-packages-catalog-app` → `packages.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-pages-blog-app` → `blog.oriz.in`
-- `projects/oriz-org/own/products/apps/content/oriz-roam-journal-app` → `journal.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-financial-cards-app` → `financial-cards.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-janaushdhi-app` → `janaushdhi.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-lore-app` → `book-lore.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-ncert-app` → `books.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-omni-post-app` → `omni.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-packages-catalog-app` → `packages.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-pages-blog-app` → `blog.oriz.in`
+- `projects/oriz/own/prod/apps/content/oriz-roam-journal-app` → `journal.oriz.in`
 
 ### tools (15)
-- `projects/oriz-org/own/products/apps/tools/oriz-cipher-crypto-tools-app` → `crypto.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-dice-random-tools-app` → `random.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-echo-audio-tools-app` → `audio.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-forge-dev-tools-app` → `dev.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-grid-qr-tools-app` → `qr.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-paisa-finance-tools-app` → `finance.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-paper-print-tools-app` → `print.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-pivot-data-tools-app` → `data.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-pixie-image-tools-app` → `image.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-rank-seo-tools-app` → `seo.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-reel-video-tools-app` → `video.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-scribe-text-tools-app` → `text.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-shift-convert-tools-app` → `convert.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-slice-pdf-tools-app` → `pdf.oriz.in`
-- `projects/oriz-org/own/products/apps/tools/oriz-vitals-health-tools-app` → `health.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-cipher-crypto-tools-app` → `crypto.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-dice-random-tools-app` → `random.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-echo-audio-tools-app` → `audio.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-forge-dev-tools-app` → `dev.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-grid-qr-tools-app` → `qr.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-paisa-finance-tools-app` → `finance.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-paper-print-tools-app` → `print.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-pivot-data-tools-app` → `data.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-pixie-image-tools-app` → `image.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-rank-seo-tools-app` → `seo.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-reel-video-tools-app` → `video.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-scribe-text-tools-app` → `text.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-shift-convert-tools-app` → `convert.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-slice-pdf-tools-app` → `pdf.oriz.in`
+- `projects/oriz/own/prod/apps/tools/oriz-vitals-health-tools-app` → `health.oriz.in`
 
 **Total: 26 CF Pages projects (with `www.oriz.in` sharing the `oriz-app` project).**
 
 ## What does NOT get a CF Pages project
 
-- 23 npm packages under `projects/oriz-org/own/libraries/npm-packages/` — npm itself + GH repo's GitHub Pages site for docs
-- 19 APIs under `projects/oriz-org/own/services/apis/` — GH Pages with `<subdomain>.api.oriz.in` CNAME → `oriz-org.github.io` (already wired)
-- Books under `projects/oriz-org/own/content/books/` — GH Pages
-- Forks under `projects/oriz-org/forks/` — no public surface, just code
-- Skills under `projects/oriz-org/own/content/skills/` — GitHub repo + npm publish only
-- Data repos under `projects/oriz-org/own/content/data/` — GH Pages JSON snapshots
+- 23 npm packages under `projects/oriz/own/lib/npm/` — npm itself + GH repo's GitHub Pages site for docs
+- 19 APIs under `projects/oriz/own/svc/api/` — GH Pages with `<subdomain>.api.oriz.in` CNAME → `oriz-org.github.io` (already wired)
+- Books under `projects/oriz/own/content/books/` — GH Pages
+- Forks under `projects/oriz/forks/` — no public surface, just code
+- Skills under `projects/oriz/own/content/skills/` — GitHub repo + npm publish only
+- Data repos under `projects/oriz/own/content/data/` — GH Pages JSON snapshots
 
 For each of these, if a public landing page is desired, host on GH Pages and add a "for more information visit oriz.in" link.
 

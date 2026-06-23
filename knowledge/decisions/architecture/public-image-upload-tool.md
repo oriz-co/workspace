@@ -51,7 +51,7 @@ If 2/5 hosts survive, the image is still served via first-200-wins read path. So
 
 ## Implementation
 
-Lives in `projects/oriz-org/own/products/apps/tools/oriz-pixie-image-tools-app/`:
+Lives in `projects/oriz/own/prod/apps/tools/oriz-pixie-image-tools-app/`:
 - `src/pages/upload.astro` — the public upload page
 - Uses `import { uploadPhoto } from '@chirag127/oriz-image-pipeline'` (extracted from journal-app's lib/photos.ts into a shared npm package — TODO)
 - reCAPTCHA v3 site key via `PUBLIC_RECAPTCHA_SITE_KEY` (already in .env)

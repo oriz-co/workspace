@@ -70,43 +70,43 @@ Suffixes name the runtime/role of the repo:
 
 | Slug | Local path |
 |---|---|
-| `oriz-cs-me-app` | `projects/oriz-org/own/products/apps/personal/oriz-cs-me-app` |
-| `oriz-pages-blog-app` | `projects/oriz-org/own/products/apps/content/oriz-pages-blog-app` |
-| `oriz-roam-journal-app` | `projects/oriz-org/own/products/apps/content/oriz-roam-journal-app` |
-| `oriz-lore-app` | `projects/oriz-org/own/products/apps/content/oriz-lore-app` |
-| `oriz-financial-cards-app` | `projects/oriz-org/own/products/apps/content/oriz-financial-cards-app` |
-| `oriz-omni-post-app` | `projects/oriz-org/own/products/apps/content/oriz-omni-post-app` |
-| `oriz-ncert-app` | `projects/oriz-org/own/products/apps/content/oriz-ncert-app` |
-| `oriz-janaushdhi-app` | `projects/oriz-org/own/products/apps/content/oriz-janaushdhi-app` |
+| `oriz-cs-me-app` | `projects/oriz/own/prod/apps/personal/oriz-cs-me-app` |
+| `oriz-pages-blog-app` | `projects/oriz/own/prod/apps/content/oriz-pages-blog-app` |
+| `oriz-roam-journal-app` | `projects/oriz/own/prod/apps/content/oriz-roam-journal-app` |
+| `oriz-lore-app` | `projects/oriz/own/prod/apps/content/oriz-lore-app` |
+| `oriz-financial-cards-app` | `projects/oriz/own/prod/apps/content/oriz-financial-cards-app` |
+| `oriz-omni-post-app` | `projects/oriz/own/prod/apps/content/oriz-omni-post-app` |
+| `oriz-ncert-app` | `projects/oriz/own/prod/apps/content/oriz-ncert-app` |
+| `oriz-janaushdhi-app` | `projects/oriz/own/prod/apps/content/oriz-janaushdhi-app` |
 | `oriz-portfolio-engine-app` | (apps) |
-| `home-app` | `projects/oriz-org/own/products/apps/hub/home-app` |
+| `home-app` | `projects/oriz/own/prod/apps/hub/home-app` |
 
 ### Tool-app repos
 
 | Slug | Local path |
 |---|---|
-| `oriz-slice-pdf-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-slice-pdf-tools-app` |
-| `oriz-pixie-image-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-pixie-image-tools-app` |
-| `oriz-paisa-finance-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-paisa-finance-tools-app` |
-| `oriz-forge-dev-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-forge-dev-tools-app` |
-| `oriz-scribe-text-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-scribe-text-tools-app` |
-| `oriz-shift-convert-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-shift-convert-tools-app` |
-| `oriz-grid-qr-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-grid-qr-tools-app` |
-| `oriz-pivot-data-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-pivot-data-tools-app` |
-| `oriz-echo-audio-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-echo-audio-tools-app` |
-| `oriz-reel-video-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-reel-video-tools-app` |
-| `oriz-rank-seo-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-rank-seo-tools-app` |
-| `oriz-cipher-crypto-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-cipher-crypto-tools-app` |
-| `oriz-vitals-health-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-vitals-health-tools-app` |
-| `oriz-dice-random-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-dice-random-tools-app` |
-| `oriz-paper-print-tools-app` | `projects/oriz-org/own/products/apps/tools/oriz-paper-print-tools-app` |
+| `oriz-slice-pdf-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-slice-pdf-tools-app` |
+| `oriz-pixie-image-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-pixie-image-tools-app` |
+| `oriz-paisa-finance-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-paisa-finance-tools-app` |
+| `oriz-forge-dev-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-forge-dev-tools-app` |
+| `oriz-scribe-text-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-scribe-text-tools-app` |
+| `oriz-shift-convert-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-shift-convert-tools-app` |
+| `oriz-grid-qr-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-grid-qr-tools-app` |
+| `oriz-pivot-data-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-pivot-data-tools-app` |
+| `oriz-echo-audio-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-echo-audio-tools-app` |
+| `oriz-reel-video-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-reel-video-tools-app` |
+| `oriz-rank-seo-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-rank-seo-tools-app` |
+| `oriz-cipher-crypto-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-cipher-crypto-tools-app` |
+| `oriz-vitals-health-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-vitals-health-tools-app` |
+| `oriz-dice-random-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-dice-random-tools-app` |
+| `oriz-paper-print-tools-app` | `projects/oriz/own/prod/apps/tools/oriz-paper-print-tools-app` |
 
 ### API repos
 
 | Slug | Local path |
 |---|---|
-| `oriz-mmi-tickertape-mmi-api` | `projects/oriz-org/own/services/apis/oriz-mmi-tickertape-mmi-api` |
-| `oriz-flow-fii-dii-activity-api` | `projects/oriz-org/own/services/apis/oriz-flow-fii-dii-activity-api` |
+| `oriz-mmi-tickertape-mmi-api` | `projects/oriz/own/svc/api/oriz-mmi-tickertape-mmi-api` |
+| `oriz-flow-fii-dii-activity-api` | `projects/oriz/own/svc/api/oriz-flow-fii-dii-activity-api` |
 
 ## Why single family brand
 

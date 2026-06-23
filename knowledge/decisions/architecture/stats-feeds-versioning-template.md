@@ -16,7 +16,7 @@ related:
 
 ## stats.oriz.in family-wide stats dashboard
 
-New app `oriz-stats-app` at `c:/D/oriz/projects/oriz-org/own/products/apps/content/oriz-stats-app/`. Publicly accessible at `stats.oriz.in`. Read-only.
+New app `oriz-stats-app` at `c:/D/oriz/projects/oriz/own/prod/apps/content/oriz-stats-app/`. Publicly accessible at `stats.oriz.in`. Read-only.
 
 **Data sources** (all polled by GH Action daily and committed to `public/stats.json`):
 - npm registry API → download counts per package (17 packages)

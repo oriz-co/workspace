@@ -106,7 +106,7 @@ process_repo() {
 
 # Gather all directories
 DIRS=()
-for d in "$ROOT"/projects/oriz-org/own/libraries/npm-packages/*/ "$ROOT"/projects/oriz-org/own/products/apps/*/*/ "$ROOT"/projects/oriz-org/own/services/apis/*/; do
+for d in "$ROOT"/projects/oriz/own/lib/npm/*/ "$ROOT"/projects/oriz/own/prod/apps/*/*/ "$ROOT"/projects/oriz/own/svc/api/*/; do
   [ -d "$d" ] && DIRS+=("${d%/}")
 done
 

@@ -81,7 +81,7 @@ const workerSet = new Set(workers.map(w => (w.id || w.name || '').toLowerCase())
 // 4. Build expected subdomain set from family-data (textual parse — TS import not needed)
 let expected = new Set();
 try {
-  const tsFile = readFileSync('projects/oriz-org/own/libraries/npm-packages/astro-shell-npm-pkg/src/family-data.ts', 'utf8');
+  const tsFile = readFileSync('projects/oriz/own/lib/npm/astro-shell-npm-pkg/src/family-data.ts', 'utf8');
   // Extract every "url: 'https://...oriz.in'"
   const re = /url:\s*['"]https?:\/\/([^'"\/]+\.oriz\.in)['"]/g;
   let m;

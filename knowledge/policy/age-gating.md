@@ -80,4 +80,4 @@ re-prompt aligned with the review cycle.
 
 - [`./public-private-line.md`](./public-private-line.md) — the four-tier visibility model `age-gated-18` slots into
 - [`./journal-not-public.md`](./journal-not-public.md) — adjacent gate (auth instead of attestation)
-- [`projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/age-gating-policy.md`](../../projects/oriz-org/own/products/apps/personal/oriz-cs-me-app/knowledge/decisions/age-gating-policy.md) — original app-scoped version (in the oriz-cs-me-app submodule) this file supersedes for family use
+- [`projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/age-gating-policy.md`](../../projects/oriz/own/prod/apps/personal/oriz-cs-me-app/knowledge/decisions/age-gating-policy.md) — original app-scoped version (in the oriz-cs-me-app submodule) this file supersedes for family use

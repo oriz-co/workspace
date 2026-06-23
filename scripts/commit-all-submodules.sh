@@ -7,48 +7,48 @@ set -euo pipefail
 ROOT="C:/D/oriz"
 
 APPS=(
-  projects/oriz-org/own/products/apps/hub/home-app
-  projects/oriz-org/own/products/apps/personal/oriz-cs-me-app
-  projects/oriz-org/own/products/apps/content/oriz-pages-blog-app
-  projects/oriz-org/own/products/apps/content/oriz-roam-journal-app
-  projects/oriz-org/own/products/apps/content/oriz-financial-cards-app
-  projects/oriz-org/own/products/apps/content/oriz-ncert-app
-  projects/oriz-org/own/products/apps/content/oriz-omni-post-app
-  projects/oriz-org/own/products/apps/content/oriz-lore-book-summaries-app
-  projects/oriz-org/own/products/apps/content/oriz-janaushdhi-app
-  projects/oriz-org/own/products/apps/tools/oriz-slice-pdf-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-paisa-finance-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-pixie-image-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-grid-qr-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-forge-dev-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-scribe-text-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-shift-convert-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-pivot-data-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-echo-audio-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-reel-video-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-rank-seo-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-cipher-crypto-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-vitals-health-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-dice-random-tools-app
-  projects/oriz-org/own/products/apps/tools/oriz-paper-print-tools-app
+  projects/oriz/own/prod/apps/hub/home-app
+  projects/oriz/own/prod/apps/personal/oriz-cs-me-app
+  projects/oriz/own/prod/apps/content/oriz-pages-blog-app
+  projects/oriz/own/prod/apps/content/oriz-roam-journal-app
+  projects/oriz/own/prod/apps/content/oriz-financial-cards-app
+  projects/oriz/own/prod/apps/content/oriz-ncert-app
+  projects/oriz/own/prod/apps/content/oriz-omni-post-app
+  projects/oriz/own/prod/apps/content/oriz-lore-book-summaries-app
+  projects/oriz/own/prod/apps/content/oriz-janaushdhi-app
+  projects/oriz/own/prod/apps/tools/oriz-slice-pdf-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-paisa-finance-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-pixie-image-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-grid-qr-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-forge-dev-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-scribe-text-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-shift-convert-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-pivot-data-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-echo-audio-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-reel-video-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-rank-seo-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-cipher-crypto-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-vitals-health-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-dice-random-tools-app
+  projects/oriz/own/prod/apps/tools/oriz-paper-print-tools-app
 )
 
 PKGS=(
-  projects/oriz-org/own/libraries/npm-packages/astro-shell-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-chrome-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-tools-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-content-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-data-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-forms-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-billing-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-pwa-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-distribute-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-widgets-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/astro-test-utils-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/auth-core-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/auth-wxt-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/auth-vsc-npm-pkg
-  projects/oriz-org/own/libraries/npm-packages/auth-cli-npm-pkg
+  projects/oriz/own/lib/npm/astro-shell-npm-pkg
+  projects/oriz/own/lib/npm/astro-chrome-npm-pkg
+  projects/oriz/own/lib/npm/astro-tools-npm-pkg
+  projects/oriz/own/lib/npm/astro-content-npm-pkg
+  projects/oriz/own/lib/npm/astro-data-npm-pkg
+  projects/oriz/own/lib/npm/astro-forms-npm-pkg
+  projects/oriz/own/lib/npm/astro-billing-npm-pkg
+  projects/oriz/own/lib/npm/astro-pwa-npm-pkg
+  projects/oriz/own/lib/npm/astro-distribute-npm-pkg
+  projects/oriz/own/lib/npm/astro-widgets-npm-pkg
+  projects/oriz/own/lib/npm/astro-test-utils-npm-pkg
+  projects/oriz/own/lib/npm/auth-core-npm-pkg
+  projects/oriz/own/lib/npm/auth-wxt-npm-pkg
+  projects/oriz/own/lib/npm/auth-vsc-npm-pkg
+  projects/oriz/own/lib/npm/auth-cli-npm-pkg
 )
 
 commit_one() {

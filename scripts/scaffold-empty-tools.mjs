@@ -11,7 +11,7 @@ import { APPS } from './_scaffold-apps-data.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const ROOT = path.resolve('projects/oriz-org/own/products/apps/tools')
+const ROOT = path.resolve('projects/oriz/own/prod/apps/tools')
 
 function writeFile(p, content) {
   fs.mkdirSync(path.dirname(p), { recursive: true })

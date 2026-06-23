@@ -71,7 +71,7 @@ Per-app knowledge lives INSIDE each app submodule under its own `knowledge/` fol
 
 Richest example of a per-app bundle:
 
-- [`projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/`](../projects/chirag127/own/products/apps/personal/cs-me-app/knowledge/) — lifestream + 100-year strategy + age-gating + ingester contract (lives inside the cs-me-app submodule; moved from oriz-org → chirag127 on 2026-06-24, slug dropped the `oriz-` prefix)
+- [`projects/c127/own/prod/apps/personal/cs-me-app/knowledge/`](../projects/c127/own/prod/apps/personal/cs-me-app/knowledge/) — lifestream + 100-year strategy + age-gating + ingester contract (lives inside the cs-me-app submodule; moved from oriz-org → chirag127 on 2026-06-24, slug dropped the `oriz-` prefix)
 
 ## Update protocol
 

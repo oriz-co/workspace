@@ -81,7 +81,7 @@ Per API:
 
 ## data.oriz.in aggregator hub
 
-New app `oriz-data-aggregator-app` at `c:/D/oriz/projects/oriz-org/own/products/apps/content/oriz-data-aggregator-app/`:
+New app `oriz-data-aggregator-app` at `c:/D/oriz/projects/oriz/own/prod/apps/content/oriz-data-aggregator-app/`:
 
 - Hosted on Cloudflare Pages (NOT GH Pages — this is the catalog UI, not an API)
 - Lists all 14+ APIs from `FAMILY_APIS` (dynamic registry)
