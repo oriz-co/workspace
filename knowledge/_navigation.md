@@ -22,6 +22,7 @@ status: active
 | Age-gating, monetisation, ingester contract, secrets handling | [`policy/`](./policy/) |
 | Step-by-step actions (auth setup, add a site, rotate secrets) | [`runbooks/`](./runbooks/) |
 | Per-site v2 design briefs + family design rules | [`design/`](./design/) |
+| Browser MCP server (Chrome DevTools) — start Chrome with `--remote-debugging-port=9222` first | [`decisions/tooling/browser-mcp-chrome-devtools.md`](./decisions/tooling/browser-mcp-chrome-devtools.md) |
 | Family-specific term definitions | [`glossary/`](./glossary/) |
 | Multi-engine "Search the web" button — every site ships one (in `@chirag127/oriz-kit` as `<MultiSearch />`) | [`decisions/architecture/multi-engine-search-button.md`](./decisions/architecture/multi-engine-search-button.md) |
 | Repo naming — sites are `<subdomain-prefix>-site`; extensions `-ext`, VS Code extensions `-vsc-ext`, CLIs `-cli`, MCP servers `-mcp`, Workers `-worker`, Cloud Functions `-fn`, data repos `-data`, agent skills `-skill`, rule bundles `-rules`. NPM packages stay clean (no suffix). | [`decisions/branding/repo-naming-suffixes.md`](./decisions/branding/repo-naming-suffixes.md) |
