@@ -5,10 +5,12 @@ description: ".env.enc (sops+age) at the umbrella root preserves all 134 comment
 tags: [rule, env, secrets, conventions]
 timestamp: 2026-06-24
 format_version: okf-v0.1
-status: active
+status: SUPERSEDED 2026-06-24 — the new rule allows .env.example everywhere (including umbrella root) provided it's auto-generated from .env so it can't drift. The new rule also locks the three-file pattern (.env gitignored / .env.enc committed / .env.example committed) for every submodule that consumes env vars. See [[rules/submodule-env-files-three-file-pattern]] for the current rule.
+superseded_by: rules/submodule-env-files-three-file-pattern
 related:
   - decisions/security/sops-plus-doppler-hybrid
   - rules/org-level-secrets-only-no-per-repo
+  - rules/submodule-env-files-three-file-pattern
 ---
 
 # No `.env.example` at the umbrella root

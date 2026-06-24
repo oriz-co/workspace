@@ -35,6 +35,7 @@ status: active
 | RSS → every-platform cross-poster — `@chirag127/oriz-omnipost` watches `blog.oriz.in/rss.xml` | [`decisions/architecture/cross-post-engine.md`](./decisions/architecture/cross-post-engine.md) |
 | Secrets management — Doppler upstream; GitHub Secrets / CF Worker secrets / Firebase config are runtime mirrors | [`decisions/security/secrets-management-doppler.md`](./decisions/security/secrets-management-doppler.md) |
 | Three-env file split — `.env` (shared) + `.env.development` (TEST) + `.env.production` (LIVE), all SOPS-encrypted | [`decisions/security/env-three-file-split.md`](./decisions/security/env-three-file-split.md) |
+| **Env files in submodules** — every submodule has `.env` (gitignored) + `.env.enc` (committed, sops) + `.env.example` (committed, placeholders); all use the SAME age key from Bitwarden | [`rules/submodule-env-files-three-file-pattern.md`](./rules/submodule-env-files-three-file-pattern.md) |
 | Consent management — 5-category Klaro; geo-routed defaults | [`decisions/security/consent-management-multi-category.md`](./decisions/security/consent-management-multi-category.md) |
 | Auto-only tracking — every metric auto-captured | [`rules/auto-only-tracking.md`](./rules/auto-only-tracking.md) |
 | Env keys + GH Actions secrets — single source of truth, two delivery tracks | [`decisions/security/env-and-secrets-single-source.md`](./decisions/security/env-and-secrets-single-source.md) |
