@@ -205,9 +205,9 @@
 [submodule "repos/oriz/own/svc/api/oriz-india-budget-numbers-api"]
 	path = repos/oriz/own/svc/api/oriz-india-budget-numbers-api
 	url = https://github.com/oriz-org/oriz-india-budget-numbers-api.git
-[submodule "repos/oriz/frk/ai-rewrite-bs-ext"]
-	path = repos/oriz/frk/ai-rewrite-bs-ext
-	url = https://github.com/oriz-org/ai-rewrite-bs-ext.git
+[submodule "repos/c127/frk/prod/bs-ext/ai-rewrite-bs-ext"]
+	path = repos/c127/frk/prod/bs-ext/ai-rewrite-bs-ext
+	url = https://github.com/chirag127/ai-rewrite-bs-ext.git
 [submodule "repos/oriz/own/prod/apps/hub/oriz-status-app"]
 	path = repos/oriz/own/prod/apps/hub/oriz-status-app
 	url = https://github.com/oriz-org/oriz-status-app.git
@@ -226,3 +226,6 @@
 [submodule "repos/c127/frk/prod/bs-ext/chathub-bs-ext"]
 	path = repos/c127/frk/prod/bs-ext/chathub-bs-ext
 	url = https://github.com/chirag127/chathub-bs-ext.git
+[submodule "repos/c127/own/prod/userscripts"]
+	path = repos/c127/own/prod/userscripts
+	url = https://github.com/chirag127/userscripts.git
