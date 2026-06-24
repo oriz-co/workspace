@@ -1,7 +1,7 @@
 ---
 type: decision
 title: "Repo naming locked: <subdomain-prefix>-site for every site + role suffix matrix for everything else"
-description: "Every site repo is named <subdomain-prefix>-site (the subdomain prefix on oriz.in, suffixed with -site). Extensions get -ext, VS Code extensions -vsc-ext, CLIs -cli, Workers -worker, Cloud Functions -fn, MCP servers -mcp, data repos -data, agent skills -skill, rule bundles -rules. NPM packages stay clean (no suffix)."
+description: "Every site repo is named <subdomain-prefix>-site (the subdomain prefix on oriz.in, suffixed with -site). Browser extensions get -bs-ext (revised 2026-06-24 from -ext to match the bs-ext/ folder convention), VS Code extensions -vsc-ext, CLIs -cli, Workers -worker, Cloud Functions -fn, MCP servers -mcp, data repos -data, agent skills -skill, rule bundles -rules. NPM packages stay clean (no suffix). Convention applies to forks too — see fork-discipline's product-rename exception."
 tags: [naming, repo, packages, suffix, family, branding]
 timestamp: 2026-06-21
 format_version: okf-v0.1
@@ -29,17 +29,18 @@ public subdomain on `oriz.in`. The repo for `blog.oriz.in` is
 their public URL.
 
 Everything else keeps its role suffix from the third-pass matrix: npm
-packages stay bare scoped (`@chirag127/<name>`), extensions get `-ext` /
-`-vsc-ext`, CLIs get `-cli`, MCP servers get `-mcp`, Cloudflare Workers
-get `-worker`, Cloudflare/Firebase Functions get `-fn`, static-data
-repos get `-data`, agent skills get `-skill`, agent rule bundles get
-`-rules`.
+packages stay bare scoped (`@chirag127/<name>`), browser extensions get
+`-bs-ext` (revised 2026-06-24 from `-ext` to match the disk folder
+`bs-ext/`), VS Code extensions get `-vsc-ext`, CLIs get `-cli`, MCP
+servers get `-mcp`, Cloudflare Workers get `-worker`, Cloudflare /
+Firebase Functions get `-fn`, static-data repos get `-data`, agent
+skills get `-skill`, agent rule bundles get `-rules`.
 
 | Role | Suffix | Examples |
 |---|---|---|
 | Static site | `<subdomain-prefix>-site` | `blog-site` (blog.oriz.in), `journal-site` (journal.oriz.in), `pdf-tools-site` (pdf.oriz.in) |
 | Astro / JS / TS npm package | _(none — scoped only)_ | `@chirag127/astro-shell`, `@chirag127/astro-chrome` |
-| Browser extension | `-ext` | `kagi-summarizer-ext`, `bookmarks-ext` |
+| Browser extension | `-bs-ext` | `kagi-summarizer-bs-ext`, `bookmarks-bs-ext`, `dearrow-plus-bs-ext` |
 | VS Code extension | `-vsc-ext` | `snippets-vsc-ext` |
 | CLI tool | `-cli` | `deploy-cli`, `echo-cli` |
 | Cloudflare Worker | `-worker` | `api-worker` |

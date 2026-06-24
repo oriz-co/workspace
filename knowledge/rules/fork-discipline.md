@@ -44,13 +44,17 @@ The on-disk submodule path mirrors the owner:
 ### Exception: shipping the fork as a distinct product
 
 If the fork is published as its own product (Chrome Web Store listing,
-App Store entry, separate npm package), the GitHub slug + disk folder
-SHOULD be renamed to a distinct name (e.g. `DeArrow-plus`, not
-`DeArrow`). Reasons:
+App Store entry, separate npm package), or if we patch it materially
+enough to want a distinct identity, the GitHub slug + disk folder
+SHOULD be renamed to a convention-compliant slug (e.g.
+`dearrow-plus-bs-ext`, not `DeArrow`). Reasons:
 
 - Store listings reject duplicate names anyway.
 - A distinct slug communicates "this is our shipped variant" to anyone
   landing on the GitHub repo or store page.
+- The family naming convention ([`repo-naming-suffixes`](../decisions/branding/repo-naming-suffixes.md))
+  applies to forks too: browser extensions get `-bs-ext`, CLIs get
+  `-cli`, etc. Lowercase, hyphenated, role-suffixed.
 - Upstream rebase still works — set `upstream` to the original repo
   and rebase as usual; the slug doesn't affect `git rebase`.
 

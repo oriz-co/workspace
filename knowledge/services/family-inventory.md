@@ -131,9 +131,11 @@ The umbrella `api.oriz.in` Hono Worker is the inline (non-submodule) API and is 
 
 ## Browser extensions — 3 total
 
-- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `repos/oriz/frk/Ai-rewrite/`. Repo: `oriz-org/Ai-rewrite`.
-- `DeArrow-plus` — Chrome extension replacing YouTube titles + thumbnails with crowdsourced alternatives. **Personal fork** of `ajayyy/DeArrow` (GPL-3.0), renamed for distinct CWS listing. Submodule under `repos/c127/frk/prod/bs-ext/DeArrow-plus/`. Repo: `chirag127/DeArrow-plus`. Divergence: `showOriginalAlongsideTitle` toggle. See [per-fork knowledge](../../repos/c127/frk/prod/bs-ext/DeArrow-plus/knowledge/index.md).
-- `chathub-browser-ext` — Multi-LLM chat browser extension. **Personal fork** of `chathub-dev/chathub` (GPL-3.0). Submodule under `repos/c127/frk/prod/bs-ext/chathub-browser-ext/`. Repo: `chirag127/chathub-browser-ext`. Divergence: `ALWAYS_PREMIUM=true` in `use-premium.ts` (personal use only — NOT distributed to CWS, see [per-fork knowledge](../../repos/c127/frk/prod/bs-ext/chathub-browser-ext/knowledge/index.md)).
+All browser-extension repo slugs follow the `-bs-ext` suffix per [`repo-naming-suffixes`](../decisions/branding/repo-naming-suffixes.md) (revised 2026-06-24).
+
+- `ai-rewrite-bs-ext` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (GPL-3.0). Submodule under `repos/oriz/frk/ai-rewrite-bs-ext/`. Repo: `oriz-org/ai-rewrite-bs-ext`.
+- `dearrow-plus-bs-ext` — Chrome extension replacing YouTube titles + thumbnails with crowdsourced alternatives. **Personal fork** of `ajayyy/DeArrow` (GPL-3.0), renamed for distinct CWS listing. Submodule under `repos/c127/frk/prod/bs-ext/dearrow-plus-bs-ext/`. Repo: `chirag127/dearrow-plus-bs-ext`. Divergence: `showOriginalAlongsideTitle` toggle.
+- `chathub-bs-ext` — Multi-LLM chat browser extension. **Personal fork** of `chathub-dev/chathub` (GPL-3.0). Submodule under `repos/c127/frk/prod/bs-ext/chathub-bs-ext/`. Repo: `chirag127/chathub-bs-ext`. Divergence: `ALWAYS_PREMIUM=true` (personal-use only — NOT distributed to CWS).
 
 ## Submodules — 75 declared, 74 active
 
