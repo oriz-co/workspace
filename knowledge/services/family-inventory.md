@@ -129,10 +129,11 @@ Indian-data APIs. Each is a submodule under `repos/oriz/own/svc/api/`:
 
 The umbrella `api.oriz.in` Hono Worker is the inline (non-submodule) API and is not counted here.
 
-## Browser extensions — 2 total
+## Browser extensions — 3 total
 
-- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `repos/oriz/frk/Ai-rewrite/` (moved 2026-06-22 from `repos/oriz/own/prod/bs-ext/`; further moved 2026-06-24 from `repos/forks/` to `repos/oriz/frk/` per [`projects-owner-own-forks-layout`](../decisions/architecture/projects-owner-own-forks-layout.md)). Repo: `oriz-org/Ai-rewrite` (renamed from `oriz-co/Ai-rewrite` 2026-06-24).
-- `DeArrow-plus` — Chrome extension that replaces YouTube titles + thumbnails with crowdsourced alternatives. **Personal fork** of `ajayyy/DeArrow` (GPL-3.0), renamed for distinct CWS listing. Submodule under `repos/c127/frk/prod/bs-ext/DeArrow-plus/`. Repo: `chirag127/DeArrow-plus`. Single divergence: a new toggle `showOriginalAlongsideTitle` that renders the original YouTube title in parentheses after the API-replaced title. See [the per-fork knowledge bundle](../../repos/c127/frk/prod/bs-ext/DeArrow-plus/knowledge/index.md).
+- `Ai-rewrite` — Chrome extension, AI-powered text rewriting. **Fork** of `SupratimRK/Ai-rewrite` (verified 2026-06-22 via `gh api`). Submodule under `repos/oriz/frk/Ai-rewrite/`. Repo: `oriz-org/Ai-rewrite`.
+- `DeArrow-plus` — Chrome extension replacing YouTube titles + thumbnails with crowdsourced alternatives. **Personal fork** of `ajayyy/DeArrow` (GPL-3.0), renamed for distinct CWS listing. Submodule under `repos/c127/frk/prod/bs-ext/DeArrow-plus/`. Repo: `chirag127/DeArrow-plus`. Divergence: `showOriginalAlongsideTitle` toggle. See [per-fork knowledge](../../repos/c127/frk/prod/bs-ext/DeArrow-plus/knowledge/index.md).
+- `chathub-browser-ext` — Multi-LLM chat browser extension. **Personal fork** of `chathub-dev/chathub` (GPL-3.0). Submodule under `repos/c127/frk/prod/bs-ext/chathub-browser-ext/`. Repo: `chirag127/chathub-browser-ext`. Divergence: `ALWAYS_PREMIUM=true` in `use-premium.ts` (personal use only — NOT distributed to CWS, see [per-fork knowledge](../../repos/c127/frk/prod/bs-ext/chathub-browser-ext/knowledge/index.md)).
 
 ## Submodules — 75 declared, 74 active
 

@@ -223,3 +223,6 @@
 [submodule "repos/c127/frk/prod/bs-ext/DeArrow-plus"]
 	path = repos/c127/frk/prod/bs-ext/DeArrow-plus
 	url = https://github.com/chirag127/DeArrow-plus.git
+[submodule "repos/c127/frk/prod/bs-ext/chathub-browser-ext"]
+	path = repos/c127/frk/prod/bs-ext/chathub-browser-ext
+	url = https://github.com/chirag127/chathub-browser-ext.git
