@@ -253,3 +253,6 @@
 [submodule "repos/oriz/own/prod/bs-ext/bookmark-mind-bs-ext"]
 	path = repos/oriz/own/prod/bs-ext/bookmark-mind-bs-ext
 	url = https://github.com/oriz-org/bookmark-mind-bs-ext.git
+[submodule "repos/oriz/own/svc/mcp/clear-thought-mcp-server"]
+	path = repos/oriz/own/svc/mcp/clear-thought-mcp-server
+	url = https://github.com/oriz-org/clear-thought-mcp-server.git
