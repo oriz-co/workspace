@@ -1,0 +1,60 @@
+refactor(fleet)!: scope-cut — archive 33 in-progress repos, keep only shipping
+
+Generalizes the build-gate rule from features to entire repos: if it
+doesn't ship value to a user today, archive it.
+
+Archived to oriz-archive (33 repos):
+- 14 India-data APIs (air-quality, currency-rates, flow-fii-dii,
+  gold-silver-rates, ifsc, india-budget-numbers, india-holidays,
+  india-petrol-diesel, india-train-schedules, india-weather, mf-nav,
+  nse-bse-tickers, pincode, rbi-rates)
+- 8 scaffold/in-progress apps (cards, finance, health, packages, tools,
+  oriz-cipher-crypto-tools-app, oriz-forge-dev-tools-app,
+  oriz-omni-post-app)
+- 4 Phase-A new repos created this morning (template, tools, secrets;
+  backup was kept on review)
+- 3 hub/infra (auth — orphaned by no-auth decision; status; clear-thought-mcp-server)
+- 2 books not started (oriz-paisa-book, oriz-pdf-book)
+- 1 forked extension (chathub-bs-ext)
+- 1 doc template (oriz-api-docs-template)
+- 1 fleet inventory data (oriz-ai-providers-data)
+
+Result:
+- oriz-org active: 53 -> 24
+- oriz-archive total: 34 -> 67 (+33)
+- Submodules: 53 -> 20
+- apps.ts catalog: 12 -> 6 apps
+
+Surviving 20 submodules (only what ships content TODAY):
+- Personal/content: me, blog, journal, oriz-ncert-app, oriz-lore-app,
+  oriz-janaushdhi-app
+- Books: oriz-me-book, oriz-janaushdhi-book
+- Extensions: ai-rewrite-bs-ext, bookmark-mind-bs-ext,
+  dearrow-plus-bs-ext, sops-lens-vsc-ext
+- Hub: home
+- APIs (one survivor): oriz-mmi-tickertape-mmi-api, freellmapi (nested
+  under repos/apis/ due to Windows lock), omniroute
+- Utilities: claude-notifications-cli, agent-skills, userscripts, backup
+
+Rule locked: scope-cut-only-shipping-survives
+Knowledge: decisions/architecture/fleet/scope-cut-2026-06-25.md
+Memory:    scope-cut-only-shipping-survives.md
+
+Implications (data-source cascade):
+- Apps that consumed the 14 India-data APIs will need to swap to public
+  3rd-party APIs (or build self-hosted equivalents lazily).
+- The Phase A reversal (template/tools/secrets archived hours after
+  creation) demonstrates the build-gate in action: created speculatively
+  with no shipping content, archived.
+
+Audit:
+- Comprehensive umbrella audit at .staging/umbrella-audit-2026-06-25.md
+- 46 top-level entries scanned. 13 DELETE candidates (~43 MB), 4 MOVE,
+  11 REVIEW. No deletions applied; audit is plan-only.
+
+Known follow-ups (unchanged from prior commit):
+- repos/apis/freellmapi/ still Windows-locked.
+- Umbrella audit recommendations not yet executed (plan-only).
+- DNS issues (login.oriz.in, api.oriz.in) still open.
+
+Co-authored-by: Claude Code agent <claude@anthropic.com>
