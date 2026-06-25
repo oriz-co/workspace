@@ -1,12 +1,12 @@
 // Batch scaffolder for the 12 ToS-conservative scraping APIs.
-// Writes the per-API directory tree under c:/D/oriz/projects/apis/<slug>/ and prints
+// Writes the per-API directory tree under c:/D/oriz/repos/oriz/own/svc/api/<slug>/ and prints
 // the gh/git command list to execute afterwards.
 // Lazy: scrapers are ~60 LOC each; on 403 / network fail they write placeholder data.
 
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 
-const ROOT = resolve('c:/D/oriz/projects/apis');
+const ROOT = resolve('c:/D/oriz/repos/apis');
 const USER_AGENT = 'oriz-api-bot/0.1 (+https://oriz.in/about; contact: privacy@oriz.in)';
 
 const apis = [

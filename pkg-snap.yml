@@ -1,0 +1,690 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Oriz packages home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - text: oriz/packages
+      - navigation "Primary" [ref=e6]:
+        - link "All" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - link "Astro" [ref=e8] [cursor=pointer]:
+          - /url: /category/astro
+        - link "Auth" [ref=e9] [cursor=pointer]:
+          - /url: /category/auth
+        - link "Utilities" [ref=e10] [cursor=pointer]:
+          - /url: /category/utilities
+        - link "About" [ref=e11] [cursor=pointer]:
+          - /url: /about
+  - main [ref=e12]:
+    - complementary "Filters" [ref=e13]:
+      - heading "Search" [level=4] [ref=e14]
+      - searchbox "Filter packages" [ref=e15]
+      - heading "Categories" [level=4] [ref=e16]
+      - list [ref=e17]:
+        - listitem [ref=e18]:
+          - link "All 23" [ref=e19] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e20]: All
+            - generic [ref=e21]: "23"
+        - listitem [ref=e22]:
+          - link "Astro packages 11" [ref=e23] [cursor=pointer]:
+            - /url: /category/astro
+            - generic [ref=e24]: Astro packages
+            - generic [ref=e25]: "11"
+        - listitem [ref=e26]:
+          - link "Auth packages 4" [ref=e27] [cursor=pointer]:
+            - /url: /category/auth
+            - generic [ref=e28]: Auth packages
+            - generic [ref=e29]: "4"
+        - listitem [ref=e30]:
+          - link "Utility packages 8" [ref=e31] [cursor=pointer]:
+            - /url: /category/utilities
+            - generic [ref=e32]: Utility packages
+            - generic [ref=e33]: "8"
+      - heading "About" [level=4] [ref=e34]
+      - list [ref=e35]:
+        - listitem [ref=e36]:
+          - link "About this catalog" [ref=e37] [cursor=pointer]:
+            - /url: /about
+        - listitem [ref=e38]:
+          - link "GitHub →" [ref=e39] [cursor=pointer]:
+            - /url: https://github.com/chirag127
+        - listitem [ref=e40]:
+          - link "npm →" [ref=e41] [cursor=pointer]:
+            - /url: https://www.npmjs.com/~chirag127
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: packages.oriz.in · v0
+        - heading "Every @chirag127 package, in one place." [level=1] [ref=e45]
+        - paragraph [ref=e46]:
+          - text: Auto-discovered from
+          - code [ref=e47]: chirag127/*-npm-pkg
+          - text: repositories. Click the install snippet to copy. MIT-licensed, source-available, ship-ready.
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - strong [ref=e50]: "23"
+            - text: packages
+          - generic [ref=e51]:
+            - strong [ref=e52]: "11"
+            - text: Astro
+          - generic [ref=e53]:
+            - strong [ref=e54]: "4"
+            - text: Auth
+          - generic [ref=e55]:
+            - strong [ref=e56]: "8"
+            - text: Utilities
+          - generic [ref=e57]: MIT licensed
+      - generic [ref=e58]:
+        - article [ref=e59]:
+          - generic [ref=e60]:
+            - heading "Astro Billing" [level=3] [ref=e61]:
+              - link "Astro Billing" [ref=e62] [cursor=pointer]:
+                - /url: /p/astro-billing
+            - generic [ref=e63]: Astro
+          - paragraph [ref=e64]: Razorpay checkout + license-key verify + <Paywall> + <PriceTag> for one-subscription-unlocks-all.
+          - button "Copy install command for @chirag127/astro-billing" [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]: $
+            - generic [ref=e67]: npm i
+            - generic [ref=e68]: "@chirag127/"
+            - generic [ref=e69]: astro-billing
+            - img [ref=e70]
+          - generic [ref=e73]:
+            - generic "Bundle size" [ref=e74]: ~18kb
+            - generic "GitHub stars" [ref=e75]: ★ 3
+            - generic "Last publish" [ref=e76]: 2 days ago
+          - generic [ref=e77]:
+            - link "npm ↗" [ref=e78] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-billing
+            - link "GitHub ↗" [ref=e79] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-billing-npm-pkg
+            - link "Details →" [ref=e80] [cursor=pointer]:
+              - /url: /p/astro-billing
+        - article [ref=e81]:
+          - generic [ref=e82]:
+            - heading "Astro Chrome" [level=3] [ref=e83]:
+              - link "Astro Chrome" [ref=e84] [cursor=pointer]:
+                - /url: /p/astro-chrome
+            - generic [ref=e85]: Astro
+          - paragraph [ref=e86]: Shared visual chrome for chirag127 Astro sites — Header / Footer / Wordmark / AccountPanel / FinishSignIn / MultiSearch / StatusBanner / ConsentBanner. Mobile-first responsive at 320/768/1024/1440. Peer-deps on @chirag127/astro-shell.
+          - button "Copy install command for @chirag127/astro-chrome" [ref=e87] [cursor=pointer]:
+            - generic [ref=e88]: $
+            - generic [ref=e89]: npm i
+            - generic [ref=e90]: "@chirag127/"
+            - generic [ref=e91]: astro-chrome
+            - img [ref=e92]
+          - generic [ref=e95]:
+            - generic "Bundle size" [ref=e96]: ~15kb
+            - generic "GitHub stars" [ref=e97]: ★ 2
+            - generic "Last publish" [ref=e98]: 5 days ago
+          - generic [ref=e99]:
+            - link "npm ↗" [ref=e100] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-chrome
+            - link "GitHub ↗" [ref=e101] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-chrome-npm-pkg
+            - link "Details →" [ref=e102] [cursor=pointer]:
+              - /url: /p/astro-chrome
+        - article [ref=e103]:
+          - generic [ref=e104]:
+            - heading "Astro Content" [level=3] [ref=e105]:
+              - link "Astro Content" [ref=e106] [cursor=pointer]:
+                - /url: /p/astro-content
+            - generic [ref=e107]: Astro
+          - paragraph [ref=e108]: Zod content-collection schemas + RSS + Atom + JSON-Feed + sitemap + IndexNow + OG-card. Peer-deps on @chirag127/astro-chrome.
+          - button "Copy install command for @chirag127/astro-content" [ref=e109] [cursor=pointer]:
+            - generic [ref=e110]: $
+            - generic [ref=e111]: npm i
+            - generic [ref=e112]: "@chirag127/"
+            - generic [ref=e113]: astro-content
+            - img [ref=e114]
+          - generic [ref=e117]:
+            - generic "Bundle size" [ref=e118]: ~18kb
+            - generic "GitHub stars" [ref=e119]: ★ 3
+            - generic "Last publish" [ref=e120]: 1 week ago
+          - generic [ref=e121]:
+            - link "npm ↗" [ref=e122] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-content
+            - link "GitHub ↗" [ref=e123] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-content-npm-pkg
+            - link "Details →" [ref=e124] [cursor=pointer]:
+              - /url: /p/astro-content
+        - article [ref=e125]:
+          - generic [ref=e126]:
+            - heading "Astro Data" [level=3] [ref=e127]:
+              - link "Astro Data" [ref=e128] [cursor=pointer]:
+                - /url: /p/astro-data
+            - generic [ref=e129]: Astro
+          - paragraph [ref=e130]: Data-fetching primitives — TanStack Query setup, typed Firestore helpers, LocalStorage hooks.
+          - button "Copy install command for @chirag127/astro-data" [ref=e131] [cursor=pointer]:
+            - generic [ref=e132]: $
+            - generic [ref=e133]: npm i
+            - generic [ref=e134]: "@chirag127/"
+            - generic [ref=e135]: astro-data
+            - img [ref=e136]
+          - generic [ref=e139]:
+            - generic "Bundle size" [ref=e140]: ~9kb
+            - generic "GitHub stars" [ref=e141]: ★ 4
+            - generic "Last publish" [ref=e142]: 2 weeks ago
+          - generic [ref=e143]:
+            - link "npm ↗" [ref=e144] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-data
+            - link "GitHub ↗" [ref=e145] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-data-npm-pkg
+            - link "Details →" [ref=e146] [cursor=pointer]:
+              - /url: /p/astro-data
+        - article [ref=e147]:
+          - generic [ref=e148]:
+            - heading "Astro Distribute" [level=3] [ref=e149]:
+              - link "Astro Distribute" [ref=e150] [cursor=pointer]:
+                - /url: /p/astro-distribute
+            - generic [ref=e151]: Astro
+          - paragraph [ref=e152]: Thin CLI wrapping PWABuilder (primary — AAB / MSIX / iOS-project) and optional Tauri for desktop EXE/dmg/AppImage from one Astro build.
+          - button "Copy install command for @chirag127/astro-distribute" [ref=e153] [cursor=pointer]:
+            - generic [ref=e154]: $
+            - generic [ref=e155]: npm i
+            - generic [ref=e156]: "@chirag127/"
+            - generic [ref=e157]: astro-distribute
+            - img [ref=e158]
+          - generic [ref=e161]:
+            - generic "Bundle size" [ref=e162]: ~4kb
+            - generic "GitHub stars" [ref=e163]: ★ 2
+            - generic "Last publish" [ref=e164]: 3 weeks ago
+          - generic [ref=e165]:
+            - link "npm ↗" [ref=e166] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-distribute
+            - link "GitHub ↗" [ref=e167] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-distribute-npm-pkg
+            - link "Details →" [ref=e168] [cursor=pointer]:
+              - /url: /p/astro-distribute
+        - article [ref=e169]:
+          - generic [ref=e170]:
+            - heading "Astro Forms" [level=3] [ref=e171]:
+              - link "Astro Forms" [ref=e172] [cursor=pointer]:
+                - /url: /p/astro-forms
+            - generic [ref=e173]: Astro
+          - paragraph [ref=e174]: Form helpers — react-hook-form + Zod resolvers + shadcn-style Form wrappers + honeypot + Web3Forms client.
+          - button "Copy install command for @chirag127/astro-forms" [ref=e175] [cursor=pointer]:
+            - generic [ref=e176]: $
+            - generic [ref=e177]: npm i
+            - generic [ref=e178]: "@chirag127/"
+            - generic [ref=e179]: astro-forms
+            - img [ref=e180]
+          - generic [ref=e183]:
+            - generic "Bundle size" [ref=e184]: ~12kb
+            - generic "GitHub stars" [ref=e185]: ★ 5
+            - generic "Last publish" [ref=e186]: 1 month ago
+          - generic [ref=e187]:
+            - link "npm ↗" [ref=e188] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-forms
+            - link "GitHub ↗" [ref=e189] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-forms-npm-pkg
+            - link "Details →" [ref=e190] [cursor=pointer]:
+              - /url: /p/astro-forms
+        - article [ref=e191]:
+          - generic [ref=e192]:
+            - heading "Astro Pwa" [level=3] [ref=e193]:
+              - link "Astro Pwa" [ref=e194] [cursor=pointer]:
+                - /url: /p/astro-pwa
+            - generic [ref=e195]: Astro
+          - paragraph [ref=e196]: Locked @vite-pwa/astro defaults for the chirag127 family — manifest from astro-chrome brand, offline shell, <InstallPrompt>, <UpdateToast>.
+          - button "Copy install command for @chirag127/astro-pwa" [ref=e197] [cursor=pointer]:
+            - generic [ref=e198]: $
+            - generic [ref=e199]: npm i
+            - generic [ref=e200]: "@chirag127/"
+            - generic [ref=e201]: astro-pwa
+            - img [ref=e202]
+          - generic [ref=e205]:
+            - generic "Bundle size" [ref=e206]: ~7kb
+            - generic "GitHub stars" [ref=e207]: ★ 3
+            - generic "Last publish" [ref=e208]: 2 days ago
+          - generic [ref=e209]:
+            - link "npm ↗" [ref=e210] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-pwa
+            - link "GitHub ↗" [ref=e211] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-pwa-npm-pkg
+            - link "Details →" [ref=e212] [cursor=pointer]:
+              - /url: /p/astro-pwa
+        - article [ref=e213]:
+          - generic [ref=e214]:
+            - heading "Astro Shell" [level=3] [ref=e215]:
+              - link "Astro Shell" [ref=e216] [cursor=pointer]:
+                - /url: /p/astro-shell
+            - generic [ref=e217]: Astro
+          - paragraph [ref=e218]: Astro 6 base layer — shell() defineConfig wrapper + OrizSiteConfig type + integrations preset (React + sitemap + MDX) + Tailwind v4 vite plugin + reusable Cloudflare Pages deploy workflow + design tokens (CSS custom properties + TS const).
+          - button "Copy install command for @chirag127/astro-shell" [ref=e219] [cursor=pointer]:
+            - generic [ref=e220]: $
+            - generic [ref=e221]: npm i
+            - generic [ref=e222]: "@chirag127/"
+            - generic [ref=e223]: astro-shell
+            - img [ref=e224]
+          - generic [ref=e227]:
+            - generic "Bundle size" [ref=e228]: ~12kb
+            - generic "GitHub stars" [ref=e229]: ★ 5
+            - generic "Last publish" [ref=e230]: 5 days ago
+          - generic [ref=e231]:
+            - link "npm ↗" [ref=e232] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-shell
+            - link "GitHub ↗" [ref=e233] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-shell-npm-pkg
+            - link "Details →" [ref=e234] [cursor=pointer]:
+              - /url: /p/astro-shell
+        - article [ref=e235]:
+          - generic [ref=e236]:
+            - heading "Astro Test Utils" [level=3] [ref=e237]:
+              - link "Astro Test Utils" [ref=e238] [cursor=pointer]:
+                - /url: /p/astro-test-utils
+            - generic [ref=e239]: Astro
+          - paragraph [ref=e240]: Common Vitest + Playwright + MSW + Firebase test fixtures for the chirag127/oriz family. Thin wrapper over @firebase/rules-unit-testing, msw, @playwright/test.
+          - button "Copy install command for @chirag127/astro-test-utils" [ref=e241] [cursor=pointer]:
+            - generic [ref=e242]: $
+            - generic [ref=e243]: npm i
+            - generic [ref=e244]: "@chirag127/"
+            - generic [ref=e245]: astro-test-utils
+            - img [ref=e246]
+          - generic [ref=e249]:
+            - generic "Bundle size" [ref=e250]: ~4kb
+            - generic "GitHub stars" [ref=e251]: ★ 2
+            - generic "Last publish" [ref=e252]: 1 week ago
+          - generic [ref=e253]:
+            - link "npm ↗" [ref=e254] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-test-utils
+            - link "GitHub ↗" [ref=e255] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-test-utils-npm-pkg
+            - link "Details →" [ref=e256] [cursor=pointer]:
+              - /url: /p/astro-test-utils
+        - article [ref=e257]:
+          - generic [ref=e258]:
+            - heading "Astro Tools" [level=3] [ref=e259]:
+              - link "Astro Tools" [ref=e260] [cursor=pointer]:
+                - /url: /p/astro-tools
+            - generic [ref=e261]: Astro
+          - paragraph [ref=e262]: ToolGrid + ToolCard + ToolPage components for utility/tool sites. Peer-deps on @chirag127/astro-chrome.
+          - button "Copy install command for @chirag127/astro-tools" [ref=e263] [cursor=pointer]:
+            - generic [ref=e264]: $
+            - generic [ref=e265]: npm i
+            - generic [ref=e266]: "@chirag127/"
+            - generic [ref=e267]: astro-tools
+            - img [ref=e268]
+          - generic [ref=e271]:
+            - generic "Bundle size" [ref=e272]: ~12kb
+            - generic "GitHub stars" [ref=e273]: ★ 5
+            - generic "Last publish" [ref=e274]: 2 weeks ago
+          - generic [ref=e275]:
+            - link "npm ↗" [ref=e276] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-tools
+            - link "GitHub ↗" [ref=e277] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-tools-npm-pkg
+            - link "Details →" [ref=e278] [cursor=pointer]:
+              - /url: /p/astro-tools
+        - article [ref=e279]:
+          - generic [ref=e280]:
+            - heading "Astro Widgets" [level=3] [ref=e281]:
+              - link "Astro Widgets" [ref=e282] [cursor=pointer]:
+                - /url: /p/astro-widgets
+            - generic [ref=e283]: Astro
+          - paragraph [ref=e284]: Shared cross-app islands — <MultiSearch> popover, <StatusBanner>, <ConsentBanner> (Klaro). Datasheet Dark tokens via @chirag127/astro-chrome.
+          - button "Copy install command for @chirag127/astro-widgets" [ref=e285] [cursor=pointer]:
+            - generic [ref=e286]: $
+            - generic [ref=e287]: npm i
+            - generic [ref=e288]: "@chirag127/"
+            - generic [ref=e289]: astro-widgets
+            - img [ref=e290]
+          - generic [ref=e293]:
+            - generic "Bundle size" [ref=e294]: ~18kb
+            - generic "GitHub stars" [ref=e295]: ★ 3
+            - generic "Last publish" [ref=e296]: 3 weeks ago
+          - generic [ref=e297]:
+            - link "npm ↗" [ref=e298] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/astro-widgets
+            - link "GitHub ↗" [ref=e299] [cursor=pointer]:
+              - /url: https://github.com/chirag127/astro-widgets-npm-pkg
+            - link "Details →" [ref=e300] [cursor=pointer]:
+              - /url: /p/astro-widgets
+        - article [ref=e301]:
+          - generic [ref=e302]:
+            - heading "Auth Cli" [level=3] [ref=e303]:
+              - link "Auth Cli" [ref=e304] [cursor=pointer]:
+                - /url: /p/auth-cli
+            - generic [ref=e305]: Auth
+          - paragraph [ref=e306]: CLI auth — Firebase OAuth device-code flow + token store at ~/.config/oriz/auth.json + refresh on 401. Peer-deps on @chirag127/auth-core.
+          - button "Copy install command for @chirag127/auth-cli" [ref=e307] [cursor=pointer]:
+            - generic [ref=e308]: $
+            - generic [ref=e309]: npm i
+            - generic [ref=e310]: "@chirag127/"
+            - generic [ref=e311]: auth-cli
+            - img [ref=e312]
+          - generic [ref=e315]:
+            - generic "Bundle size" [ref=e316]: ~4kb
+            - generic "GitHub stars" [ref=e317]: ★ 2
+            - generic "Last publish" [ref=e318]: 1 month ago
+          - generic [ref=e319]:
+            - link "npm ↗" [ref=e320] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/auth-cli
+            - link "GitHub ↗" [ref=e321] [cursor=pointer]:
+              - /url: https://github.com/chirag127/auth-cli-npm-pkg
+            - link "Details →" [ref=e322] [cursor=pointer]:
+              - /url: /p/auth-cli
+        - article [ref=e323]:
+          - generic [ref=e324]:
+            - heading "Auth Core" [level=3] [ref=e325]:
+              - link "Auth Core" [ref=e326] [cursor=pointer]:
+                - /url: /p/auth-core
+            - generic [ref=e327]: Auth
+          - paragraph [ref=e328]: Cross-surface auth primitives — auth.oriz.in URL helpers, Firebase ID-token verify, refresh logic. Runtime-agnostic. Peer-dep of auth-wxt / auth-vsc / auth-cli.
+          - button "Copy install command for @chirag127/auth-core" [ref=e329] [cursor=pointer]:
+            - generic [ref=e330]: $
+            - generic [ref=e331]: npm i
+            - generic [ref=e332]: "@chirag127/"
+            - generic [ref=e333]: auth-core
+            - img [ref=e334]
+          - generic [ref=e337]:
+            - generic "Bundle size" [ref=e338]: ~7kb
+            - generic "GitHub stars" [ref=e339]: ★ 3
+            - generic "Last publish" [ref=e340]: 2 days ago
+          - generic [ref=e341]:
+            - link "npm ↗" [ref=e342] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/auth-core
+            - link "GitHub ↗" [ref=e343] [cursor=pointer]:
+              - /url: https://github.com/chirag127/auth-core-npm-pkg
+            - link "Details →" [ref=e344] [cursor=pointer]:
+              - /url: /p/auth-core
+        - article [ref=e345]:
+          - generic [ref=e346]:
+            - heading "Auth Vsc" [level=3] [ref=e347]:
+              - link "Auth Vsc" [ref=e348] [cursor=pointer]:
+                - /url: /p/auth-vsc
+            - generic [ref=e349]: Auth
+          - paragraph [ref=e350]: VS Code extension auth — vscode.authentication API + Firebase ID-token mint via REST + secure-storage via context.secrets. Peer-deps on @chirag127/auth-core.
+          - button "Copy install command for @chirag127/auth-vsc" [ref=e351] [cursor=pointer]:
+            - generic [ref=e352]: $
+            - generic [ref=e353]: npm i
+            - generic [ref=e354]: "@chirag127/"
+            - generic [ref=e355]: auth-vsc
+            - img [ref=e356]
+          - generic [ref=e359]:
+            - generic "Bundle size" [ref=e360]: ~4kb
+            - generic "GitHub stars" [ref=e361]: ★ 2
+            - generic "Last publish" [ref=e362]: 5 days ago
+          - generic [ref=e363]:
+            - link "npm ↗" [ref=e364] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/auth-vsc
+            - link "GitHub ↗" [ref=e365] [cursor=pointer]:
+              - /url: https://github.com/chirag127/auth-vsc-npm-pkg
+            - link "Details →" [ref=e366] [cursor=pointer]:
+              - /url: /p/auth-vsc
+        - article [ref=e367]:
+          - generic [ref=e368]:
+            - heading "Auth Wxt" [level=3] [ref=e369]:
+              - link "Auth Wxt" [ref=e370] [cursor=pointer]:
+                - /url: /p/auth-wxt
+            - generic [ref=e371]: Auth
+          - paragraph [ref=e372]: Browser-extension auth — chrome.identity.launchWebAuthFlow bouncing through auth.oriz.in, ID-token in chrome.storage.local. Chrome / Firefox / Edge via @wxt-dev/browser. Peer-deps on @chirag127/auth-core.
+          - button "Copy install command for @chirag127/auth-wxt" [ref=e373] [cursor=pointer]:
+            - generic [ref=e374]: $
+            - generic [ref=e375]: npm i
+            - generic [ref=e376]: "@chirag127/"
+            - generic [ref=e377]: auth-wxt
+            - img [ref=e378]
+          - generic [ref=e381]:
+            - generic "Bundle size" [ref=e382]: ~4kb
+            - generic "GitHub stars" [ref=e383]: ★ 2
+            - generic "Last publish" [ref=e384]: 1 week ago
+          - generic [ref=e385]:
+            - link "npm ↗" [ref=e386] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/auth-wxt
+            - link "GitHub ↗" [ref=e387] [cursor=pointer]:
+              - /url: https://github.com/chirag127/auth-wxt-npm-pkg
+            - link "Details →" [ref=e388] [cursor=pointer]:
+              - /url: /p/auth-wxt
+        - article [ref=e389]:
+          - generic [ref=e390]:
+            - heading "Omni Publish" [level=3] [ref=e391]:
+              - link "Omni Publish" [ref=e392] [cursor=pointer]:
+                - /url: /p/omni-publish
+            - generic [ref=e393]: Utilities
+          - paragraph [ref=e394]: Auto-publish release notes / blog posts to multiple platforms (dev.to, Hashnode, Bluesky, Mastodon, Threads) + Telegram drafts queue for manual platforms (X, Reddit, LinkedIn, Medium). Platform fan-out is env-gated.
+          - button "Copy install command for @chirag127/omni-publish" [ref=e395] [cursor=pointer]:
+            - generic [ref=e396]: $
+            - generic [ref=e397]: npm i
+            - generic [ref=e398]: "@chirag127/"
+            - generic [ref=e399]: omni-publish
+            - img [ref=e400]
+          - generic [ref=e403]:
+            - generic "Bundle size" [ref=e404]: ~15kb
+            - generic "GitHub stars" [ref=e405]: ★ 1
+            - generic "Last publish" [ref=e406]: 2 weeks ago
+          - generic [ref=e407]:
+            - link "npm ↗" [ref=e408] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/omni-publish
+            - link "GitHub ↗" [ref=e409] [cursor=pointer]:
+              - /url: https://github.com/chirag127/omni-publish-npm-pkg
+            - link "Details →" [ref=e410] [cursor=pointer]:
+              - /url: /p/omni-publish
+        - article [ref=e411]:
+          - generic [ref=e412]:
+            - heading "Oriz AI Providers" [level=3] [ref=e413]:
+              - link "Oriz AI Providers" [ref=e414] [cursor=pointer]:
+                - /url: /p/oriz-ai-providers
+            - generic [ref=e415]: Utilities
+          - paragraph [ref=e416]: Thin wrapper around 20 free LLM APIs (OVHcloud, LLM7, Pollinations, Cerebras, Groq, NVIDIA NIM, OpenRouter, Google AI Studio, Cohere, GitHub Models, Cloudflare Workers AI, HuggingFace, Mistral, SambaNova, Z.AI, SiliconFlow, Aion Labs, Ollama Cloud, ModelScope, Kilo Code). OpenAI SDK-compatible client with priority-based fallback chain.
+          - button "Copy install command for @chirag127/oriz-ai-providers" [ref=e417] [cursor=pointer]:
+            - generic [ref=e418]: $
+            - generic [ref=e419]: npm i
+            - generic [ref=e420]: "@chirag127/"
+            - generic [ref=e421]: oriz-ai-providers
+            - img [ref=e422]
+          - generic [ref=e425]:
+            - generic "Bundle size" [ref=e426]: ~7kb
+            - generic "GitHub stars" [ref=e427]: ★ 2
+            - generic "Last publish" [ref=e428]: 3 weeks ago
+          - generic [ref=e429]:
+            - link "npm ↗" [ref=e430] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-ai-providers
+            - link "GitHub ↗" [ref=e431] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-ai-providers-npm-pkg
+            - link "Details →" [ref=e432] [cursor=pointer]:
+              - /url: /p/oriz-ai-providers
+        - article [ref=e433]:
+          - generic [ref=e434]:
+            - heading "Oriz Analytics" [level=3] [ref=e435]:
+              - link "Oriz Analytics" [ref=e436] [cursor=pointer]:
+                - /url: /p/oriz-analytics
+            - generic [ref=e437]: Utilities
+          - paragraph [ref=e438]: Single wrapper around Cloudflare Web Analytics + GA4 + Microsoft Clarity + Sentry. One init() call, four backends, zero PII.
+          - button "Copy install command for @chirag127/oriz-analytics" [ref=e439] [cursor=pointer]:
+            - generic [ref=e440]: $
+            - generic [ref=e441]: npm i
+            - generic [ref=e442]: "@chirag127/"
+            - generic [ref=e443]: oriz-analytics
+            - img [ref=e444]
+          - generic [ref=e447]:
+            - generic "Bundle size" [ref=e448]: ~22kb
+            - generic "GitHub stars" [ref=e449]: ★ 3
+            - generic "Last publish" [ref=e450]: 1 month ago
+          - generic [ref=e451]:
+            - link "npm ↗" [ref=e452] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-analytics
+            - link "GitHub ↗" [ref=e453] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-analytics-npm-pkg
+            - link "Details →" [ref=e454] [cursor=pointer]:
+              - /url: /p/oriz-analytics
+        - article [ref=e455]:
+          - generic [ref=e456]:
+            - heading "Oriz Book Build" [level=3] [ref=e457]:
+              - link "Oriz Book Build" [ref=e458] [cursor=pointer]:
+                - /url: /p/oriz-book-build
+            - generic [ref=e459]: Utilities
+          - paragraph [ref=e460]: "Pandoc-wrapping CLI for the chirag127/oriz family. Builds EPUB3 / PDF / MOBI / Markua from a manuscript/ dir of Markua-flavoured .md files + book.json metadata. Used by oriz-*-book repos and exposed via `oriz-book` bin."
+          - button "Copy install command for @chirag127/oriz-book-build" [ref=e461] [cursor=pointer]:
+            - generic [ref=e462]: $
+            - generic [ref=e463]: npm i
+            - generic [ref=e464]: "@chirag127/"
+            - generic [ref=e465]: oriz-book-build
+            - img [ref=e466]
+          - generic [ref=e469]:
+            - generic "Bundle size" [ref=e470]: ~28kb
+            - generic "GitHub stars" [ref=e471]: ★ 4
+            - generic "Last publish" [ref=e472]: 2 days ago
+          - generic [ref=e473]:
+            - link "npm ↗" [ref=e474] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-book-build
+            - link "GitHub ↗" [ref=e475] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-book-build-npm-pkg
+            - link "Details →" [ref=e476] [cursor=pointer]:
+              - /url: /p/oriz-book-build
+        - article [ref=e477]:
+          - generic [ref=e478]:
+            - heading "Oriz Consent" [level=3] [ref=e479]:
+              - link "Oriz Consent" [ref=e480] [cursor=pointer]:
+                - /url: /p/oriz-consent
+            - generic [ref=e481]: Utilities
+          - paragraph [ref=e482]: Klaro-based consent manager covering EU GDPR + UK + India DPDP + US GPC (Global Privacy Control) signals. Cookie banner + preference center.
+          - button "Copy install command for @chirag127/oriz-consent" [ref=e483] [cursor=pointer]:
+            - generic [ref=e484]: $
+            - generic [ref=e485]: npm i
+            - generic [ref=e486]: "@chirag127/"
+            - generic [ref=e487]: oriz-consent
+            - img [ref=e488]
+          - generic [ref=e491]:
+            - generic "Bundle size" [ref=e492]: ~15kb
+            - generic "GitHub stars" [ref=e493]: ★ 1
+            - generic "Last publish" [ref=e494]: 5 days ago
+          - generic [ref=e495]:
+            - link "npm ↗" [ref=e496] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-consent
+            - link "GitHub ↗" [ref=e497] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-consent-npm-pkg
+            - link "Details →" [ref=e498] [cursor=pointer]:
+              - /url: /p/oriz-consent
+        - article [ref=e499]:
+          - generic [ref=e500]:
+            - heading "Oriz Rate Limit" [level=3] [ref=e501]:
+              - link "Oriz Rate Limit" [ref=e502] [cursor=pointer]:
+                - /url: /p/oriz-rate-limit
+            - generic [ref=e503]: Utilities
+          - paragraph [ref=e504]: Per-user usage caps for Free/Pro/Max tiers (10/100/unlimited requests per day). Edge-friendly token bucket built on Cloudflare KV / Durable Objects.
+          - button "Copy install command for @chirag127/oriz-rate-limit" [ref=e505] [cursor=pointer]:
+            - generic [ref=e506]: $
+            - generic [ref=e507]: npm i
+            - generic [ref=e508]: "@chirag127/"
+            - generic [ref=e509]: oriz-rate-limit
+            - img [ref=e510]
+          - generic [ref=e513]:
+            - generic "Bundle size" [ref=e514]: ~28kb
+            - generic "GitHub stars" [ref=e515]: ★ 4
+            - generic "Last publish" [ref=e516]: 1 week ago
+          - generic [ref=e517]:
+            - link "npm ↗" [ref=e518] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-rate-limit
+            - link "GitHub ↗" [ref=e519] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-rate-limit-npm-pkg
+            - link "Details →" [ref=e520] [cursor=pointer]:
+              - /url: /p/oriz-rate-limit
+        - article [ref=e521]:
+          - generic [ref=e522]:
+            - heading "Oriz Seo" [level=3] [ref=e523]:
+              - link "Oriz Seo" [ref=e524] [cursor=pointer]:
+                - /url: /p/oriz-seo
+            - generic [ref=e525]: Utilities
+          - paragraph [ref=e526]: Sitemap.xml + IndexNow ping + JSON-LD structured data + dynamic OG image generation via satori. SEO toolkit for Astro/Next sites.
+          - button "Copy install command for @chirag127/oriz-seo" [ref=e527] [cursor=pointer]:
+            - generic [ref=e528]: $
+            - generic [ref=e529]: npm i
+            - generic [ref=e530]: "@chirag127/"
+            - generic [ref=e531]: oriz-seo
+            - img [ref=e532]
+          - generic [ref=e535]:
+            - generic "Bundle size" [ref=e536]: ~4kb
+            - generic "GitHub stars" [ref=e537]: ★ 1
+            - generic "Last publish" [ref=e538]: 2 weeks ago
+          - generic [ref=e539]:
+            - link "npm ↗" [ref=e540] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-seo
+            - link "GitHub ↗" [ref=e541] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-seo-npm-pkg
+            - link "Details →" [ref=e542] [cursor=pointer]:
+              - /url: /p/oriz-seo
+        - article [ref=e543]:
+          - generic [ref=e544]:
+            - heading "Oriz UI" [level=3] [ref=e545]:
+              - link "Oriz UI" [ref=e546] [cursor=pointer]:
+                - /url: /p/oriz-ui
+            - generic [ref=e547]: Utilities
+          - paragraph [ref=e548]: Shared Oriz UI — ContactForm + widgets used across the chirag127/oriz* family.
+          - button "Copy install command for @chirag127/oriz-ui" [ref=e549] [cursor=pointer]:
+            - generic [ref=e550]: $
+            - generic [ref=e551]: npm i
+            - generic [ref=e552]: "@chirag127/"
+            - generic [ref=e553]: oriz-ui
+            - img [ref=e554]
+          - generic [ref=e557]:
+            - generic "Bundle size" [ref=e558]: ~28kb
+            - generic "GitHub stars" [ref=e559]: ★ 4
+            - generic "Last publish" [ref=e560]: 3 weeks ago
+          - generic [ref=e561]:
+            - link "npm ↗" [ref=e562] [cursor=pointer]:
+              - /url: https://www.npmjs.com/package/@chirag127/oriz-ui
+            - link "GitHub ↗" [ref=e563] [cursor=pointer]:
+              - /url: https://github.com/chirag127/oriz-ui-npm-pkg
+            - link "Details →" [ref=e564] [cursor=pointer]:
+              - /url: /p/oriz-ui
+  - contentinfo [ref=e565]:
+    - generic [ref=e566]:
+      - generic [ref=e567]:
+        - link "oriz/packages" [ref=e568] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e569]:
+          - text: An auto-discovery catalog of MIT-licensed
+          - code [ref=e570]: "@chirag127/*"
+          - text: npm packages from the oriz family. Find one, install, ship.
+      - generic [ref=e571]:
+        - heading "Browse" [level=5] [ref=e572]
+        - list [ref=e573]:
+          - listitem [ref=e574]:
+            - link "All packages" [ref=e575] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e576]:
+            - link "Astro" [ref=e577] [cursor=pointer]:
+              - /url: /category/astro
+          - listitem [ref=e578]:
+            - link "Auth" [ref=e579] [cursor=pointer]:
+              - /url: /category/auth
+          - listitem [ref=e580]:
+            - link "Utilities" [ref=e581] [cursor=pointer]:
+              - /url: /category/utilities
+      - generic [ref=e582]:
+        - heading "Resources" [level=5] [ref=e583]
+        - list [ref=e584]:
+          - listitem [ref=e585]:
+            - link "npm profile" [ref=e586] [cursor=pointer]:
+              - /url: https://www.npmjs.com/~chirag127
+          - listitem [ref=e587]:
+            - link "GitHub" [ref=e588] [cursor=pointer]:
+              - /url: https://github.com/chirag127
+          - listitem [ref=e589]:
+            - link "About" [ref=e590] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e591]:
+            - link "Contact" [ref=e592] [cursor=pointer]:
+              - /url: /contact
+          - listitem [ref=e593]:
+            - link "Pricing" [ref=e594] [cursor=pointer]:
+              - /url: /pricing
+      - generic [ref=e595]:
+        - heading "Legal" [level=5] [ref=e596]
+        - list [ref=e597]:
+          - listitem [ref=e598]:
+            - link "Privacy" [ref=e599] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e600]:
+            - link "Terms" [ref=e601] [cursor=pointer]:
+              - /url: /terms
+          - listitem [ref=e602]:
+            - link "Refunds" [ref=e603] [cursor=pointer]:
+              - /url: /refunds
+          - listitem [ref=e604]:
+            - link "Disclaimer" [ref=e605] [cursor=pointer]:
+              - /url: /disclaimer
+          - listitem [ref=e606]:
+            - link "Sign in" [ref=e607] [cursor=pointer]:
+              - /url: /sign-in
+    - generic [ref=e609]: © 2026 Chirag Singhal · MIT licensed · Built with Astro · Hosted on Cloudflare Pages

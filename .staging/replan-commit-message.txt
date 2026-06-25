@@ -1,0 +1,34 @@
+refactor(fleet)!: flatten umbrella + replan to 13-category layout
+
+BREAKING: all 86 submodules now at repos/<slug>/ (flat). Old nested paths
+like repos/oriz/own/prod/apps/tools/oriz-paisa-finance-tools-app are gone.
+
+- Phase A: 3 new repos (template, tools, backup) added to submodules
+- Phase B: 11 saturated apps archived to oriz-archive org + removed from submodules
+- Phase C: 1 portfolio-engine transfer (chirag127 → oriz-org)
+- Phase D: 10 slug renames (drop oriz- prefix, -app suffix where applicable)
+- Phase E: 77 submodules re-added at flat repos/<slug>/ paths
+- Phase F: old nested repos/oriz/* tree deleted
+- Phase G: apps.ts catalog updated (12 live apps, 0 archived in umbrella)
+
+Submodule changes:
+- .gitmodules: 86 → 77 submodules, all at repos/<slug>/
+- Removed (archived): slice-pdf, pixie-image, reel-video, echo-audio,
+  scribe-text, grid-qr, shift-convert, dice-random, rank-seo, pivot-data, paper-print
+- Added: agent-skills, template, tools, backup
+- Renamed (10 total): dropped oriz- prefix, consolidated -app suffixes
+
+Config updates:
+- pnpm-workspace.yaml: repos/** pattern (flat layout)
+- .github/workflows/deploy-*.yml: may reference old nested paths (needs manual audit)
+- knowledge/decisions/architecture/: fleet-replan-2026-06-25.md documents Phases A–G
+- knowledge/decisions/security/: auth-clerk-emergency-migrate-2026-06-25.md (Clerk reversal)
+- memory/auth-clerk-with-emergency-migrate.md: updated decision
+
+Known issues (Phase H backlog):
+- repos/oriz/own/svc/api/openmodel-shim-api/ still locked by Windows (delete after reboot)
+- login.oriz.in DNS not yet wired (requires Phase H deployment)
+- api.oriz.in orphan CNAME cross-account (marked for deletion)
+
+Co-authored-by: Claude Code agent <claude@anthropic.com>
+Date: 2026-06-25

@@ -1,7 +1,14 @@
 # CLAUDE.md
 
-> **Read [`AGENTS.md`](./AGENTS.md) first — it is the single source of truth for this repo and the entire `chirag127/oriz*` family.**
+> **Read [`AGENTS.md`](./AGENTS.md) and [`README.md`](./README.md) first — they are the source of truth.**
 
-This file is a pointer. All rules, architecture, conventions, hosting, auth, secrets, design system, submodule, knowledge-first, README-vs-knowledge, parallel-tests, and master-install rules are documented in AGENTS.md and `knowledge/`.
+This file is a pointer to avoid duplication of rules, decisions, or conventions.
 
-The 11 hard rules every agent must follow are listed in [`AGENTS.md`](./AGENTS.md#the-11-hard-rules-full-versions-in-knowledgerules); the full text of each lives in `knowledge/rules/<rule-slug>.md`. AGENTS.md and `knowledge/` take precedence over any individual prompt that contradicts them.
+All repository rules, architecture, hosting, and developer guidelines are documented in:
+- [`AGENTS.md`](./AGENTS.md) — Open Knowledge Format (OKF) explanation & agent self-regulation guidelines.
+- [`knowledge/index.md`](./knowledge/index.md) — The canonical brain (rules, decisions, runbooks, services).
+
+## Claude Code Specific Instructions
+1. **Load Context Wisely:** Read `knowledge/index.md` first to locate relevant decisions and rules rather than scanning files ad-hoc.
+2. **Follow self-update:** Ensure all architectural, stack, or naming decisions locked in chat are documented in `knowledge/` during the same session, as per [`knowledge/rules/self-update-rule.md`](./knowledge/rules/agent/self-update-rule.md).
+3. **MCP Tools Usage:** Follow global rules and settings specified in `.claude/settings.local.json` or MCP config if applicable.

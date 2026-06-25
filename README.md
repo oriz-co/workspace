@@ -83,7 +83,7 @@ c:/D/oriz/
 └── README.md                              # this file
 ```
 
-Full layout rationale: [`knowledge/decisions/architecture/projects-owner-own-forks-layout.md`](./knowledge/decisions/architecture/projects-owner-own-forks-layout.md).
+Full layout rationale: [`knowledge/decisions/architecture/projects-owner-own-forks-layout.md`](./knowledge/decisions/architecture/general/projects-owner-own-forks-layout.md).
 
 ---
 
@@ -118,13 +118,13 @@ Full layout rationale: [`knowledge/decisions/architecture/projects-owner-own-for
 | Need to | Open |
 |---|---|
 | Add a feature (any kind) | [`knowledge/rules/`](./knowledge/rules/) — read relevant rules first |
-| Add a dependency | [`knowledge/rules/community-packages-first.md`](./knowledge/rules/community-packages-first.md) |
-| Add a 3rd-party service | [`knowledge/rules/free-tier-with-cost-controls.md`](./knowledge/rules/free-tier-with-cost-controls.md) |
+| Add a dependency | [`knowledge/rules/community-packages-first.md`](./knowledge/rules/development/community-packages-first.md) |
+| Add a 3rd-party service | [`knowledge/rules/free-tier-with-cost-controls.md`](./knowledge/rules/infrastructure/free-tier-with-cost-controls.md) |
 | Understand "why are we using X" | [`knowledge/decisions/`](./knowledge/decisions/) — search by service name |
 | Run a one-off task (deploy, backup, audit) | [`knowledge/runbooks/`](./knowledge/runbooks/) |
 | Spot a service's free-tier numbers | [`knowledge/runbooks/free-hosting-providers/`](./knowledge/runbooks/free-hosting-providers/) |
-| Lock a new decision in chat | follow [`knowledge/rules/self-update-rule.md`](./knowledge/rules/self-update-rule.md) |
-| Bootstrap a fresh clone | [`knowledge/runbooks/install-and-bootstrap.md`](./knowledge/runbooks/install-and-bootstrap.md) |
+| Lock a new decision in chat | follow [`knowledge/rules/self-update-rule.md`](./knowledge/rules/agent/self-update-rule.md) |
+| Bootstrap a fresh clone | [`knowledge/runbooks/install-and-bootstrap.md`](./knowledge/runbooks/operations/install-and-bootstrap.md) |
 | See the "where to look" map | [`knowledge/_navigation.md`](./knowledge/_navigation.md) |
 
 ---
@@ -152,7 +152,7 @@ Run everything in parallel:
 pnpm -r --parallel <script>
 ```
 
-Full bootstrap runbook with troubleshooting: [`knowledge/runbooks/install-and-bootstrap.md`](./knowledge/runbooks/install-and-bootstrap.md).
+Full bootstrap runbook with troubleshooting: [`knowledge/runbooks/install-and-bootstrap.md`](./knowledge/runbooks/operations/install-and-bootstrap.md).
 
 ---
 
@@ -187,7 +187,7 @@ The complete authoritative list with full text is at [`knowledge/rules/`](./know
 
 ## Env vars
 
-`.env` is the **single source of truth**. There is no `.env.example`. The shape of `.env` is documented in [`knowledge/runbooks/env-management.md`](./knowledge/runbooks/env-management.md). It is encrypted to `.env.enc` via sops+age and that file is committed. Local dev decrypts with `pnpm run env:decrypt`; CI receives the age key as `SOPS_AGE_KEY` secret on `oriz-org/workspace`.
+`.env` is the **single source of truth**. There is no `.env.example`. The shape of `.env` is documented in [`knowledge/runbooks/env-management.md`](./knowledge/runbooks/operations/env-management.md). It is encrypted to `.env.enc` via sops+age and that file is committed. Local dev decrypts with `pnpm run env:decrypt`; CI receives the age key as `SOPS_AGE_KEY` secret on `oriz-org/workspace`.
 
 The daily sync workflow (`.github/workflows/sync-env-to-org-secrets.yml`) decrypts `.env.enc` and pushes every non-empty value to GitHub Org secrets at `oriz-org` with `visibility: all`. Every app's CI inherits.
 
@@ -241,7 +241,7 @@ For anything in that exception list, the agent stops and asks via `AskUserQuesti
 
 ## License
 
-[MIT](./LICENSE). The source-available-but-all-rights-reserved framing in earlier versions of this README is **superseded** — every repo in the oriz-org org ships under MIT (locked decision: [`knowledge/decisions/architecture/mit-license-all-repos.md`](./knowledge/decisions/architecture/mit-license-all-repos.md)).
+[MIT](./LICENSE). The source-available-but-all-rights-reserved framing in earlier versions of this README is **superseded** — every repo in the oriz-org org ships under MIT (locked decision: [`knowledge/decisions/architecture/mit-license-all-repos.md`](./knowledge/decisions/architecture/general/mit-license-all-repos.md)).
 
 ---
 

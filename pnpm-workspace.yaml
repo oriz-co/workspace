@@ -1,22 +1,25 @@
 packages:
-  - 'projects/npm-packages/*'
-  - 'projects/apps/hub/*'
-  - 'projects/apps/personal/*'
-  - 'projects/apps/content/*'
-  - 'projects/apps/tools/*'
-  - 'projects/apis/*'
-  - 'projects/books/*'
-  - 'projects/browser-extensions/*'
-  - 'projects/ide-extensions/*'
-  - 'projects/mcp-servers/*'
-  - 'projects/skills/*'
+  - 'repos/oriz/own/lib/npm/*'
+  - 'repos/oriz/own/prod/apps/hub/*'
+  - 'repos/oriz/own/prod/apps/personal/*'
+  - 'repos/oriz/own/prod/apps/content/*'
+  - 'repos/oriz/own/prod/apps/tools/*'
+  - 'repos/oriz/own/svc/api/*'
+  - 'repos/oriz/own/content/books/*'
+  - 'repos/oriz/own/prod/bs-ext/*'
+  - 'repos/oriz/own/prod/ide-ext/*'
+  - 'repos/oriz/own/svc/mcp/*'
+  - 'repos/oriz/own/content/skills/*'
   # data repos (JSON-only, not npm packages) — explicitly excluded from pnpm workspace
-  - '!projects/data/*'
+  - '!repos/oriz/own/content/data/*'
 allowBuilds:
+  '@biomejs/biome': set this to true or false
   '@firebase/util': set this to true or false
+  '@vscode/vsce-sign': set this to true or false
   canvas: set this to true or false
   core-js: set this to true or false
   esbuild: set this to true or false
+  keytar: set this to true or false
   protobufjs: set this to true or false
   sharp: set this to true or false
   tesseract.js: set this to true or false

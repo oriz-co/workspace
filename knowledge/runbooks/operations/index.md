@@ -1,0 +1,37 @@
+---
+type: index
+title: Operations
+description: Index of concepts in runbooks/operations.
+tags:
+- index
+- operations
+timestamp: '2026-06-24'
+format_version: okf-v0.1
+status: active
+---
+
+# Operations
+
+## Concepts
+
+- [Add a new decision to the knowledge bundle](./add-new-decision.md) — The OKF self-update workflow. When the user makes an architectural / naming / stack decision in chat, capture it as a concept file before the conversation ends.
+- [Add a new Chrome / Firefox / Edge extension](./add-new-extension.md) — Add a new extension repo as a submodule under extensions/, set up the cross-store publish workflow (Chrome Web Store + Firefox Add-ons + Edge Add-ons), wire its landing-page slot on extensions.oriz.in, and bump the master pointer.
+- [Add a new site to the family](./add-new-site-to-family.md) — Add a new oriz-<name> repo as a submodule under sites/, register it in the family list, scaffold its design brief, set up its CI + Cloudflare Pages deploy, and bump the master pointer.
+- [Add a new chirag127/*-npm-pkg repo to packages.oriz.in catalog](./add-package-to-catalog.md) — Auto-discovery means there's almost nothing to do — publish the new -npm-pkg repo on GitHub and it appears in the catalog within 24h. This runbook documents the FEW manual steps required for tight integration (on-tag rebuild trigger + group keyword) so the new package shows up in the right sidebar group immediately.
+- [Apply per-site CI templates to every oriz-* submodule](./apply-per-site-ci.md) — Copy the templates/per-site-ci/ scaffold into each of the 11 site submodules + 6 package submodules, substitute the <sitename> placeholder, commit conventionally, then bump the master pointer. Wires up CI lint/typecheck/build, Cloudflare Pages deploy, GitHub Pages mirror, Dependabot, CodeQL, CodeRabbit, SonarCloud, and Biome in one pass.
+- [Build PWA + Android AAB/APK + Windows MSIX + desktop EXE from one app](./build-distributable.md) — One command per app emits all distributables — PWA on Cloudflare Pages, native packages via PWABuilder (Android AAB, Windows MSIX) or optional Tauri (EXE/dmg/AppImage). No per-app native code; PWA is the source of truth.
+- [Bump a submodule pointer in master](./bump-submodule-pointer.md) — After landing a feature inside a submodule, bump the master repo's pointer to it. The standard `feat in submodule, chore: bump in master` two-commit workflow.
+- [CF token D1 scope — required for flag service activation](./cf-token-d1-scope-unblock-2026-06-23.md) — The CF API token currently scoped to Workers+KV+Pages can't create D1 databases (verified 2026-06-23: api returns code 10000 'Authentication error' on /accounts/.../d1/database). Two-step fix: (1) add D1:Edit scope to the existing token at dash.cloudflare.com/profile/api-tokens, (2) run wrangler d1 create oriz-flags. Until this is done, flags.oriz.in returns 503 and apps fall back to default values (kill-switch unavailable but app render unaffected — fail-open by design).
+- [Clean install — bootstrap the entire family on a fresh machine](./clean-install.md) — One git clone --recursive + one pnpm install loop and the whole family is running locally. New developers get a working dev environment in under 10 minutes; pnpm's global store keeps disk usage flat across 11+ sites.
+- [Dependabot Notification Tuning](./dependabot-notification-tuning.md) — No description available.
+- [Env management — sops + age + GitHub Org Secrets](./env-management.md) — Plain-English runbook for managing the single env source `c:/D/oriz/.env`. Covers: install sops + age, generate keys, encrypt + commit `.env.enc`, decrypt locally, rotate a secret, add a new secret, recover if you lose the age key, restore from password manager backup. Read this when you need to change ANY env var anywhere in the oriz family. Single source: master `c:/D/oriz/.env` → encrypted to `.env.enc` → daily cron pushes values to chirag127 GH org secrets → every repo's CI/builds consume from org secrets automatically. Zero per-repo manual setup.
+- [GitHub Apps audit — chirag127 account, 2026-06-22](./github-apps-audit-2026-06-22.md) — One-shot audit of every GitHub App installed on the chirag127 account, surfaced via check-suite enumeration. Each row: app slug, observed activity, recommendation (KEEP/REMOVE/REVIEW). No auto-uninstall — humans pull the trigger.
+- [Install + bootstrap the umbrella workspace](./install-and-bootstrap.md) — The chirag127/oriz family is one umbrella git repo that submodules every site, app, package, API, extension, and skill. The user always works from `c:/D/oriz/`. This runbook is the canonical fresh-clone and existing-clone-update procedure.
+- [Install free GitHub Apps to all 39+ chirag127/oriz* repos in one pass](./install-github-apps.md) — GitHub Apps cannot be installed via API (security policy — install needs human consent). What we CAN do: install each app ONCE to the chirag127 org with 'All repositories' selected, and it auto-applies to every existing + future repo. This runbook lists the 8 apps to install with one click each, plus what to do after install (configure tokens / enable features). Total time: ~10 minutes.
+- [Lifestream auto-sources setup — wire the 3 pipelines to live cron + webhooks](./lifestream-auto-sources-setup.md) — One-shot deploy steps to take @chirag127/oriz-lifestream from scaffold to live: stand up the GitHub-webhook CF Worker behind Hookdeck, enable the two daily GH Actions cron workflows, and verify first events land in the oriz-me JSONL canonical store. Re-run any section when a token is rotated or a site is added.
+- [Migrate CI/CD from GitHub Actions to GitLab CI or CircleCI](./migrate-ci-platform.md) — Plan-B runbook for the day GitHub Actions becomes unusable (account suspension, regional ban, ToS dispute, billing change). Translates the family's standard CI workflow into GitLab CI + CircleCI equivalents. Each repo already has its source mirrored to GitLab via the weekly master cron, so the migration is: enable CI on the mirror, push a translated config, switch DNS/CNAME if hosting moved too. Linux/Ubuntu runners only per [[linux-ci-only]].
+- [Migrate the knowledge bundle to a new OKF spec version](./migrate-okf-to-new-version.md) — Run when the OKF spec moves beyond v0.1. Read migration notes, update _okf.md format_version, find every concept file with the old version stamp, batch-update, and log the migration.
+- [Rename a repo to its role-suffixed slug](./rename-repo.md) — Step-by-step procedure to rename a chirag127/oriz* repo to its correct role-suffixed slug (-site / -ext / -vsc-ext / -cli / -worker / -fn / -data). Updates .gitmodules, syncs submodules, bumps the master pointer, and refreshes package.json + README badges.
+- [Scaffold a new chirag127 site](./scaffold-a-new-site.md) — Step-by-step to add a new Astro site to the family in <10 minutes. Clones starter, edits 4 config files, registers as workspace submodule, deploys to Cloudflare Pages.
+- [Sync .env.example from master to every repo](./sync-env-example-to-all-repos.md) — Step-by-step procedure for adding / removing / renaming a family-wide env var: edit templates/.env.example on master, run scripts/sync-env-example.sh to fan the change to every submodule, commit + push each touched repo + bump master pointers, verify with scripts/verify-env-example-sync.sh.
+- [Visual Audit 2026 06 22](./visual-audit-2026-06-22.md) — No description available.

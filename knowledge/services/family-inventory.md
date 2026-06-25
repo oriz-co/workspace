@@ -170,7 +170,7 @@ remains. Composition of the 75 declared:
 - 26 app submodules under `repos/oriz/own/prod/apps/{content,hub,personal,tools}/`
 - 1 personal app under `repos/oriz/own/prod/apps/personal/cs-me-app/`
 - 23 npm-package submodules under `repos/oriz/own/lib/npm/`
-- 16 API submodules under `repos/oriz/own/svc/api/` (15 India-data APIs + `openmodel-shim-api` local proxy)
+- 15 API submodules under `repos/oriz/own/svc/api/` (15 India-data APIs; `openmodel-shim-api` deleted 2026-06-25)
 - 0 worker submodules under `repos/oriz/own/svc/workers/` (placeholder; oriz-flags-worker deleted 2026-06-24 per `[[feature-flags-deferred]]`)
 - 5 book submodules under `repos/oriz/own/content/books/`
 - 2 skill submodules under `repos/oriz/own/content/skills/`

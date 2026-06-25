@@ -8,7 +8,7 @@ APIS=(
   oriz-india-rti-api oriz-india-court-judgments-api
   oriz-india-budget-numbers-api oriz-stackoverflow-trending-api
 )
-ROOT=c:/D/oriz/projects/apis
+ROOT=c:/D/oriz/repos/apis
 
 # Share node_modules from the first install (cheerio + deps).
 SRC=$ROOT/oriz-nse-bse-tickers-api/node_modules

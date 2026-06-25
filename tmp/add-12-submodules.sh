@@ -12,7 +12,7 @@ APIS=(
 )
 
 for a in "${APIS[@]}"; do
-  rel="projects/apis/$a"
+  rel="repos/oriz/own/svc/api/$a"
   echo "=== $a ==="
   # The dir currently has its own .git + uncommitted-state — submodule add needs a clean path.
   # Move it aside, add submodule, which re-clones, preserving the GH copy as source of truth.

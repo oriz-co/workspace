@@ -14,7 +14,7 @@ dist/
 .wrangler/
 .firebase/
 firebase-debug.log
-projects/oriz/own/lib/npm/astro-test-utils-npm-pkg
+repos/oriz/own/lib/npm/astro-test-utils-npm-pkg
 pnpm-lock.yaml
 .tmp-*
 logs

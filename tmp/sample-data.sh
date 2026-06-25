@@ -10,7 +10,7 @@ APIS=(
 for a in "${APIS[@]}"; do
   echo "##### $a"
   node -e "
-    const d = JSON.parse(require('fs').readFileSync('c:/D/oriz/projects/apis/$a/data/latest.json','utf8'));
+    const d = JSON.parse(require('fs').readFileSync('c:/D/oriz/repos/oriz/own/svc/api/$a/data/latest.json','utf8'));
     // Find first array in d and slice 3.
     const out = { date: d.date, source: d.source };
     for (const k of Object.keys(d)) {

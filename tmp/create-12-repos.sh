@@ -24,7 +24,7 @@ APIS=(
   oriz-india-budget-numbers-api oriz-stackoverflow-trending-api
 )
 
-ROOT=c:/D/oriz/projects/apis
+ROOT=c:/D/oriz/repos/apis
 LOG=c:/D/oriz/tmp/12-apis-deploy.log
 > "$LOG"
 

@@ -1,0 +1,500 @@
+- generic [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "oriz home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: o
+        - generic [ref=e7]: r
+        - generic [ref=e8]: i
+        - generic [ref=e9]: z
+      - navigation "Primary" [ref=e10]:
+        - link "Apps" [ref=e11] [cursor=pointer]:
+          - /url: /apps/
+        - link "Tools" [ref=e12] [cursor=pointer]:
+          - /url: /tools/
+        - link "Books" [ref=e13] [cursor=pointer]:
+          - /url: /books/
+        - link "Packages" [ref=e14] [cursor=pointer]:
+          - /url: /packages/
+        - link "Pricing" [ref=e15] [cursor=pointer]:
+          - /url: /pricing/
+        - link "About" [ref=e16] [cursor=pointer]:
+          - /url: /about/
+      - link "Sign in" [ref=e18] [cursor=pointer]:
+        - /url: /sign-in/
+  - main [ref=e19]:
+    - article [ref=e20]:
+      - region "Oriz family" [ref=e21]:
+        - generic [ref=e22]:
+          - heading "oriz" [level=1] [ref=e23]:
+            - generic [ref=e24]: o
+            - generic [ref=e25]: r
+            - generic [ref=e26]: i
+            - generic [ref=e27]: z
+          - paragraph [ref=e28]:
+            - text: A self-built family of
+            - emphasis [ref=e29]: free tools, content, and books
+            - text: .
+            - text: For developers, the curious, and everyone in between.
+          - search [ref=e30]:
+            - generic [ref=e31]: Search the Oriz family
+            - generic [ref=e32]: ⌕
+            - searchbox "Search the Oriz family" [ref=e33]
+            - generic [ref=e34]: /
+        - complementary "Family highlights" [ref=e35]:
+          - article [ref=e36]:
+            - generic [ref=e37]:
+              - generic [ref=e38]: Latest essay
+              - link "Blog →" [ref=e39] [cursor=pointer]:
+                - /url: https://blog.oriz.in/
+            - heading "Hello, Oriz" [level=3] [ref=e40]:
+              - link "Hello, Oriz" [ref=e41] [cursor=pointer]:
+                - /url: https://blog.oriz.in/blog/2026-06-22-hello-oriz/
+            - paragraph [ref=e42]: The first post on blog.oriz.in — what Oriz is, why it exists, and what to expect from this blog.
+            - time [ref=e43]: 2026-06-22
+          - article [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Latest book
+              - link "Books →" [ref=e47] [cursor=pointer]:
+                - /url: /books/
+            - generic [ref=e48]:
+              - generic [ref=e50]: The Stack
+              - generic [ref=e51]:
+                - heading "The Stack" [level=3] [ref=e52]:
+                  - link "The Stack" [ref=e53] [cursor=pointer]:
+                    - /url: https://books.oriz.in/
+                - paragraph [ref=e54]: Chirag Singhal
+                - paragraph [ref=e55]: Coming soon
+          - article [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: Latest package
+              - link "Packages →" [ref=e59] [cursor=pointer]:
+                - /url: https://packages.oriz.in
+            - heading "astro-shell v0.2.0" [level=3] [ref=e60]:
+              - link "astro-shell" [ref=e61] [cursor=pointer]:
+                - /url: https://npm.im/@chirag127/astro-shell
+              - text: v0.2.0
+            - paragraph [ref=e62]: Astro 6 base layer — shell() defineConfig wrapper + design tokens + family-data registry.
+            - code [ref=e64]: npm i @chirag127/astro-shell
+          - article [ref=e65]:
+            - generic [ref=e67]: Family at a glance
+            - list [ref=e68]:
+              - listitem [ref=e69]:
+                - generic [ref=e70]: "25"
+                - generic [ref=e71]: apps
+              - listitem [ref=e72]:
+                - generic [ref=e73]: "22"
+                - generic [ref=e74]: packages
+              - listitem [ref=e75]:
+                - generic [ref=e76]: "5"
+                - generic [ref=e77]: books
+              - listitem [ref=e78]:
+                - generic [ref=e79]: "52"
+                - generic [ref=e80]: total
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - heading "Apps" [level=2] [ref=e83]
+          - link "All apps →" [ref=e84] [cursor=pointer]:
+            - /url: /apps/
+        - list [ref=e85]:
+          - listitem [ref=e86]:
+            - link "Home Family hub — every Oriz app in one place. oriz.in Open ↗" [ref=e87] [cursor=pointer]:
+              - /url: https://oriz.in
+              - heading "Home" [level=3] [ref=e88]
+              - paragraph [ref=e89]: Family hub — every Oriz app in one place.
+              - generic [ref=e90]: oriz.in
+              - generic [ref=e91]: Open ↗
+          - listitem [ref=e92]:
+            - link "Blog Long-form essays on engineering, finance, books. blog.oriz.in Open ↗" [ref=e93] [cursor=pointer]:
+              - /url: https://blog.oriz.in
+              - heading "Blog" [level=3] [ref=e94]
+              - paragraph [ref=e95]: Long-form essays on engineering, finance, books.
+              - generic [ref=e96]: blog.oriz.in
+              - generic [ref=e97]: Open ↗
+          - listitem [ref=e98]:
+            - link "NCERT Free NCERT textbook directory — class · subject · language. books.oriz.in Open ↗" [ref=e99] [cursor=pointer]:
+              - /url: https://books.oriz.in
+              - heading "NCERT" [level=3] [ref=e100]
+              - paragraph [ref=e101]: Free NCERT textbook directory — class · subject · language.
+              - generic [ref=e102]: books.oriz.in
+              - generic [ref=e103]: Open ↗
+          - listitem [ref=e104]:
+            - link "Janaushdhi PMBJP generic-medicine catalog — search, compare, locate. janaushdhi.oriz.in Open ↗" [ref=e105] [cursor=pointer]:
+              - /url: https://janaushdhi.oriz.in
+              - heading "Janaushdhi" [level=3] [ref=e106]
+              - paragraph [ref=e107]: PMBJP generic-medicine catalog — search, compare, locate.
+              - generic [ref=e108]: janaushdhi.oriz.in
+              - generic [ref=e109]: Open ↗
+          - listitem [ref=e110]:
+            - link "Packages Catalog of every @chirag127/* npm package. packages.oriz.in Open ↗" [ref=e111] [cursor=pointer]:
+              - /url: https://packages.oriz.in
+              - heading "Packages" [level=3] [ref=e112]
+              - paragraph [ref=e113]: Catalog of every @chirag127/* npm package.
+              - generic [ref=e114]: packages.oriz.in
+              - generic [ref=e115]: Open ↗
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - heading "Tools" [level=2] [ref=e118]
+          - link "All tools →" [ref=e119] [cursor=pointer]:
+            - /url: /tools/
+        - list [ref=e120]:
+          - listitem [ref=e121]:
+            - link "slice-pdf pdf.oriz.in" [ref=e122] [cursor=pointer]:
+              - /url: https://pdf.oriz.in
+              - generic [ref=e123]: slice-pdf
+              - generic [ref=e124]: pdf.oriz.in
+          - listitem [ref=e125]:
+            - link "pixie-image image.oriz.in" [ref=e126] [cursor=pointer]:
+              - /url: https://image.oriz.in
+              - generic [ref=e127]: pixie-image
+              - generic [ref=e128]: image.oriz.in
+          - listitem [ref=e129]:
+            - link "scribe-text text.oriz.in" [ref=e130] [cursor=pointer]:
+              - /url: https://text.oriz.in
+              - generic [ref=e131]: scribe-text
+              - generic [ref=e132]: text.oriz.in
+          - listitem [ref=e133]:
+            - link "grid-qr qr.oriz.in" [ref=e134] [cursor=pointer]:
+              - /url: https://qr.oriz.in
+              - generic [ref=e135]: grid-qr
+              - generic [ref=e136]: qr.oriz.in
+          - listitem [ref=e137]:
+            - link "paisa-finance finance.oriz.in" [ref=e138] [cursor=pointer]:
+              - /url: https://finance.oriz.in
+              - generic [ref=e139]: paisa-finance
+              - generic [ref=e140]: finance.oriz.in
+          - listitem [ref=e141]:
+            - link "forge-dev dev.oriz.in" [ref=e142] [cursor=pointer]:
+              - /url: https://dev.oriz.in
+              - generic [ref=e143]: forge-dev
+              - generic [ref=e144]: dev.oriz.in
+          - listitem [ref=e145]:
+            - link "shift-convert convert.oriz.in" [ref=e146] [cursor=pointer]:
+              - /url: https://convert.oriz.in
+              - generic [ref=e147]: shift-convert
+              - generic [ref=e148]: convert.oriz.in
+          - listitem [ref=e149]:
+            - link "dice-random random.oriz.in" [ref=e150] [cursor=pointer]:
+              - /url: https://random.oriz.in
+              - generic [ref=e151]: dice-random
+              - generic [ref=e152]: random.oriz.in
+          - listitem [ref=e153]:
+            - link "cipher-crypto crypto.oriz.in" [ref=e154] [cursor=pointer]:
+              - /url: https://crypto.oriz.in
+              - generic [ref=e155]: cipher-crypto
+              - generic [ref=e156]: crypto.oriz.in
+          - listitem [ref=e157]:
+            - link "paper-print print.oriz.in" [ref=e158] [cursor=pointer]:
+              - /url: https://print.oriz.in
+              - generic [ref=e159]: paper-print
+              - generic [ref=e160]: print.oriz.in
+          - listitem [ref=e161]:
+            - link "vitals-health health.oriz.in" [ref=e162] [cursor=pointer]:
+              - /url: https://health.oriz.in
+              - generic [ref=e163]: vitals-health
+              - generic [ref=e164]: health.oriz.in
+          - listitem [ref=e165]:
+            - link "rank-seo seo.oriz.in" [ref=e166] [cursor=pointer]:
+              - /url: https://seo.oriz.in
+              - generic [ref=e167]: rank-seo
+              - generic [ref=e168]: seo.oriz.in
+          - listitem [ref=e169]:
+            - link "reel-video video.oriz.in" [ref=e170] [cursor=pointer]:
+              - /url: https://video.oriz.in
+              - generic [ref=e171]: reel-video
+              - generic [ref=e172]: video.oriz.in
+          - listitem [ref=e173]:
+            - link "echo-audio audio.oriz.in" [ref=e174] [cursor=pointer]:
+              - /url: https://audio.oriz.in
+              - generic [ref=e175]: echo-audio
+              - generic [ref=e176]: audio.oriz.in
+          - listitem [ref=e177]:
+            - link "pivot-data data.oriz.in" [ref=e178] [cursor=pointer]:
+              - /url: https://data.oriz.in
+              - generic [ref=e179]: pivot-data
+              - generic [ref=e180]: data.oriz.in
+          - listitem [ref=e181]:
+            - link "tbd-16 tbd.oriz.in" [ref=e182] [cursor=pointer]:
+              - /url: https://tbd.oriz.in
+              - generic [ref=e183]: tbd-16
+              - generic [ref=e184]: tbd.oriz.in
+      - generic [ref=e185]:
+        - generic [ref=e186]:
+          - heading "Books" [level=2] [ref=e187]
+          - link "All books →" [ref=e188] [cursor=pointer]:
+            - /url: /books/
+        - list [ref=e189]:
+          - listitem [ref=e190]:
+            - generic [ref=e192]: The Stack
+            - heading "The Stack" [level=3] [ref=e193]
+            - paragraph [ref=e194]: Chirag Singhal
+            - paragraph [ref=e195]: Coming soon
+          - listitem [ref=e196]:
+            - generic [ref=e198]: Paisa
+            - heading "Paisa" [level=3] [ref=e199]
+            - paragraph [ref=e200]: Chirag Singhal
+            - paragraph [ref=e201]: Coming soon
+          - listitem [ref=e202]:
+            - generic [ref=e204]: "PDF: A Field Guide"
+            - 'heading "PDF: A Field Guide" [level=3] [ref=e205]'
+            - paragraph [ref=e206]: Chirag Singhal
+            - paragraph [ref=e207]: Coming soon
+          - listitem [ref=e208]:
+            - generic [ref=e210]: Janaushdhi
+            - heading "Janaushdhi" [level=3] [ref=e211]
+            - paragraph [ref=e212]: Chirag Singhal
+            - paragraph [ref=e213]: Coming soon
+          - listitem [ref=e214]:
+            - generic [ref=e216]: Me
+            - heading "Me" [level=3] [ref=e217]
+            - paragraph [ref=e218]: Chirag Singhal
+            - paragraph [ref=e219]: Coming soon
+      - generic [ref=e220]:
+        - generic [ref=e221]:
+          - heading "Packages" [level=2] [ref=e222]
+          - link "All packages →" [ref=e223] [cursor=pointer]:
+            - /url: https://packages.oriz.in
+        - list [ref=e224]:
+          - listitem [ref=e225]:
+            - link "astro-billing @chirag127" [ref=e226] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-billing
+              - generic [ref=e227]: astro-billing
+              - generic [ref=e228]: "@chirag127"
+          - listitem [ref=e229]:
+            - link "astro-chrome @chirag127" [ref=e230] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-chrome
+              - generic [ref=e231]: astro-chrome
+              - generic [ref=e232]: "@chirag127"
+          - listitem [ref=e233]:
+            - link "astro-content @chirag127" [ref=e234] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-content
+              - generic [ref=e235]: astro-content
+              - generic [ref=e236]: "@chirag127"
+          - listitem [ref=e237]:
+            - link "astro-data @chirag127" [ref=e238] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-data
+              - generic [ref=e239]: astro-data
+              - generic [ref=e240]: "@chirag127"
+          - listitem [ref=e241]:
+            - link "astro-distribute @chirag127" [ref=e242] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-distribute
+              - generic [ref=e243]: astro-distribute
+              - generic [ref=e244]: "@chirag127"
+          - listitem [ref=e245]:
+            - link "astro-forms @chirag127" [ref=e246] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-forms
+              - generic [ref=e247]: astro-forms
+              - generic [ref=e248]: "@chirag127"
+          - listitem [ref=e249]:
+            - link "astro-pwa @chirag127" [ref=e250] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-pwa
+              - generic [ref=e251]: astro-pwa
+              - generic [ref=e252]: "@chirag127"
+          - listitem [ref=e253]:
+            - link "astro-shell @chirag127" [ref=e254] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-shell
+              - generic [ref=e255]: astro-shell
+              - generic [ref=e256]: "@chirag127"
+          - listitem [ref=e257]:
+            - link "astro-test-utils @chirag127" [ref=e258] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-test-utils
+              - generic [ref=e259]: astro-test-utils
+              - generic [ref=e260]: "@chirag127"
+          - listitem [ref=e261]:
+            - link "astro-tools @chirag127" [ref=e262] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-tools
+              - generic [ref=e263]: astro-tools
+              - generic [ref=e264]: "@chirag127"
+          - listitem [ref=e265]:
+            - link "astro-widgets @chirag127" [ref=e266] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/astro-widgets
+              - generic [ref=e267]: astro-widgets
+              - generic [ref=e268]: "@chirag127"
+          - listitem [ref=e269]:
+            - link "auth-cli @chirag127" [ref=e270] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/auth-cli
+              - generic [ref=e271]: auth-cli
+              - generic [ref=e272]: "@chirag127"
+          - listitem [ref=e273]:
+            - link "auth-core @chirag127" [ref=e274] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/auth-core
+              - generic [ref=e275]: auth-core
+              - generic [ref=e276]: "@chirag127"
+          - listitem [ref=e277]:
+            - link "auth-vsc @chirag127" [ref=e278] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/auth-vsc
+              - generic [ref=e279]: auth-vsc
+              - generic [ref=e280]: "@chirag127"
+          - listitem [ref=e281]:
+            - link "auth-wxt @chirag127" [ref=e282] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/auth-wxt
+              - generic [ref=e283]: auth-wxt
+              - generic [ref=e284]: "@chirag127"
+          - listitem [ref=e285]:
+            - link "omni-publish @chirag127" [ref=e286] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/omni-publish
+              - generic [ref=e287]: omni-publish
+              - generic [ref=e288]: "@chirag127"
+          - listitem [ref=e289]:
+            - link "oriz-ai-providers @chirag127" [ref=e290] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-ai-providers
+              - generic [ref=e291]: oriz-ai-providers
+              - generic [ref=e292]: "@chirag127"
+          - listitem [ref=e293]:
+            - link "oriz-analytics @chirag127" [ref=e294] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-analytics
+              - generic [ref=e295]: oriz-analytics
+              - generic [ref=e296]: "@chirag127"
+          - listitem [ref=e297]:
+            - link "oriz-book-build @chirag127" [ref=e298] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-book-build
+              - generic [ref=e299]: oriz-book-build
+              - generic [ref=e300]: "@chirag127"
+          - listitem [ref=e301]:
+            - link "oriz-consent @chirag127" [ref=e302] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-consent
+              - generic [ref=e303]: oriz-consent
+              - generic [ref=e304]: "@chirag127"
+          - listitem [ref=e305]:
+            - link "oriz-rate-limit @chirag127" [ref=e306] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-rate-limit
+              - generic [ref=e307]: oriz-rate-limit
+              - generic [ref=e308]: "@chirag127"
+          - listitem [ref=e309]:
+            - link "oriz-seo @chirag127" [ref=e310] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-seo
+              - generic [ref=e311]: oriz-seo
+              - generic [ref=e312]: "@chirag127"
+          - listitem [ref=e313]:
+            - link "oriz-ui @chirag127" [ref=e314] [cursor=pointer]:
+              - /url: https://npm.im/@chirag127/oriz-ui
+              - generic [ref=e315]: oriz-ui
+              - generic [ref=e316]: "@chirag127"
+      - generic [ref=e317]:
+        - heading "Me" [level=2] [ref=e319]
+        - link "Chirag Singhal Lifestream, now-page, uses, CV, contact. The person behind every Oriz site. me.oriz.in Open ↗" [ref=e321] [cursor=pointer]:
+          - /url: https://me.oriz.in
+          - heading "Chirag Singhal" [level=3] [ref=e322]
+          - paragraph [ref=e323]: Lifestream, now-page, uses, CV, contact. The person behind every Oriz site.
+          - generic [ref=e324]: me.oriz.in
+          - generic [ref=e325]: Open ↗
+  - contentinfo [ref=e326]:
+    - generic [ref=e328]:
+      - generic [ref=e329]: 🏠 oriz
+      - generic [ref=e330]: 👤 Me
+      - generic [ref=e331]: ✍️ Blog
+      - generic [ref=e332]: 📚 Books
+      - generic [ref=e333]: 📖 Book Lore
+      - generic [ref=e334]: 💳 Cards
+      - generic [ref=e335]: 📊 Finance
+      - generic [ref=e336]: 🔗 URLs to Markdown
+      - generic [ref=e337]: 🖼️ Image Tools
+      - generic [ref=e338]: 📄 PDF Tools
+      - generic [ref=e339]: 🏠 oriz
+      - generic [ref=e340]: 👤 Me
+      - generic [ref=e341]: ✍️ Blog
+      - generic [ref=e342]: 📚 Books
+      - generic [ref=e343]: 📖 Book Lore
+      - generic [ref=e344]: 💳 Cards
+      - generic [ref=e345]: 📊 Finance
+      - generic [ref=e346]: 🔗 URLs to Markdown
+      - generic [ref=e347]: 🖼️ Image Tools
+      - generic [ref=e348]: 📄 PDF Tools
+    - generic [ref=e349]:
+      - generic [ref=e350]:
+        - heading "Apps" [level=3] [ref=e351]
+        - list [ref=e352]:
+          - listitem [ref=e353]:
+            - link "oriz" [ref=e354] [cursor=pointer]:
+              - /url: https://oriz.in
+          - listitem [ref=e355]:
+            - link "Me" [ref=e356] [cursor=pointer]:
+              - /url: https://me.oriz.in
+          - listitem [ref=e357]:
+            - link "Blog" [ref=e358] [cursor=pointer]:
+              - /url: https://blog.oriz.in
+          - listitem [ref=e359]:
+            - link "Books" [ref=e360] [cursor=pointer]:
+              - /url: https://books.oriz.in
+          - listitem [ref=e361]:
+            - link "Book Lore" [ref=e362] [cursor=pointer]:
+              - /url: https://book-lore.oriz.in
+          - listitem [ref=e363]:
+            - link "Cards" [ref=e364] [cursor=pointer]:
+              - /url: https://cards.oriz.in
+          - listitem [ref=e365]:
+            - link "Finance" [ref=e366] [cursor=pointer]:
+              - /url: https://finance.oriz.in
+          - listitem [ref=e367]:
+            - link "URLs to Markdown" [ref=e368] [cursor=pointer]:
+              - /url: https://urls-to-md.oriz.in
+          - listitem [ref=e369]:
+            - link "Image Tools" [ref=e370] [cursor=pointer]:
+              - /url: https://image.oriz.in
+          - listitem [ref=e371]:
+            - link "PDF Tools" [ref=e372] [cursor=pointer]:
+              - /url: https://pdf.oriz.in
+      - generic [ref=e373]:
+        - heading "Reading" [level=3] [ref=e374]
+        - list [ref=e375]:
+          - listitem [ref=e376]:
+            - link "Blog" [ref=e377] [cursor=pointer]:
+              - /url: https://blog.oriz.in
+          - listitem [ref=e378]:
+            - link "Books" [ref=e379] [cursor=pointer]:
+              - /url: https://books.oriz.in
+          - listitem [ref=e380]:
+            - link "Book Lore" [ref=e381] [cursor=pointer]:
+              - /url: https://book-lore.oriz.in
+      - generic [ref=e382]:
+        - heading "Tools" [level=3] [ref=e383]
+        - list [ref=e384]:
+          - listitem [ref=e385]:
+            - link "URLs to Markdown" [ref=e386] [cursor=pointer]:
+              - /url: https://urls-to-md.oriz.in
+          - listitem [ref=e387]:
+            - link "Image Tools" [ref=e388] [cursor=pointer]:
+              - /url: https://image.oriz.in
+          - listitem [ref=e389]:
+            - link "PDF Tools" [ref=e390] [cursor=pointer]:
+              - /url: https://pdf.oriz.in
+      - generic [ref=e391]:
+        - heading "Finance" [level=3] [ref=e392]
+        - list [ref=e393]:
+          - listitem [ref=e394]:
+            - link "Cards" [ref=e395] [cursor=pointer]:
+              - /url: https://cards.oriz.in
+          - listitem [ref=e396]:
+            - link "Finance" [ref=e397] [cursor=pointer]:
+              - /url: https://finance.oriz.in
+    - generic [ref=e399]:
+      - paragraph [ref=e400]: A free family of static sites and tools by Chirag Singhal — no ads, no tracking, MIT-licensed.
+      - navigation "Legal" [ref=e401]:
+        - link "About" [ref=e402] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e403] [cursor=pointer]:
+          - /url: /contact
+        - link "Privacy" [ref=e404] [cursor=pointer]:
+          - /url: /privacy
+        - link "Terms" [ref=e405] [cursor=pointer]:
+          - /url: /terms
+        - link "Refunds" [ref=e406] [cursor=pointer]:
+          - /url: /refunds
+        - link "Disclaimer" [ref=e407] [cursor=pointer]:
+          - /url: /disclaimer
+      - paragraph [ref=e408]:
+        - text: © 2026 Oriz ·
+        - link "github.com/chirag127" [ref=e409] [cursor=pointer]:
+          - /url: https://github.com/chirag127
+  - dialog [active] [ref=e410]:
+    - generic [ref=e411]:
+      - paragraph [ref=e412]:
+        - generic [ref=e413]: We use a few small services to make this site work. Some are required (auth, basic analytics); others (marketing analytics, social embeds) are off until you opt in.
+      - generic [ref=e414]:
+        - link "Customise" [ref=e415] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e416]:
+          - button "I decline" [ref=e417] [cursor=pointer]
+          - button "That's ok" [ref=e418] [cursor=pointer]

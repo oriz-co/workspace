@@ -1,0 +1,54 @@
+refactor(fleet)!: flatten umbrella, archive 23 packages, lock new rules
+
+BREAKING CHANGES across the polyrepo:
+- Every submodule moves to repos/<slug>/ (flat layout)
+- All 23 in-house @oriz/* npm packages archived to oriz-archive
+- Auth removed from every app and API (separate login project, TBD)
+- Analytics inlined per app via 6 <script> tags in BaseLayout
+
+Phases executed:
+- Phase A: 3 new repos (template, tools, backup)
+- Phase B: 11 saturated apps transferred + archived to oriz-archive
+- Phase C: 1 transfer (chirag127/oriz-portfolio-engine-app -> oriz-org)
+- Phase D: 10 renames dropping oriz- prefix (home, finance, cards, blog,
+  journal, health, auth, status, me, packages)
+- Phase E: 77 submodules re-added at flat repos/<slug>/ paths
+- Phase F: old nested repos/oriz/* tree deleted
+- Phase G: apps.ts rewritten (12 live apps, 0 archived)
+- Phase H1: nested by category (reversed same-day)
+- Phase H2: un-nested back to flat (final state)
+- Packages: 23 in-house packages archived (transfer + archive)
+- Auth: AccountWidget removed, Clerk decision reverted, login moves out
+- Analytics: 6-provider inline scripts (CF + Clarity + PostHog + GA4 +
+  Fathom Lite + GoatCounter), env-gated, GH org Actions secrets
+
+Rules locked this session:
+- fs-flat-always: repos/<slug>/, no category dirs
+- zero-in-house-packages-inline-analytics: no @oriz/* deps; analytics
+  inline in BaseLayout
+- no-auth-in-apps-or-apis: apps and APIs are 100% public
+- lean-by-need-not-count: build-gate applies to deps too
+- analytics-stack-no-card-no-selfhost: 6 industry-standard providers
+- gh-org-secrets-build-time-inject: shared tokens via org-level secrets
+- github-repo-names-are-brand-identity: on collision, rename folder
+
+Rules superseded (same-day, all five reversals captured with audit trail):
+- fs-flat-over-nested -> fs-flat-always
+- fs-nested-when-large-flat-when-small -> fs-flat-always
+- auth-firebase-login-and-account-subdomains -> no-auth-in-apps-or-apis
+- auth-clerk-with-emergency-migrate -> no-auth-in-apps-or-apis
+- twenty-two-packages-on-npm -> one-package-only-analytics ->
+  zero-in-house-packages-inline-analytics
+
+Known follow-ups:
+- repos/apis/freellmapi/ still nested (Windows file lock during un-nest);
+  manual move once VS Code / Defender releases the handle.
+- login.oriz.in NXDOMAIN; api.oriz.in cross-account CNAME orphan.
+- 13 apps not yet audited for @chirag127/* imports (grandfathered for now
+  since archived packages still install from npm).
+- GitHub topics labeling drafted but not applied
+  (.staging/github-topics-plan.md).
+- Umbrella commit message refers to design + DNS plans staged in
+  .staging/ — not yet executed.
+
+Co-authored-by: Claude Code agent <claude@anthropic.com>
