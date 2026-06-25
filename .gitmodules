@@ -16,12 +16,6 @@
 [submodule "projects_apps_tools_finance-tools-app"]
 	path = repos/oriz/own/prod/apps/tools/oriz-paisa-finance-tools-app
 	url = https://github.com/oriz-org/oriz-paisa-finance-tools-app.git
-[submodule "projects_skills_agents-md-sync-skill"]
-	path = repos/oriz/own/content/skills/agents-md-sync-skill
-	url = https://github.com/oriz-org/agents-md-sync-skill.git
-[submodule "projects_skills_claude-code-mcq-notes-skill"]
-	path = repos/oriz/own/content/skills/claude-code-mcq-notes-skill
-	url = https://github.com/oriz-org/claude-code-mcq-notes-skill.git
 [submodule "projects_apps_hub_home-app"]
 	path = repos/oriz/own/prod/apps/hub/home-app
 	url = https://github.com/oriz-org/oriz-app.git
