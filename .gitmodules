@@ -38,7 +38,7 @@
 	path = repos/claude-notifications-cli
 	url = https://github.com/oriz-org/claude-notifications-cli.git
 [submodule "repos/freellmapi"]
-	path = repos/apis/freellmapi
+	path = repos/freellmapi
 	url = https://github.com/oriz-org/freellmapi.git
 [submodule "repos/omniroute"]
 	path = repos/omniroute

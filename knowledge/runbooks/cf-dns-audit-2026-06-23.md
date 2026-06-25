@@ -191,3 +191,9 @@ The `image.oriz.in` row is the most actionable: registry says "live" but DNS sho
 - DNS data: Cloudflare API live pull at audit time, paged through `dns_records?per_page=100`.
 - Token loaded from `c:/D/oriz/.env` `CLOUDFLARE_API_TOKEN`. No records were created, modified, or deleted.
 - 73 total records read. Mapping logic matched (host, target) tuples against (a) `repos/oriz/own/svc/api/*/CNAME` literal content, (b) `FAMILY_APPS[].url` host, (c) `FAMILY_APIS[].url` host.
+
+---
+
+## 2026-06-25 cleanup
+- DELETED api.oriz.in CNAME (was apis.chirag127.workers.dev — cross-account orphan from chirag127 → oriz-org fleet migration; CF API record id `9372932a0e531340a6b08f7d31d191f5`). Verified via CF API + DoH: no record present post-delete.
+- login.oriz.in: intentionally LEFT NXDOMAIN until no-auth-in-apps-or-apis decision is reversed (see `knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md`).

@@ -1,0 +1,53 @@
+chore(fleet): post-replan cleanup + topics + DNS + freellmapi unlock
+
+Final commit of the 2026-06-25 fleet replan session, executing all
+post-cut tasks:
+
+1. freellmapi unlocked + moved: repos/apis/freellmapi -> repos/freellmapi
+   (the Windows file lock from the morning's nest/un-nest finally
+   released). repos/apis/ directory removed. All 20 submodules now at
+   flat repos/<slug>/ paths.
+
+2. Stale gitlinks removed from .staging/:
+   .staging/backup-repo and .staging/template were 160000 entries
+   without .gitmodules mappings, blocking git submodule status. Cleared.
+
+3. Umbrella audit cleanups (~42.7 MB reclaimed):
+   - .playwright-cli/ (22 MB), .tmp-scaffold/ (15 MB),
+     .tmp-screenshots/ (5.6 MB), screenshots/
+   - Stale root files: a.md, 2026-06-23.md, Untitled.*
+   - One-off scripts: polish-N-repos.sh (3 variants),
+     recover-22-from-npm.sh, stub-and-publish-22.sh,
+     razorpay-bootstrap.mjs (Razorpay killed), fix-gh-pages-certs
+     (3 versions + results)
+
+4. DNS cleanup (Cloudflare API):
+   - DELETED api.oriz.in CNAME (was apis.chirag127.workers.dev —
+     cross-account orphan from chirag127 -> oriz-org migration)
+   - login.oriz.in: intentionally LEFT NXDOMAIN until no-auth
+     decision is reversed (separate TBD login-manager project)
+   - Runbook updated: knowledge/runbooks/cf-dns-audit-2026-06-23.md
+
+5. GitHub topics labeled on all 20 surviving repos (single-category
+   atomic PUT via Topics API):
+   - app: 8 (blog, journal, me, home, oriz-{janaushdhi,lore,ncert}-app)
+     wait — home is infrastructure, so 7 apps
+   - api: 3 (freellmapi, omniroute, oriz-mmi-tickertape-mmi-api)
+   - browser-extension: 3 (ai-rewrite, bookmark-mind, dearrow-plus)
+   - book: 2 (oriz-{janaushdhi,me}-book)
+   - infrastructure: 2 (home, backup)
+   - cli, ide-extension, meta, userscript: 1 each
+   - Result table: .staging/github-topics-applied-2026-06-25.md
+
+6. Inner-repo HEAD commits:
+   - repos/home: committed apps.ts post-scope-cut at 70d428a, pushed
+   - Umbrella pointer bumped: 14a327b -> 70d428a
+   - repos/agent-skills has 1 untracked file
+     (playwright-persistent-sessions/SKILL.md) — left for user review
+
+Known follow-ups:
+- agent-skills uncommitted SKILL.md (intentional new skill?)
+- repos/home/src/data/apps.ts may need further refinement (catalog now
+  6 entries; home page UI may need a layout pass for the smaller set)
+
+Co-authored-by: Claude Code agent <claude@anthropic.com>
