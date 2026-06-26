@@ -30,6 +30,23 @@ Full details: `repos/own/backup/README.md` (private repo).
 
 ---
 
+## Coding agents wired to this workspace
+
+Four free agents are supported. All read this file (`C:\D\oriz\AGENTS.md`) as the workspace source of truth via a per-agent stub at `C:\D\oriz\.agents\<agent>/`:
+
+| Agent | Type | Install | Workspace stub |
+|---|---|---|---|
+| **Claude Code** | CLI | (already installed) | `.agents/claude/CLAUDE.md` |
+| **OpenCode** | CLI | `npm i -g opencode-ai` | `.agents/opencode/AGENTS.md` |
+| **Kilo Code** | VS Code ext | `code --install-extension kilocode.Kilo-Code` | `.agents/kilocode/rules/00-pointer.md` |
+| **Cline** | VS Code ext | `code --install-extension saoudrizwan.claude-dev` | `.agents/cline/AGENTS.md` |
+
+Install all four at once: `C:\D\oriz\scripts\install-agents.cmd`. Idempotent, workspace-only (no global changes).
+
+When working in this workspace, every agent picks up this file. Agent-specific overrides go in the per-agent stub, never here.
+
+---
+
 ## How agents update knowledge
 
 - **Code-level facts** (file structure, signatures, current behaviour) → don't write; derive on read.

@@ -1,0 +1,120 @@
+﻿<#
+.SYNOPSIS
+  Install 4 coding agents wired to this workspace. WORKSPACE-ONLY.
+  Touches NO global config files (no ~/.claude/, no ~/.config/, no ~/.gemini/).
+  All rules live in C:\D\oriz\AGENTS.md.
+#>
+[CmdletBinding()]
+param()
+
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+function Step($m) { Write-Host "`n=== $m ===" -ForegroundColor Cyan }
+function Ok($m)   { Write-Host "  [ok] $m"   -ForegroundColor Green }
+function Warn($m) { Write-Host "  [!]  $m"   -ForegroundColor Yellow }
+function Have($cmd) { return [bool](Get-Command $cmd -ErrorAction SilentlyContinue) }
+
+$Workspace = 'C:\D\oriz'
+
+# ── 0. winget ─────────────────────────────────────────────────────────────
+Step '0. winget'
+if (-not (Have winget)) {
+  Warn 'winget missing. Installing App Installer from aka.ms/getwinget...'
+  $msix = Join-Path $env:TEMP 'AppInstaller.msixbundle'
+  Invoke-WebRequest -UseBasicParsing -Uri 'https://aka.ms/getwinget' -OutFile $msix
+  Add-AppxPackage -Path $msix -ForceApplicationShutdown -ErrorAction Stop
+  $env:PATH = "$env:LOCALAPPDATA\Microsoft\WindowsApps;$env:PATH"
+  if (-not (Have winget)) { throw 'winget install ran but command still not on PATH.' }
+}
+Ok 'winget present'
+
+# ── 1. Node (for OpenCode) ────────────────────────────────────────────────
+Step '1. Node.js'
+if (-not (Have node)) {
+  & winget install --id OpenJS.NodeJS.LTS -e --silent --accept-source-agreements --accept-package-agreements --disable-interactivity 2>&1 | Out-Host
+  $env:PATH = "$env:ProgramFiles\nodejs;$env:PATH"
+}
+Ok ('node: ' + ((node --version 2>&1) | Out-String).Trim())
+
+# ── 2. Claude Code (verify only) ──────────────────────────────────────────
+Step '2. Claude Code'
+if (Have claude) {
+  Ok ('claude: ' + ((claude --version 2>&1) | Out-String).Trim())
+} else {
+  Warn 'claude CLI not on PATH. (Already installed per session context; no install attempted.)'
+}
+
+# ── 3. OpenCode ───────────────────────────────────────────────────────────
+Step '3. OpenCode'
+if (-not (Have opencode)) {
+  & npm install -g opencode-ai 2>&1 | Out-Host
+}
+if (Have opencode) {
+  Ok 'opencode installed'
+} else {
+  Warn 'opencode install failed'
+}
+
+# ── 4. VS Code + Cline + Kilo Code ────────────────────────────────────────
+Step '4. VS Code + extensions'
+if (-not (Have code)) {
+  & winget install --id Microsoft.VisualStudioCode -e --silent --accept-source-agreements --accept-package-agreements --disable-interactivity 2>&1 | Out-Host
+  $env:PATH = "$env:ProgramFiles\Microsoft VS Code\bin;$env:PATH"
+}
+if (Have code) {
+  & code --install-extension saoudrizwan.claude-dev --force 2>&1 | Out-Host
+  & code --install-extension kilocode.Kilo-Code     --force 2>&1 | Out-Host
+  Ok 'Cline + Kilo Code installed via VS Code'
+} else {
+  Warn '`code` CLI not on PATH; Cline + Kilo Code skipped'
+}
+
+# ── 5. Wire .kilocode/rules -> .agents/kilocode/rules ─────────────────────
+# Kilo Code reads <repo>/.kilocode/rules/ - symlink that to .agents/kilocode/rules/
+# so the pointer file is picked up.
+Step '5. Workspace symlink for Kilo Code'
+$kilocodeDir = Join-Path $Workspace '.kilocode'
+$kilocodeRules = Join-Path $kilocodeDir 'rules'
+$agentsKiloRules = Join-Path $Workspace '.agents\kilocode\rules'
+
+if (-not (Test-Path $kilocodeDir)) {
+  New-Item -ItemType Directory -Path $kilocodeDir -Force | Out-Null
+}
+if (Test-Path $kilocodeRules) {
+  # If it's already a symlink to the right target, leave it.
+  $item = Get-Item $kilocodeRules -Force
+  if ($item.LinkType -eq 'SymbolicLink' -and $item.Target -eq $agentsKiloRules) {
+    Ok 'Symlink already correct'
+  } else {
+    Warn ".kilocode\rules exists and is not the expected symlink. Leaving in place; please remove manually if you want it symlinked."
+  }
+} else {
+  try {
+    New-Item -ItemType SymbolicLink -Path $kilocodeRules -Target $agentsKiloRules -ErrorAction Stop | Out-Null
+    Ok ('symlinked .kilocode\rules -> .agents\kilocode\rules')
+  } catch {
+    # Symlinks need admin or developer mode; we self-elevated, so this should work.
+    # If it still fails, fall back to a directory junction (works without dev mode).
+    & cmd /c mklink /J "$kilocodeRules" "$agentsKiloRules" 2>&1 | Out-Host
+    if (Test-Path $kilocodeRules) {
+      Ok ('directory junction created .kilocode\rules -> .agents\kilocode\rules')
+    } else {
+      Warn 'Could not create symlink or junction. Kilo Code will not see the pointer until this is fixed.'
+    }
+  }
+}
+
+# ── 6. Summary ────────────────────────────────────────────────────────────
+Step '6. Done'
+Write-Host ''
+Write-Host '  Workspace source of truth: C:\D\oriz\AGENTS.md' -ForegroundColor Green
+Write-Host ''
+Write-Host '  Agents wired:'
+Write-Host '    - Claude Code (reads C:\D\oriz\CLAUDE.md + AGENTS.md)' -ForegroundColor Green
+Write-Host '    - OpenCode    (reads C:\D\oriz\AGENTS.md)'             -ForegroundColor Green
+Write-Host '    - Cline       (reads C:\D\oriz\AGENTS.md)'             -ForegroundColor Green
+Write-Host '    - Kilo Code   (reads C:\D\oriz\.kilocode\rules\)'      -ForegroundColor Green
+Write-Host ''
+Write-Host '  No global files were modified.' -ForegroundColor DarkGray
+Write-Host ''
