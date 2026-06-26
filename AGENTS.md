@@ -16,6 +16,20 @@
 
 ---
 
+## New-laptop bootstrap
+
+If you're setting up oriz on a fresh Windows machine:
+
+1. `gh auth login` (GitHub auth)
+2. `git clone https://github.com/oriz-org/workspace.git C:\D\oriz --recurse-submodules`
+3. `cd C:\D\oriz\repos\own\backup`
+4. `.\bootstrap.ps1`
+
+The script installs all software + Docker + Hr + MCPs + decrypts env (needs age key from Bitwarden).
+Full details: `repos/own/backup/README.md` (private repo).
+
+---
+
 ## How agents update knowledge
 
 - **Code-level facts** (file structure, signatures, current behaviour) → don't write; derive on read.
