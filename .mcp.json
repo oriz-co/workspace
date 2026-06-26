@@ -43,6 +43,10 @@
     "duckduckgo": {
       "command": "npx",
       "args": ["-y", "duckduckgo-mcp"]
+    },
+    "crawl-md": {
+      "command": "node",
+      "args": ["./scripts/crawl-mcp/server.js"]
     }
   }
 }
