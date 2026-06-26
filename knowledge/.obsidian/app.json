@@ -1,0 +1,10 @@
+{
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "inbox",
+  "useMarkdownLinks": false,
+  "promptDelete": false,
+  "showLineNumber": true,
+  "showFrontmatter": true,
+  "attachmentFolderPath": "personal/attachments"
+}

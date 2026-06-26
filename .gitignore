@@ -24,6 +24,18 @@ logs
 *.base
 *.canvas
 
+# Vault wiring exception: knowledge/.obsidian/ committed (Q11/Q12 lock)
+# — declared plugins + app.json travel with the repo; workspace state stays local.
+!knowledge/.obsidian/
+!knowledge/.obsidian/app.json
+!knowledge/.obsidian/community-plugins.json
+
+# Obsidian workspace state (per-machine, don't commit)
+knowledge/.obsidian/workspace.json
+knowledge/.obsidian/workspace-mobile.json
+knowledge/.obsidian/graph.json
+knowledge/.obsidian/cache/
+
 # Scratch markdown — daily notes / scratch files outside knowledge/
 /[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md
 /a.md
