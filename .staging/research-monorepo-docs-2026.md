@@ -1,530 +1,444 @@
-# Monorepo + docs tooling 2026
+# Polyrepo npm docs — state of the art, June 2026
 
-> Deep-research brief, June 2026. Constraints: oriz-org is a polyrepo of ~20 submodules; atomic npm/PyPI packages each live in their own GitHub repo, submoduled into the umbrella at `repos/own/<slug>/`. Astro + polyrepo + category-consolidation + submodules are locked — this brief does **not** propose reversing them. It picks the tooling layer on top.
-
-## TL;DR (the picks for oriz-org)
-
-- **Topology:** Polyrepo with a **meta-repo / virtual-monorepo orchestration layer** (the existing `oriz-org/oriz` umbrella IS the meta-repo). This is now a named, documented 2026 pattern — not an improvisation.
-- **Tooling consistency:** **B + A hybrid.** B for CI (a shared `oriz-org/automation` repo of reusable workflows + `oriz-org/.github` for workflow-templates and community-health files), A for code-level configs (publish `@oriz/tsconfig`, `@oriz/eslint-config`, `@oriz/biome-config` and let every repo extend via the language's native `extends` mechanism). Skip C (copy-paste sync) except for genuinely uncopyable files.
-- **Release flow:** **release-please + npm/PyPI trusted publishing (OIDC).** One tool covers both npm and PyPI via `release-type: node | python`, PR-based human checkpoint, zero tokens to fan out across 20+ repos, free automatic provenance/Sigstore attestations. Antfu-style `bumpp + changelogithub` as the fallback for ultra-lean repos.
-- **Docs platform:** **Astro Starlight per repo + a thin aggregator portal using Pagefind `mergeIndex` for cross-repo search.** TypeDoc + typedoc-plugin-markdown + starlight-typedoc for TS API. Defer versioning until a package actually needs it (ship-at-HEAD posture makes versioning premature).
-- **Renovate strategy:** **GitHub-hosted preset repo `oriz-org/renovate-config`** with `default.json` + `lib.json` + `app.json`. Each consumer's `.github/renovate.json` is one line: `"extends": ["github>oriz-org/renovate-config"]`. Run on the free **Mend Renovate Community Cloud**, keep Dependabot enabled in each repo for `github-actions` only (its native GHSA security alerts in the GitHub UI are still a real advantage).
+> Deep-research brief for the `@oriz/*` polyrepo family (5-15 atomic packages, each its own GitHub repo under `oriz-org/<slug>-npm-pkg/`, all submoduled into the umbrella `oriz-org/oriz`). Aggregator docs site target: `packages.oriz.in` on Cloudflare Pages. Astro 6 is the family default. This brief answers 10 numbered questions with citations and copy-paste configs.
+>
+> Method: 5 parallel WebSearch fan-outs (one per angle) → 60+ URLs → cross-check for adversarial verification → opinionated synthesis. Sources weighted to 2025-2026; older sources retained only where still authoritative.
 
 ---
 
-## 1. Polyrepo vs monorepo 2026
+## TL;DR — the picks
 
-### The honest state of the debate
-
-The 2025-2026 cycle moved the polyrepo-vs-monorepo argument from ideology to data. The defining new artefact is Faros.ai's 320-team benchmark (March 2026), which measured median PR cycle time of **19h on monorepos vs 2h on polyrepos**, with p90 of 8.6d vs 5.5d. The conclusion the study draws is sharp: "well-engineered monorepo infra can match polyrepo, but the infra has to keep evolving with scale" — and most teams never quite keep pace ([Faros.ai](https://www.faros.ai/blog/monorepo-vs-polyrepo-benchmark-data)).
-
-This is reinforced by Block/Cash App's public post-mortem of their ~450 JVM service polyrepo→monorepo migration ([engineering.block.xyz](https://engineering.block.xyz/blog/from-polyrepo-fragmentation-to-monorepo-leverage), [InfoQ summary](https://www.infoq.com/news/2026/06/block-450-jvm-monorepo-migration/)). Yissachar Radcliffe's headline quote: *"If you can't commit to properly funding a platform team to support a monorepo, you'll probably do better with a polyrepo."* The migration ran ~18 months, required Bazel/Gradle invasive surgery, and produces ~8,800 builds/week with p90 CI of 10 minutes — i.e. it works at scale, but it costs a dedicated platform team.
-
-On the polyrepo side, the canonical 2026 examples are **Netflix** (~5,000 polyrepos, ~3,000 JVM apps, kept consistent via Nebula + Astrid + RocketCI; GOTO 2025 reported 60%+ of fleet deploys daily) and **Cloudflare** (an AI code-review system across "thousands of repositories" with composable plugins, per [blog.cloudflare.com/ai-code-review](https://blog.cloudflare.com/ai-code-review/)). Even Vercel — which sells monorepo tooling for a living — runs polyrepo internally and tells customers in [Vercel Academy](https://vercel.com/academy/production-monorepos/monorepos-vs-polyrepos): *"Choose polyrepos when… different teams, different release cycles, zero coordination."*
-
-### When polyrepo wins (2026 consensus)
-
-- Independent release cadence per package. The atomic npm/PyPI package model is the textbook case.
-- Sub-20-engineer teams. PanDev's 2026 study (n=120+) found polyrepo teams of 6-10 repos averaged **9.1 daily context switches** vs 3.2 for monorepos, but absolute productivity was higher because the cognitive overhead of monorepo CI/build-graph configuration dominates at small scale ([PanDev](https://pandev-metrics.com/docs/blog/monorepo-vs-polyrepo-impact)).
-- Polyglot fleets where each language ships to its own registry. Even Nx 21's polyglot release support (Java/Go/Rust on separate registries) is acknowledged as a workaround, not a feature ([nx.dev/blog/nx-21-release](https://nx.dev/blog/nx-21-release)).
-- Strong isolation requirements — each repo has its own auth, CODEOWNERS, branch protection.
-
-### When monorepo wins
-
-- Cross-cutting refactors across 10+ packages in a single PR. This is the genuine monorepo superpower and the reason Google/Meta keep paying for Piper/the Mercurial fork.
-- Large dedicated platform team (Block's threshold). Below that, infra rot dominates.
-- AI coding agents — monorepos give better default context for cross-cutting changes. This is the new (2025-2026) forcing function pushing some teams toward monorepos. Note that the meta-repo pattern below explicitly tries to deliver the same context to polyrepo fleets.
-- Language uniformity. JS/TS-only fleets pay much lower monorepo tax than polyglot fleets.
-
-### The hybrid (meta-repo) model — viable in 2026? Yes.
-
-The hybrid pattern now has a name. Multiple names, actually:
-
-- **meta-repo** ([mateodelnorte/meta](https://github.com/mateodelnorte/meta) — Node, established; [gitkb/meta](https://github.com/gitkb/meta) — Rust rewrite, Mar 2025)
-- **virtual monorepo**
-- **repo-of-repos** ([Rafferty Uy, May 2026](https://www.raffertyuy.com/raztype/repo-of-repos-pattern/))
-- **polyrepo synthesis** ([Rajiv Pant, Nov 2025](https://rajiv.com/blog/2025/11/30/polyrepo-synthesis-synthesis-coding-across-multiple-repositories-with-claude-code-in-visual-studio-code/))
-- **spine pattern**
-
-The shape is the same: a thin orchestration repo (manifests, docs, agent config, shared scripts) over independent repos, with `git submodule` or `meta`-style manifest-driven cloning. This is exactly what `oriz-org/oriz` already is — repos/own/\<slug\>/ submodules + shared `knowledge/` brain + shared `.staging/`.
-
-Tooling supporting this in 2026:
-
-- **Nx 21** added `nx import` explicitly as a polyrepo-to-monorepo migration tool **preserving git history** — a hedge in case the meta-repo eventually grows into a true monorepo.
-- **Turborepo 2.8** (Jan 2026) added **shared local cache across git worktrees**, explicitly targeting agentic-coding multi-branch workflows ([turborepo.dev/blog/2-8](https://turborepo.dev/blog/2-8)).
-- **moon v2.2** (Apr 2026) added a background daemon with hot in-memory workspace graph and **first-class polyrepo support** (the "moon is monorepo-only" assumption is now wrong) ([moonrepo.dev/blog/moon-v2.2](https://moonrepo.dev/blog/moon-v2.2)).
-- **Devnewsletter "Meta-Repo Pattern"** ([devnewsletter.com](https://devnewsletter.com/p/meta-repo-pattern/)) formalises the pattern as a 2026 architectural option.
-
-### Top 2026 examples
-
-**Polyrepo at scale:**
-1. Netflix (~5,000 repos, polyglot, Nebula/Astrid/RocketCI for consistency)
-2. Cloudflare (thousands of repos, AI code review system shared across them)
-3. Amazon (per-team service repos, Brazil build system)
-4. Anthony Fu's personal fleet (dozens of single-package npm repos using bumpp + changelogithub)
-5. Most of the OSS/Vercel/Astro ecosystem at the org level (per-product CI in each product repo; `.github` has only community-health files)
-
-**Monorepo at scale:**
-1. Google (Piper, 2B+ LoC, 86 TB, 9M files, 35M commits — fully custom VCS/build/search stack)
-2. Meta (Mercurial fork)
-3. Block/Cash App (recent migration, ~450 JVM services in one Bazel monorepo)
-4. Stripe (single Ruby+Go monorepo, internal Bazel-equivalent)
-5. Microsoft (Babel Git Virtual File System for the Windows source tree)
-
-**Meta-repo / hybrid:**
-1. The `mateodelnorte/meta` ecosystem itself
-2. Many startups using Turborepo on top of git submodules
-3. Various Backstage TechDocs deployments (per-service repo + Backstage portal)
-4. The `polyrepopro/polyrepo` and `gitkb/meta` communities
-5. oriz-org (this fleet)
-
-### Key tooling releases worth noting
-
-- **Nx 21.0** (May 2025): "Continuous tasks", `nx import` for polyrepo migration with history preservation.
-- **Nx 22.x** (Oct 2025 - Dec 2025): rewrote `nx release` with custom version actions for polyglot.
-- **Turborepo 2.9** (Mar 2026): ~96% faster TTFT after daemon removal; `turbo query` GraphQL stable.
-- **Turborepo 2.6** (Oct 2025): first-class microfrontend support; Bun stable.
-- **moon v2.2** (Apr 2026): background daemon, hot graph, polyrepo-first.
-
-Verdict: **the meta-repo / virtual-monorepo pattern is the 2026 right answer for oriz-org.** It's the named pattern that matches what you already have, and the new tooling (Turborepo worktree cache, moon polyrepo support, Nx import escape hatch) means you keep options open.
+| # | Question | Winner | Confidence | Why in one line |
+|---|---|---|---|---|
+| 1 | Docs site framework | **Astro Starlight 0.41+** | High | Native Content Layer + Pagefind + Astro 6 fit; only framework with first-class "remote markdown from N repos" story |
+| 2 | README aggregation | **Astro Content Layer loader + `repository_dispatch` per package + CF Pages deploy hook** | High | Build-time deterministic, sub-second freshness, no commit-back loops |
+| 3 | TypeDoc | **Skip per-repo. Run `typedoc-plugin-markdown` once at docs-site level only if public surface > ~5 exports** | High | TypeDoc maintainer himself says it's low value for small libs; JSDoc + IDE hover is enough for 100-300 LOC |
+| 4 | Changelog visibility | **Changesets per repo → CHANGELOG.md + GH Releases; aggregated `/releases` page on docs site fetched via GH API** | High | viem/wagmi/Astro/Vitest all do per-package CHANGELOG + docs-site `/releases`; nobody trusts npmjs.com as the changelog surface |
+| 5 | Search | **Pagefind** (built into Starlight, zero-config, static) | High | Sub-200 pages, no infra, no card; only switch to Algolia DocSearch if UX limits bite |
+| 6 | MDX vs MD for READMEs | **Plain GFM in README.md; MDX confined to docs site** | High | npm + GitHub render GFM only; viem/wagmi/hono/shadcn/Astro all do this |
+| 7 | Package catalog page | **Hand-curated card grid (Radix/TanStack pattern) auto-populated from a single `packages.json` in umbrella + shields.io badges** | Medium | shadcn's `registry.json` is the auto-pattern but overkill for 5-15 packages |
+| 8 | Versioned routes | **Latest-only. Link to GitHub tags for old versions.** Lucide pattern. | High | Docusaurus's own docs say "most of the time, you don't need versioning"; Starlight has no native support |
+| 9 | Knowledge → docs sync | **One-way pull**: docs site reads `knowledge/decisions/architecture/packages/*.md` from the umbrella at build time | High | OKF design is publish-once-read-many; two-way sync is unattested in 2025-2026 sources |
+| 10 | Deploy trigger | **CF Pages with `git submodule update --remote --merge` in build command + Deploy Hook URL called from each sibling's release workflow** | High | Skips git pull, no PAT roundtrip, audit trail in CF deploys panel |
 
 ---
 
-## 2. Cross-repo tooling consistency
+## 1. Docs site framework — Astro Starlight wins, but the bias is earned
 
-### The three approaches
+Six contenders evaluated: **Astro Starlight 0.41.0** (Astro 7 support, released 2026), **Nextra 4.x** (Next.js 15-only, App Router exclusive), **VitePress 1.6.x** (Vue/Vite/Vitest), **Docusaurus 3.10.1** (Meta, React/Jest/Prettier), **Fumadocs** (Next.js-native, MDX-first), and **Vocs** (wevm, used by wagmi.sh + viem.sh, tagline "Minimal Docs for Agents & Humans"). The 2026 head-to-heads ([pkgpulse.com Fumadocs vs Nextra v4 vs Starlight, 2026](https://www.pkgpulse.com/guides/fumadocs-vs-nextra-v4-vs-starlight-documentation-sites-2026); [pkgpulse 4-way, 2026-03](https://www.pkgpulse.com/guides/docusaurus-vs-vitepress-vs-nextra-vs-starlight-2026)) converge on: Starlight is the **modern Astro-native** choice, Docusaurus is the most feature-rich (multi-instance, versioning, plugin ecosystem), VitePress is fastest but MDX-weak, Nextra/Fumadocs lock you to Next.js 15, Vocs is minimal but undocumented for multi-repo aggregation.
 
-**A. Published base config packages.** `@oriz/tsconfig`, `@oriz/eslint-config`, `@oriz/biome-config`. Each repo extends via the language's native `extends` mechanism.
+The load-bearing differentiator for THIS use case ("aggregate READMEs from 5-15 sibling repos") is the **Astro Content Layer API** ([reference](https://docs.astro.build/en/reference/content-loader-reference/); [deep dive 2024-09](https://astro.build/blog/content-layer-deep-dive/)). Two existing loaders are purpose-built: `algorandfoundation/astro-github-loader` and `@larkiny/astro-github-loader` ([npm](https://www.npmjs.com/package/@larkiny/astro-github-loader)). A real reference architecture exists: [`WyattAu/starlight-sites`](https://github.com/WyattAu/starlight-sites) runs **nine Starlight docs sites + cross-site search on Cloudflare Pages** — closest reference architecture to the use case found anywhere.
 
-**B. Shared `.github` template repo + reusable workflows.** Workflow templates surface in the "New workflow" UI org-wide; reusable workflows are runtime imports (`uses: org/repo/.github/workflows/x.yml@ref`).
+Astro 6's stabilization of **live content collections** ([Astro 6 beta announcement](https://astro.build/blog/astro-6-beta/); [live content collections deep dive](https://astro.build/blog/live-content-collections-deep-dive/)) adds an optional runtime-fetch path for sub-second freshness without rebuild, though build-time loaders remain the static-friendly default.
 
-**C. Copy-paste with a sync bot.** Tools like `syncpack`, probot apps like Temper, or scripted GitHub Actions that fan out file changes to every repo.
+Docusaurus's `plugin-content-docs` is multi-instance ([docs](https://docusaurus.io/docs/docs-multi-instance)) but **has no first-class remote loader** ([thread #6086](https://github.com/facebook/docusaurus/discussions/6086); [issue #852](https://github.com/facebook/docusaurus/issues/852)). You'd glue it together with `docusaurus-plugin-remote-content` (110 stars, last v4 release ~2 years ago, [known fan-out failure mode at scale](https://github.com/RDIL/docusaurus-plugin-remote-content/issues/45)). Cross-build search is also a [known gap](https://github.com/praveenn77/docusaurus-lunr-search/issues/113). VitePress's `createContentLoader` is build-time only and MDX-weak. Nextra/Fumadocs require Next.js 15 (rules out static export + CF Pages workflow). Vocs is React+Vite minimal — beautiful (wagmi.sh, viem.sh) but no documented remote-aggregation story.
 
-### Comparing them on the 2026 evidence
+**Recommendation**: **Astro Starlight 0.41+**. The Astro 6 family default is locked, Pagefind is built-in, Content Layer is the cleanest aggregation primitive in any framework, and a real CF Pages reference architecture already exists. The only blocker would be a hard requirement for versioned docs (Starlight has none natively — see §8), which is not the case for 100-300 LOC packages.
 
-**ESLint flat config era.** ESLint 9 made `eslint.config.js` (flat config) the default; `eslintrc` is deprecated. The dominant community preset is **`@antfu/eslint-config`** — ~391.9k weekly downloads, 373 dependents, 6.17k stars, single-line consumption: `export default antfu({ typescript: true, vue: true })`. `@sxzz/eslint-config` is the credible "Antfu with Prettier instead of stylistic" alternative (v8.1.0, requires Node ≥20 + ESLint ≥9.5). Both ship a function-or-array users spread into their config ([antfu/eslint-config](https://github.com/antfu/eslint-config), [sxzz/eslint-config](https://www.npmjs.com/package/@sxzz/eslint-config), [eslint.org migrate-to-9](https://eslint.org/docs/latest/use/migrate-to-9.0.0)).
-
-**TypeScript base configs.** `tsconfig/bases` is the canonical community repo, publishing per-target packages (`@tsconfig/node-lts`, `@tsconfig/strictest`, `@tsconfig/vite-react`, etc.). TS 5.0+ supports **array-form extends**, so a single `tsconfig.json` can compose multiple bases:
-
-```jsonc
-{ "extends": ["@tsconfig/bases/strictest", "@tsconfig/bases/node18"] }
+```bash
+# Scaffold
+npm create astro@latest -- --template starlight packages-oriz-in
+cd packages-oriz-in
+npm install @larkiny/astro-github-loader
 ```
 
-The friction is near zero ([tsconfig/bases](https://github.com/tsconfig/bases/blob/main/README.md), [TS 5.0 RC announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-rc/#supporting-multiple-configuration-files-in-extends)).
+```js
+// astro.config.mjs
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
 
-**Biome v2.** Added first-class `extends` and shared-config-package support — `biome.json` now accepts an `extends` array of file paths, plus the `"//"` micro-syntax for nested configs to inherit from the workspace root, and a documented "share via package `exports`" workflow ([biomejs.dev/reference/configuration](https://biomejs.dev/reference/configuration/), [biomejs.dev/guides/big-projects](https://biomejs.dev/guides/big-projects/)). Independent 2026 reviews ([devtoolbox.blog](https://devtoolbox.blog/biome-vs-eslint-prettier-2026-2/), [toolchew.com](https://toolchew.com/en/review-biome-2/)) note Biome v2 closes the v1 blockers (multi-file analysis, type-aware rules without `tsc`, custom rules) but still lacks `import/no-cycle`, `eslint-plugin-testing-library`, and most of the ESLint plugin ecosystem. **Verdict: new projects = Biome viable; established codebases = stay on ESLint+Prettier.**
-
-**GitHub workflow templates vs reusable workflows.** Different things. Templates are scaffolding (drop YAML + `.properties.json` into `<org>/.github/workflow-templates/`; they show in the "New workflow" UI). Reusable workflows are runtime imports — and crucially, GitHub raised the limits in **November 2025 to 10 nested levels and 50 calls per run** (from 4/20), removing the historical scale objection ([github.blog 2025-11-06](https://github.blog/changelog/2025-11-06-new-releases-for-github-actions-november-2025/), [docs.github.com workflow-templates](https://docs.github.com/actions/sharing-automations/creating-workflow-templates-for-your-organization)).
-
-**Real-world examples.** The "big orgs all use reusable workflows" trope is **overstated**. Checking actual `.github` repos:
-
-- **`withastro/automation`** — Astro org does run this model. Described as "Centralized repo for GitHub actions for the `withastro` org," exposes `congratsbot.yml`, `format.yml`, etc. consumed via `uses: withastro/automation/.github/workflows/<name>.yml@<sha>` with `if: github.repository_owner == 'withastro'` gating.
-- **`vercel/.github`** and **`cloudflare/.github`** — both **minimal**: community-health files only. Per-product CI lives in each product repo. ([vercel/.github](https://github.com/vercel/.github), [cloudflare/.github](https://github.com/cloudflare/.github))
-
-So the choice is real, not a copy-the-big-co reflex.
-
-### Pick: B + A hybrid
-
-**For CI: Pattern B (a shared `oriz-org/automation` repo of reusable workflows + `oriz-org/.github` for workflow-templates and community-health files).**
-
-- One-line callers in each repo (`uses: oriz-org/automation/.github/workflows/_release.yml@main`), zero copy-paste drift, central security/perf updates apply on next push.
-- November 2025 limit increase (10/50) eliminates the scale objection.
-- Workflow templates handle "scaffold a new repo's CI"; reusable workflows handle "update CI for every existing repo".
-- The Astro org's `withastro/automation` is a working reference at exactly your scale.
-
-**For code-tooling configs: Pattern A (published base packages on npm).**
-
-- `tsconfig.json`: publish `@oriz/tsconfig` exporting `base.json`, `node.json`, `astro.json`, `library.json`. Each repo extends via TS's native array-extends. Or just adopt `@tsconfig/strictest` from the community repo and skip maintaining your own.
-- ESLint: publish `@oriz/eslint-config` exporting a flat-config function. **Decision point:** maintaining your own preset is high-effort vs adopting `@antfu/eslint-config` directly (391k weekly DLs, battle-tested, exact-match for the Astro+TS+Vue ecosystem). Recommendation: **adopt `@antfu/eslint-config` directly** and only publish a thin `@oriz/eslint-config` wrapper if/when you accumulate enough oriz-specific overrides to justify it.
-- Biome (if you adopt single-tool): publish `@oriz/biome-config` with `biome.json` exported via package `exports`, then each repo's `biome.json` does `"extends": "@oriz/biome-config/biome"`. Native v2 mechanism.
-
-**Skip Pattern C (copy-paste sync) except where unavoidable.** Copy-paste only wins when the config format genuinely doesn't support extends (rare in 2026 — tsconfig, eslint flat, biome, renovate, dependabot all support it). For version consistency across `package.json`s (where there's no `extends` equivalent), use **`syncpack`** with `versionGroups` and `snapTo`. For genuinely uncopyable files (`.editorconfig`, `LICENSE`, `CODEOWNERS`), use a probot like **Temper** ([pulseengine/temper](https://github.com/pulseengine/temper)) to push them on `repository.created`.
-
-### Concrete oriz-org blueprint
-
+export default defineConfig({
+  site: 'https://packages.oriz.in',
+  integrations: [
+    starlight({
+      title: '@oriz packages',
+      social: { github: 'https://github.com/oriz-org' },
+      sidebar: [{ label: 'Packages', autogenerate: { directory: 'packages' } }],
+    }),
+  ],
+});
 ```
-oriz-org/
-  .github/                   # community-health + workflow-templates/
-  automation/                # reusable workflows: _release.yml, _lint.yml, _deploy-cf.yml
-  tooling/                   # publishes @oriz/tsconfig, @oriz/eslint-config, @oriz/biome-config
-  renovate-config/           # default.json + lib.json + app.json
-```
-
-Each consumer repo:
-- `.github/workflows/release.yml` — 10 lines, `uses: oriz-org/automation/.github/workflows/_release.yml@main`.
-- `tsconfig.json` — `"extends": ["@oriz/tsconfig/base", "@tsconfig/strictest"]`.
-- `eslint.config.js` — `import antfu from '@antfu/eslint-config'; export default antfu({ ... })`.
-- `.github/renovate.json` — `{ "extends": ["github>oriz-org/renovate-config"] }`.
-- Optional: `syncpack.config.json` snapping to versions in `@oriz/tooling`'s `peerDependencies`.
 
 ---
 
-## 3. Cross-repo release coordination
+## 2. README aggregation — Content Layer loader + repository_dispatch + CF Deploy Hook
 
-### Tool survey (verified June 2026)
+Five candidate patterns: (a) git submodules, (b) GitHub Actions cron, (c) build-time `fetch()` of `raw.githubusercontent.com`, (d) authenticated GitHub API at build, (e) `repository_dispatch` from sibling repos. Each has a different failure profile.
 
-**Changesets** — README tagline is "A tool to manage versioning and changelogs **with a focus on monorepos**." But the docs explicitly include a "single-package repository" section, and single-package mode writes git tags as `v1.0.0` (vs `pkg-name@version-number` in monorepos). Works fine in polyrepo, but the value prop (cross-package fixed/linked version groups, intent-capture across many packages in one PR) **doesn't apply** to a fleet where each package lives in its own repo. Adopting it across 30 single-package repos means contributors must create a `.changeset/*.md` file per PR for zero inter-package coordination payoff. Currently v3 in development; stable usage is v2 ([changesets/changesets README](https://github.com/changesets/changesets/blob/main/README.md), [adding-a-changeset.md](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md)).
+**Submodules** ([Coordinated Polyrepo Pattern, ITNEXT 2025](https://itnext.io/coordinated-polyrepo-pattern-managing-multiple-git-repositories-with-submodules-1610d6ee857a)): lowest-tech, but the rebuild-trigger story is weakest — pins drift, recursive clones slow past 50 submodules, you only rebuild when *you* bump the pin. **GH Actions cron + commit-back** ([Hugo on Cloudflare guide](https://gohugo.io/host-and-deploy/host-on-cloudflare/)): eventually-consistent (1-N hour lag), commit-back loops can trip `[skip ci]` infinite-rebuild guards. **`raw.githubusercontent.com` fetch** ([Astro Markdown guide](https://docs.astro.build/en/guides/markdown-content/); [`natemoo-re/astro-remote`](https://github.com/natemoo-re/astro-remote)): no caching layer, IP-based rate limit that shared CI runners can trip. **GitHub API**: 60 req/hr unauth (fails beyond 5 repos), 5000 req/hr with PAT (fine for ≤100 repos but secrets management required). **`repository_dispatch`** ([peter-evans/repository-dispatch v4](https://github.com/peter-evans/repository-dispatch); [GitHub events docs](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)): sub-second from sibling push to docs build start; only fires on default branch; concurrent dispatches → wasted concurrent builds.
 
-**semantic-release** — designed single-repo single-package, and that's its sweet spot. But the model is **"every qualifying push to main publishes immediately"**, which a May 2026 Hazya post calls "anxious automation": five `fix:` commits in a row = five npm releases ([blog.hazya.dev](https://blog.hazya.dev/why-i-swapped-semantic-release-for-release-please)). A 2026 MakerStack review explicitly recommends release-please or Changesets over semantic-release for new projects ([makerstack.co](https://makerstack.co/reviews/semantic-release-review/)). The "monorepo story is not great" is well-documented — but for polyrepo, the real disqualifier in 2026 is the push-to-main-and-pray model and lack of PyPI support.
+The winning shape combines build-time fetch with externally-triggered rebuild. Astro's Content Layer is the substrate ([loader reference](https://docs.astro.build/en/reference/content-loader-reference/)); two production-grade loaders already exist: [`chenasraf/github-repos-astro-loader`](https://github.com/chenasraf/github-repos-astro-loader) (caches via Astro 5 content store mtime/ETag) and [`gingerchew/astro-github-file-loader`](https://github.com/gingerchew/astro-github-file-loader) (cleanest "pull README from sibling repo" implementation). The Algorand foundation's [`awesome-algorand/starlight-github-loader`](https://github.com/awesome-algorand/starlight-github-loader) extends `docsLoader()` with Octokit fan-out — a direct template for this exact use case.
 
-**release-please** (`googleapis/release-please-action@v4`) — **the polyrepo winner for 2026.** Minimum config is one GitHub Action step with `release-type: node` (or `python`, `simple`, `rust`, `go`, `php`, `ruby`, `java`, `maven`, `dart`, `elixir`, `helm`, `terraform-module` — ~15 ecosystems). It opens and maintains a "Release PR" that updates `CHANGELOG.md` and bumps `package.json` from conventional commits; merging the Release PR creates the tag + GitHub Release, which triggers your `npm publish` (or `pypi-publish`) job. **Critically: it's the only first-party tool with native npm AND PyPI support via the same `release-type` switch** ([release-please-action README](https://github.com/googleapis/release-please-action), [release-please customizing.md](https://github.com/googleapis/release-please/blob/main/docs/customizing.md)).
+**Failure modes to design against**:
+1. **Rate limits**: use a PAT scoped to `metadata: read` on `oriz-org/*` repos; 5000 req/hr handles 15 repos × build with margin.
+2. **Schema drift**: permissive zod schemas; reject malformed remote markdown with a clear log line, don't fail the whole build.
+3. **Race on concurrent dispatch**: CF Pages free tier = 1 concurrent build ([CF Pages limits](https://developers.cloudflare.com/pages/platform/limits/)); subsequent dispatches queue. Acceptable for 5-15 packages, NOT acceptable past 50.
+4. **PAT lifecycle**: fine-grained PAT belongs to a human; durable answer is a GitHub App owned by `oriz-org` ([fine-grained PAT scope guidance, peter-evans #165](https://github.com/peter-evans/repository-dispatch/issues/165)).
 
-**Anthony Fu's bumpp + changelogithub** — the ultra-lean polyrepo pattern. `bumpp` does interactive bump + commit + tag + push (defaults already correct, supports `-r/--recursive`, ~147k weekly DLs, v11.1.0 May 2026). Push triggers a GH Action on tags `v*` that runs `changelogithub` to generate the GitHub Release from conventional commits. **No Release PR, no `.changeset/` files, no semantic-release config.** Fu uses this across dozens of single-package repos ([antfu/bumpp](https://github.com/antfu/bumpp), [antfu/changelogithub](https://github.com/antfu/changelogithub)).
+**Recommendation**: Astro Content Layer loader (build-time) + each sibling repo's release workflow fires a `repository_dispatch` AND/OR calls a Cloudflare Pages Deploy Hook ([CF Pages deploy hooks docs](https://developers.cloudflare.com/pages/configuration/deploy-hooks/)). Build-time loader keeps output 100% static; dispatch gives sub-second freshness; CF Deploy Hook is the cleanest wire (no umbrella commit needed). Submodules can stay for the single-clone fleet workflow, but the docs site should not rely on submodule pins for content freshness.
 
-### Trusted publishing — the bigger 2026 story
+```yaml
+# In each package repo: .github/workflows/release.yml
+name: release
+on: { release: { types: [published] } }
+jobs:
+  notify-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger packages.oriz.in rebuild
+        run: |
+          curl -X POST "${{ secrets.PACKAGES_DEPLOY_HOOK }}"
+```
 
-**npm trusted publishing via OIDC went GA on 2025-07-31** ([github.blog changelog](https://github.blog/changelog/2025-07-31-npm-trusted-publishing-with-oidc-is-generally-available/)). Requires npm CLI v11.5.1+. Configure on npmjs.com per-package (org/repo + workflow filename + environment), give the job `id-token: write`, drop `NPM_TOKEN` entirely, run `npm publish` with no flags. **`--provenance` is no longer needed — provenance is auto-emitted on every publish** (except from private source repos). One known gap: the initial publish for a brand-new package can't use OIDC because npmjs.com requires the package to exist before you attach a trusted publisher. Workaround: `npx setup-npm-trusted-publish` (azu) publishes a dummy `0.0.0-dummy-npm` so you can attach, or do the first publish manually with a token ([npm/cli issue #8544](https://github.com/npm/cli/issues/8544)).
+```js
+// In packages-oriz-in: src/content/config.ts
+import { defineCollection, z } from 'astro:content';
+import { githubFileLoader } from '@larkiny/astro-github-loader';
 
-**PyPI trusted publishing predates npm's by two years**, works the same way, AND **lets you configure trusted publishing for a project that doesn't exist yet** — unlike npm. Pairs naturally with Sigstore attestations: same OIDC identity = publish + sign ([docs.pypi.org/trusted-publishers](https://docs.pypi.org/trusted-publishers/), [pypa/gh-action-pypi-publish](https://github.com/pypa/gh-action-pypi-publish/)).
+const PACKAGES = ['hello-npm-pkg', 'world-npm-pkg' /* ... */];
 
-Self-hosted runners not supported on either side yet.
-
-### Pick: release-please + trusted publishing
-
-**Primary: release-please + npm/PyPI trusted publishing.**
-
-Rationale:
-1. **One tool covers npm AND PyPI** via `release-type: node | python | simple`. The fleet is locked Astro+TS but you've explicitly planned PyPI packages too — release-please is the only first-party tool with parity.
-2. **PR-based, not push-based.** With ~20-35 repos, a flurry of `fix:` commits across multiple repos won't surprise-publish 20 patch versions. Each repo accumulates a Release PR you merge when ready. Matches the "no aggressive auto-publish" preference seen in the 2026 industry shift.
-3. **No secrets to fan out.** Trusted publishing means you configure each package's publisher on npmjs.com / PyPI once; `NPM_TOKEN` and `PYPI_API_TOKEN` disappear. With 30 repos, token rotation across that surface was the operational tax that justifies switching.
-4. **Free automatic provenance** on every npm publish; Sigstore attestations on every PyPI wheel, both signed by the same GitHub OIDC identity.
-5. **Maintained by Google**, used across the entire googleapis org for npm AND PyPI repos — battle-tested at scale you'll never approach.
-
-Each repo gets two files:
-- `.github/workflows/release-please.yml` — opens/maintains Release PR on push to main.
-- `.github/workflows/publish.yml` — fires on the tag created when the Release PR merges; runs build/test, then `npm publish` (no `--provenance`, no `NODE_AUTH_TOKEN`) or `pypa/gh-action-pypi-publish@release/v1` (no `password`). Both jobs need `id-token: write`.
-
-Both files should be ~10 lines, calling reusable workflows in `oriz-org/automation`.
-
-**Fallback: Anthony Fu's bumpp + changelogithub for ultra-lean repos.** If a package is tiny, ~1 release/month, single author, no PyPI: skip release-please's overhead. Local `npm run release` runs bumpp, pushes a tag, a GH Action runs changelogithub + publish.
-
-**Skip Changesets and semantic-release** for this fleet. Changesets is monorepo-coordination kit you don't need; semantic-release's push-to-main-and-pray + no-PyPI is two strikes against.
-
-**Cross-cutting baseline (every repo, regardless of pick):**
-- `commitlint` + `@commitlint/config-conventional` on `commit-msg` hook (husky).
-- `commitizen` as optional `pnpm cz` shortcut for contributors.
-- For first-publish on new npm packages: bootstrap with `npx setup-npm-trusted-publish`.
+export const collections = {
+  packages: defineCollection({
+    loader: githubFileLoader({
+      owner: 'oriz-org',
+      repos: PACKAGES,
+      path: 'README.md',
+      ref: 'main',
+      token: import.meta.env.GITHUB_TOKEN,
+    }),
+    schema: z.object({ title: z.string().optional() }).passthrough(),
+  }),
+};
+```
 
 ---
 
-## 4. Renovate config sharing
+## 3. TypeDoc — skip per-repo, run once at docs-site level if at all
 
-### Mechanism
+TypeDoc's own maintainer Gerrit0 [stated explicitly in 2023](https://github.com/TypeStrong/typedoc/issues/2310) that for simple libraries `.d.ts` + IDE hover is often enough; API-docs-only sites have "significantly lower" value. No source prescribes an LOC threshold, but the **2026 convergent evidence** for tiny packages (100-300 LOC, 1-2 public exports) is:
 
-Renovate's preset system is its `extends` array. The canonical org-wide pattern in 2026 is a **GitHub-hosted preset repo named exactly `renovate-config`** with `default.json` in the root. **Renovate's onboarding auto-discovers** `ORG/renovate-config` (or `ORG/.github` with `renovate-config.json`) and auto-injects it as the sole extended preset in the onboarding PR ([docs.renovatebot.com config-presets](https://docs.renovatebot.com/config-presets/), [renovatebot/renovate discussion #12383](https://github.com/renovatebot/renovate/discussions/12383)).
+- **JSR auto-docs kill the case for per-repo TypeDoc** ([JSR writing docs](https://jsr.io/docs/writing-docs); [Deno's JSR announcement](https://deno.com/blog/jsr-is-not-another-package-manager); [maintainer write-up](https://dev.to/fabon/publish-pure-esm-npm-package-written-in-typescript-to-jsr-4ih2)). If you publish to JSR, you get per-version API docs from JSDoc/TSDoc with zero config — modeled on godoc and docs.rs. This eliminates the GH Pages plumbing that makes per-repo TypeDoc painful.
+- **Real fleet libraries don't run per-repo TypeDoc**: viem, wagmi, hono, shadcn-ui all have docs sites that **don't show TypeDoc output**. They show hand-authored MDX pages with JSDoc-derived type signatures inlined.
+- **If you want API tables in your docs site**, the path is `typedoc-plugin-markdown` ([umbrella project](https://github.com/typedoc2md/typedoc-plugin-markdown)) feeding `starlight-typedoc` ([HiDeoo/starlight-typedoc](https://github.com/HiDeoo/starlight-typedoc)) — one toolchain pass over all packages at docs-build time, not per-repo.
 
-Consumer repos write `.github/renovate.json` (use `.github/` so it sits with other CI config):
+TypeDoc earns its place when (a) public surface > ~5 exports per package, OR (b) types are complex enough that hover-on-IDE doesn't communicate the contract, OR (c) you want type-aware doc cross-linking. None of those describe a 100-300 LOC single-purpose package.
+
+**Microsoft's `@microsoft/api-extractor`** ([npm, v7.58.9 2026-04](https://www.npmjs.com/package/@microsoft/api-extractor)) solves a **different problem** (`.d.ts` rollup, API review reports, breaking-change detection) — pair it with TypeDoc/`api-documenter` only if you need that surface.
+
+**Recommendation**: For tiny `@oriz/*` packages, the default is **zero TypeDoc**. Write a 5-line JSDoc on each exported symbol; IDE hover does the rest. If a single package grows past ~5 exports or starts shipping breaking changes, add `starlight-typedoc` at the docs-site level for that one package — not as a global rule.
+
+---
+
+## 4. Changelog visibility — Changesets per repo + aggregated `/releases` page on docs site
+
+The 2026 narrative is settled. **Changesets** ([levelup, intentional releases](https://levelup.gitconnected.com/intentional-releases-why-chose-changesets-over-semantic-release-9d16d693540b); [polyglot monorepo write-up](https://luke.hsiao.dev/blog/changesets-polyglot-monorepo/)) wins for any setup with more than one published package. **semantic-release** is "set and forget" but couples release timing to commits, removing intent. **release-please** (Google) is the PR-based middle ground ([release-please-action](https://github.com/googleapis/release-please-action)).
+
+Real-library evidence — all use Changesets, all per-package `CHANGELOG.md`, **none aggregate across repo boundaries**:
+- [Astro core CHANGELOG.md](https://github.com/withastro/astro/blob/main/packages/astro/CHANGELOG.md) — PRs filed by `astrobot-houston`, canonical Changesets release-bot pattern. Every integration (`@astrojs/node`, etc.) has its own CHANGELOG.
+- [viem CHANGELOG.md](https://github.com/wevm/viem/blob/main/src/CHANGELOG.md) + [viem CONTRIBUTING](https://github.com/wevm/viem/blob/main/.github/CONTRIBUTING.md) — documents Changesets workflow verbatim.
+- [wagmi CHANGELOG.md](https://github.com/wevm/wagmi/blob/main/packages/core/CHANGELOG.md) — same pattern, same maintainer.
+- **Vitest's three-surface solution** ([blog](https://vitest.dev/blog/vitest-4); [`/releases` page](https://main.vitest.dev/releases); [GH Releases mirror](https://github.com/vitest-dev/vitest/releases)): docs-site `/releases` page + major-version blog posts + GH Releases tag mirror. The CHANGELOG.md is **not the user-facing surface** — the docs site is.
+
+**Cross-cutting observation**: nobody trusts npmjs.com as the changelog surface. Every major library links *away* from npm to a docs `/releases` page, blog post, or GH Releases tab. None ship a `homepage` → changelog deeplink in `package.json`.
+
+The aggregation gap is interesting: even wevm (viem + wagmi, same maintainer, same org) doesn't cross-link changelogs. The `oriz-org` opportunity is to fill that gap with a single `packages.oriz.in/releases` page that fans out across all 5-15 repos via GitHub Releases API.
+
+**npm publishing**: 2025-2026 best practice is **OIDC trusted publishers** ([npm docs](https://docs.npmjs.com/trusted-publishers/); [GitHub staged publishing blog 2026-05](https://github.blog/changelog/2026-05-22-staged-publishing-and-new-install-time-controls-for-npm/)) — no long-lived `NPM_TOKEN` in secrets. Wire all three release tools (Changesets/semantic-release/release-please) to this.
+
+**Recommendation**: Changesets per repo → CHANGELOG.md + GH Releases (auto-created by `changesets/action`). Astro Content Layer loader on `packages.oriz.in` fetches `https://api.github.com/repos/oriz-org/{slug}-npm-pkg/releases` at build time, renders an aggregated `/releases` page sorted by date. Mirror Vitest's three-surface pattern.
+
+```yaml
+# In each package repo: .github/workflows/release.yml
+name: release
+on: { push: { branches: [main] } }
+permissions: { contents: write, id-token: write, pull-requests: write }
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, registry-url: 'https://registry.npmjs.org' }
+      - run: npm ci
+      - uses: changesets/action@v1
+        with: { publish: npm run release }
+        env: { GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
+```
+
+---
+
+## 5. Search — Pagefind (built into Starlight, free, static, no card)
+
+Five candidates evaluated. For a small docs site (5-15 packages, ~50-200 pages total) the math is overwhelming:
+
+- **[Pagefind](https://pagefind.app/)**: fully static, builds at site-build time, no infra, no hosting. **Ships built-in with Starlight zero-config** ([Starlight site search docs](https://starlight.astro.build/guides/site-search/)). Designed to scale to large sites with minimal bandwidth. This is the answer.
+- **[Algolia DocSearch](https://docsearch.algolia.com/docs/docsearch-program/)**: free for OSS/technical blogs ([eligibility, 2026-06](https://docsearch.algolia.com/docs/who-can-apply/)) but **requires application + crawler config + 1-2 business-day manual review** if automated check fails. Switch only if Pagefind UX becomes a genuine limit.
+- **[Meilisearch](https://www.meilisearch.com/pricing)**: **no permanently-free Cloud tier** in 2026 — only 14-day trial (no card). Self-host is free OSS but adds infra. Overkill for 50-200 pages.
+- **[Orama](https://github.com/oramasearch/orama)**: full-text + vector + hybrid in <2kb; runs in browser/edge. Free OSS. Worth it only if you want **semantic search** inside docs (which is not a need for 5-15 atomic packages).
+- **VitePress built-in**: MiniSearch-based local search, config one-liner ([reference](https://vitepress.dev/reference/default-theme-search)). Not relevant since the framework pick is Starlight.
+
+**Recommendation**: **Pagefind**, enabled by default in Starlight. Zero config. Re-evaluate only if (a) indexed content crosses 1MB+, (b) you need typo-tolerance Pagefind can't match, (c) you want analytics on search queries. Algolia DocSearch is the only realistic upgrade target.
+
+---
+
+## 6. MDX vs MD — plain GFM in README, MDX confined to docs site
+
+[npm renders README as GitHub Flavored Markdown via GitHub's API](https://docs.npmjs.com/about-package-readme-files) ([confirmed 2020](https://github.blog/changelog/2020-11-30-npm-uses-github-flavored-markdown/)). **No MDX pipeline**. Even GFM admonitions still lag on npm ([npm/documentation #1240](https://github.com/npm/documentation/issues/1240)). If your README is MDX, components fail to render on both GitHub and npm package pages.
+
+The 2026 idiom across major libraries is unanimous — short, plain GFM README in repo root, MDX only in docs-site:
+
+- [viem repo](https://github.com/wevm/viem) — 64% TS / 36% MDX, **all MDX in `site/`**.
+- [wagmi repo](https://github.com/wevm/wagmi) — same split, `site/.vitepress/`.
+- [hono repo](https://github.com/honojs/hono) — plain README, zero MDX in repo; docs at hono.dev are separate.
+- [shadcn-ui repo](https://github.com/shadcn-ui/ui) — 6-line stub README pointing at ui.shadcn.com/docs; MDX confined to `apps/v4/`.
+- [Astro repo](https://github.com/withastro/astro) — plain README; docs in a **separate `withastro/docs` repo** (strongest separation).
+
+[claylo.dev "Markdown Cosplay" (2026-03)](https://claylo.dev/articles/markdown-cosplay/) makes the case: "MDX breaks the contract. Not sometimes. Every time. By design." Data stays in Markdown; interactivity stays in the rendering layer.
+
+The lowest-friction "README also appears as docs page" mechanism is VitePress's `<!--@include: ./path/README.md-->` ([VitePress markdown guide](https://vitepress.dev/guide/markdown)). Starlight requires a custom content loader (see [withastro/starlight #1257](https://github.com/withastro/starlight/discussions/1257)) — exactly what the Pattern §2 loader already does. Docusaurus is awkward (import-wrapper pages or stale `docusaurus-plugin-includes`).
+
+**Recommendation**: README.md is **plain GFM, ~50-100 lines**: badges, tagline, install command, one-paragraph rationale, one usage snippet, link to `packages.oriz.in/<slug>`. MDX with `<Aside>`, `<Tabs>`, interactive demos lives **only** in the docs site, hand-authored per-package or generated from the README via the Content Layer loader. Match the viem/wagmi/Astro idiom verbatim.
+
+```md
+<!-- in each package repo: README.md -->
+# @oriz/<slug>
+
+![npm](https://img.shields.io/npm/v/@oriz/<slug>)
+![bundle](https://img.shields.io/bundlephobia/minzip/@oriz/<slug>)
+![license](https://img.shields.io/npm/l/@oriz/<slug>)
+
+One-line tagline. Atomic. Tree-shakeable. Zero deps.
+
+## Install
+
+```bash
+npm install @oriz/<slug>
+```
+
+## Usage
+
+```ts
+import { thing } from '@oriz/<slug>';
+thing();
+```
+
+## Docs
+
+Full docs at https://packages.oriz.in/<slug>
+```
+
+---
+
+## 7. Package catalog page — hand-curated card grid auto-populated from `packages.json`
+
+Two dominant 2026 patterns surveyed:
+
+**Hand-curated card grid** — [Radix Primitives](https://www.radix-ui.com/primitives) renders each primitive as a tile (name + short description); [TanStack](https://tanstack.com/start/v0/docs/framework/react/quick-start) has a sidebar "All Libraries" with categorized list (Start, Router, Query, DB, Store…). Both are hand-curated; metadata lives in the docs repo.
+
+**Auto-populated registry** — [shadcn registry-index](https://ui.shadcn.com/docs/registry/registry-index) ([2025-09 changelog](https://ui.shadcn.com/docs/changelog/2025-09-registry-index); [getting started](https://ui.shadcn.com/docs/registry/getting-started); [discussion #6357](https://github.com/shadcn-ui/ui/discussions/6357)) defines `registry.json` at each repo root; the CLI consumes it. Overkill for 5-15 atomic packages, but interesting if `@oriz/*` becomes a 50+ package fleet.
+
+[Vercel AI SDK](https://github.com/vercel/ai) takes a third route: README of the umbrella repo lists subpackages with short descriptions — classic "manual catalog in README" pattern. [viem.sh](https://viem.sh/) and [wagmi.sh](https://wagmi.sh/react/guides/viem) treat their docs site as single-package marketing pages with feature grids; viem+wagmi cross-link but don't co-publish a catalog.
+
+**Badges** — [shields.io](https://shields.io/) is the de-facto choice ([npm-version badge](https://shields.io/badges/npm-version); [GitHub repo](https://github.com/badges/shields)). Self-hosting is supported. Use shields over npm's own badge service.
+
+**Recommendation**: hybrid. Maintain a single `packages.json` at the umbrella docs site root with `{ slug, title, tagline, category, status }` per package. At build time, fetch live metadata (latest version, install command, repo link, license, weekly downloads) from npm + GitHub APIs via Astro Content Layer. Render as a card grid (Radix/TanStack style). 5-15 entries is small enough that hand-maintaining `packages.json` is trivial. Skip shadcn-style `registry.json` until you hit 50+ packages.
 
 ```json
-{ "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>oriz-org/renovate-config"] }
+// packages.oriz.in/src/data/packages.json
+[
+  { "slug": "hello", "title": "@oriz/hello", "tagline": "Atomic greet utility", "category": "string", "status": "stable" },
+  { "slug": "world", "title": "@oriz/world", "tagline": "Atomic world utility", "category": "string", "status": "beta" }
+]
 ```
 
-Deprecation watch:
-- **`config:base` is deprecated** since v36 (June 2023). Use `config:recommended`. Old configs auto-migrate but new ones shouldn't reference it ([PR #21136](https://github.com/renovatebot/renovate/pull/21136)).
-- **The npm-hosted preset path** (`renovate-config-<name>`, `@scope/renovate-config`) is **also deprecated**. The docs explicitly recommend `local`/`github>` presets. Don't publish your Renovate config to npm.
-- **Filename `renovate.json` inside the preset repo is deprecated** — use `default.json` instead.
+```astro
+---
+// packages.oriz.in/src/pages/index.astro
+import packages from '../data/packages.json';
 
-The "kitchen-sink" preset in 2026 is **`config:best-practices`** = `config:recommended` + `docker:pinDigests` + `helpers:pinGitHubActionDigests` + `:pinDevDependencies` + `abandonments:recommended` + `security:minimumReleaseAgeNpm` + `:maintainLockFilesWeekly`. Strong starting point.
-
-For library vs app distinction:
-- `config:js-lib` = `config:recommended` + `:pinOnlyDevDependencies` (pins devDeps, ranges on runtime deps).
-- `config:js-app` = `config:recommended` + `:pinAllExceptPeerDependencies` (pins everything).
-
-### Runner: Mend Renovate vs self-hosted vs Dependabot
-
-Three Mend offerings in 2026:
-- **Mend Renovate Community Cloud** — free, hosted by Mend, supports GitHub/Bitbucket Cloud/Azure DevOps. 1 concurrent job, 4-hour scheduling, 30 min job timeout.
-- **Community Self-Hosted** — free, AGPL, run your own container.
-- **Enterprise** — paid, more concurrency, Smart Merge Control, support.
-
-For oriz-org's no-card posture: the free **Mend Renovate Community Cloud app** is the right answer. Self-hosting adds infra cost for zero benefit at your scale ([mend.io/renovate](https://www.mend.io/renovate/)).
-
-**Dependabot vs Renovate, 2026:** Renovate supports 90+ ecosystems vs Dependabot's ~30, has Dependency Dashboard, automerge, lockFileMaintenance, full DSL scheduling, shareable presets — Dependabot has none of these. But Dependabot is GitHub-native, MIT, zero-install, and **its GHSA security alerts are surfaced natively in the GitHub UI** ([Renovate Bot comparison](https://docs.renovatebot.com/bot-comparison/), [Safeguard.sh 2026](https://safeguard.sh/resources/blog/dependabot-vs-renovate-operational-experience)).
-
-**The 2026 consensus hybrid:** Renovate for app/library deps, Dependabot for `github-actions` only (because the GHSA UI is genuinely better there). This is the pattern called out by multiple 2026 writeups.
-
-### Pinning vs ranges for atomic packages
-
-Renovate's official recommendation, reaffirmed in 2026:
-- **Apps** (web apps, Node apps, not `require()`'d): pin everything. Maximises reproducibility; auto-update via Renovate PRs.
-- **Browser / dual-target libraries published to npm**: keep SemVer ranges (`^`) for `dependencies` (consumer dedup), pin `devDependencies`.
-- **Node-only libraries**: may pin all (duplication cost is lower in Node).
-- **Use a lock file regardless** — it locks the transitive tree even with ranges.
-
-Renovate auto-detects this via `rangeStrategy=auto`: pins only if `private: true` or no `main`/`exports` field. Override per-repo with `rangeStrategy: "pin"` or `:preserveSemverRanges` ([docs.renovatebot.com/dependency-pinning](https://docs.renovatebot.com/dependency-pinning/)).
-
-### Pick: GitHub-hosted preset repo + `lib`/`app` variants
-
-Create `oriz-org/renovate-config` with three files at the root:
-
-**`default.json`** — applies to everything:
-
-```jsonc
-{
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices",
-    ":semanticCommits",
-    ":maintainLockFilesWeekly"
-  ],
-  "timezone": "Asia/Kolkata",
-  "schedule": ["before 5am on monday"],
-  "labels": ["dependencies"],
-  "prConcurrentLimit": 5,
-  "minimumReleaseAge": "7 days",
-  "packageRules": [
-    { "matchUpdateTypes": ["patch", "pin", "digest"], "automerge": true, "automergeType": "branch" },
-    { "matchDepTypes": ["devDependencies"], "matchUpdateTypes": ["minor"], "automerge": true },
-    { "matchManagers": ["github-actions"], "groupName": "GitHub Actions", "pinDigests": true }
-  ]
-}
+const enriched = await Promise.all(packages.map(async (p) => {
+  const npm = await fetch(`https://registry.npmjs.org/@oriz/${p.slug}`).then(r => r.json());
+  return { ...p, version: npm['dist-tags']?.latest, npmUrl: `https://npmjs.com/package/@oriz/${p.slug}` };
+}));
+---
+<div class="grid">
+  {enriched.map(p => (
+    <a href={`/${p.slug}`} class="card">
+      <h3>{p.title}</h3>
+      <p>{p.tagline}</p>
+      <code>npm i @oriz/{p.slug}</code>
+      <span class="badge">v{p.version}</span>
+    </a>
+  ))}
+</div>
 ```
-
-**`lib.json`** — for atomic npm packages:
-
-```jsonc
-{
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>oriz-org/renovate-config", ":pinOnlyDevDependencies"]
-}
-```
-
-**`app.json`** — for apps (Astro sites under `repos/own/<slug>/`):
-
-```jsonc
-{
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>oriz-org/renovate-config", ":pinAllExceptPeerDependencies"]
-}
-```
-
-Library repos extend `github>oriz-org/renovate-config:lib`, app repos extend `:app`.
-
-**Run on Mend Renovate Community Cloud (free).** Keep Dependabot enabled in each repo for `github-actions` only.
-
-**Commit lock files everywhere** — including libraries. Belt-and-braces.
 
 ---
 
-## 5. Docs platform
+## 8. Versioned docs — latest only, no `/v1` `/v2` routes
 
-### Candidate landscape (verified June 2026)
+[Docusaurus's own versioning docs (2026-04)](https://docusaurus.io/docs/versioning) say verbatim: **"Most of the time, you don't need versioning."** The [migration guide for versioned sites](https://docusaurus.io/docs/migration/v2/versioned-sites) reinforces that versioned bundles balloon repo size and complicate updates. The [HN thread on versioned docs (May 2025)](https://news.ycombinator.com/item?id=44109895) is blunter: "Adding versioned docs exponentially increases complexity and makes updating/reading harder. Lose/lose for [small projects]."
 
-| Platform | Stars | Weekly DL | Framework | Search | Multi-version | TS API | Astro fit | Cost |
-|---|---|---|---|---|---|---|---|---|
-| **Starlight** | 8.7k | 441k | Astro v7 | Pagefind (built-in) + Algolia opt | Plugin (early) | `starlight-typedoc` | **Native** | Free |
-| **VitePress** | 13.9k | 500-600k | Vue/Vite | minisearch + Algolia opt | Plugin | typedoc-vitepress-theme | High friction | Free |
-| **Nextra 4** | n/a | 100-113k | Next.js App Router | Pagefind | Manual | None built-in | Very high friction | Free |
-| **Fumadocs** | 11.2k | 537k | React/Next.js | Orama (default) | Manual | **First-class built-in** | Very high friction | Free |
-| **Docusaurus 3** | ~57k | n/a | React/Webpack→Rspack | Algolia DocSearch | **Native, best-in-class** | `docusaurus-plugin-typedoc` | Separate React app | Free |
-| **MkDocs Material** | ~21k | n/a | Python | lunr.js client | `mike` (external) | None (Python-native) | Python tax | Free + $15/mo Insiders |
-| **Mintlify** | n/a | n/a | Proprietary SaaS | AI proprietary | Native (coarse) | OpenAPI only | Off-stack | $0 OSS / $150 / $550 / Enterprise |
+Real evidence:
+- **[Lucide](https://lucide.dev/guide/)** hit v1.0 ([guide/version-1](https://lucide.dev/guide/version-1)); docs site is **single-version**, with a dedicated "What's new in v1" page rather than `/v0` + `/v1` routes. [GitHub releases](https://github.com/lucide-icons/lucide/releases) is the version-history surface.
+- **[TanStack](https://tanstack.com/start/v0/docs/framework/react/quick-start)** uses `/start/v0/` — versioning-from-day-one for a framework expected to break before v1. Different problem class.
 
-### Notes on each
+**Starlight has no native versioning** ([discussion #957](https://github.com/withastro/starlight/discussions/957) still open as of Nov 2023+); community workarounds via [`starlight-utils` multi-sidebar](https://stackoverflow.com/questions/77876604/how-to-create-multi-version-documentation-site-with-startlight-and-astro) and a "version your Starlight documentation" plugin in the [official plugin list](https://starlight.astro.build/resources/plugins/). Fragile.
 
-**Astro Starlight.** `@astrojs/starlight@0.41.0` (June 2026), 8.7k stars, ~441k weekly DLs. Maintained by Astro core (delucis + HiDeoo, who was promoted to Astro Core specifically for Starlight). Built-in search is **Pagefind** (zero-config, no API key, offline). Optional drop-in swap to Algolia DocSearch via official `@astrojs/starlight-docsearch`. Notable users: **Cloudflare Developer Docs** (after migrating from Docusaurus 2, reported **316% faster startup** — [kian.org.uk](https://kian.org.uk/making-cloudflare-docs-faster-by-300-percent/)), WP Engine Atlas, Patchstack, Astro's own docs. **Weakness: multi-version docs is NOT native** — community `starlight-versions` plugin (HiDeoo, ~90 stars, "early development") fills the gap. **`starlight-typedoc`** (HiDeoo, 0.21.5 Nov 2025, ~27.3k weekly DL) is the canonical TS API path: thin wrapper over TypeDoc + typedoc-plugin-markdown.
-
-**VitePress.** v1 stable, v2 still alpha (`v2.0.0-alpha.17`, Mar 2026). 13.9k stars, ~500-600k weekly DLs. Built-in search is **minisearch** (client-side). Ships Vue 3 runtime — high friction in an Astro+React shop. Mature, good DX, but it's the wrong framework for you.
-
-**Nextra 4.** Jan 2025 rewrite, App Router only. 100-113k weekly DL. Uses Pagefind (replaced FlexSearch). Requires a full Next.js app. Very high friction.
-
-**Fumadocs.** ~11.2k stars, ~537k weekly DL, v16 Oct 2025, **fastest-growing docs framework in 2025-2026** (~3× YoY). Differentiator: **first-class TypeScript API generation + OpenAPI + Twoslash built in**. Default search is Orama. Requires React/Next.js — wrong framework for you, but worth noting it's where the TS-API-built-in trend is heading.
-
-**Docusaurus 3.** Meta, Sébastien Lorber. **The only platform with first-class native per-instance versioning** (`docusaurus docs:version <X>` snapshots into `versioned_docs/`) and **multi-instance plugin support** (one `@docusaurus/plugin-content-docs` per package — this is the textbook polyrepo aggregator pattern). Search is Algolia DocSearch official. TypeScript via community `docusaurus-plugin-typedoc`. Mature, but a separate React/Rspack app outside the Astro fleet.
-
-**MkDocs Material.** squidfunk, ~21k stars, MIT + sponsorware "Insiders" tier at $15+/mo. Client-side lunr.js search. Versioning via external `mike`. Used by FastAPI, Pydantic. Python toolchain — meaningful friction for a TS shop, though the Insiders sponsorship is no-card-friendly (one-time prepaid possible).
-
-**Mintlify.** Paid SaaS, proprietary hosting + AI search + OpenAPI auto-API-ref. Free OSS tier exists on application. Paid Pro ~$150/mo, Growth ~$550/mo, Enterprise custom. Used by Anthropic, Cursor, Resend, Perplexity — top-tier polish. **Violates your no-card-on-file rule** unless on OSS tier, and even that locks you into Mintlify-hosted infrastructure (off your CF Pages / GitHub Pages baseline).
-
-### TypeScript API generation in 2026
-
-**TypeDoc** v0.28.19 (Apr 2026), 8.4k stars, ~4.26M weekly DL, 1,061 dependents. Still pre-1.0 after 12 years but monthly cadence, supports TS 5.0.x-6.0.x. **No serious replacement has emerged.** Every doc framework's TS pipeline consumes TypeDoc output ([TypeStrong/typedoc](https://github.com/TypeStrong/typedoc)).
-
-**typedoc-plugin-markdown** v4.12.0 (Jun 2026), ~2.3M weekly DL. Outputs CommonMark/GFM/MDX with companion themes for Docusaurus, VitePress, GitHub Wiki ([typedoc-plugin-markdown.org](https://typedoc-plugin-markdown.org/)).
-
-**API Extractor** (Microsoft, v7.58.9 Jun 2026, ~4.91M weekly DL) — for `.d.ts` rollups + API-review gating. **Complementary, not a substitute** for doc sites. Add it only if you need `.d.ts` rollups or API-review gating for a stable library.
-
-### Search infrastructure
-
-**Pagefind** — fully static, Rust+WASM, can full-text search a 10k-page site with <300 kB total payload. Critically: **multi-site/cross-domain search via `mergeIndex` API** ([pagefind.app/docs/multisite](https://pagefind.app/docs/multisite/)) — canonical fit for "one search box across N polyrepo docs sites." CORS required. Built by CloudCannon, now independent.
-
-**Algolia DocSearch** — **still free in 2026** for open developer docs + technical blogs (broadened beyond OSS-only since 2023). Application is automated; manual review takes 1-2 business days. Free tier requires "Search by Algolia" logo. If you don't qualify, self-host the crawler on Algolia paid (free tier caps at 10k records) ([docsearch.algolia.com/docs/who-can-apply](https://docsearch.algolia.com/docs/who-can-apply)).
-
-### Deployment shape — where the docs site lives
-
-For a polyrepo where each package is in its OWN repo, three patterns exist in 2026:
-
-**Pattern A — single aggregator docs site that pulls markdown from each package repo at build time.** Docusaurus multi-instance plugins, `mkdocs-multirepo-plugin`, or scripted GitHub Actions. The aggregator clones each package repo at build time, ingests `docs/`, builds one site.
-
-**Pattern B — per-repo docs site + portal index.** Each repo's docs deploys to `<pkg>.docs.oriz.in`; a thin aggregator at `docs.oriz.in` is just a landing page with links. Backstage TechDocs does this at Spotify scale (5,000+ entity docs sites).
-
-**Pattern C — git submodules for pinned-version aggregation.** The umbrella's `docs/` submodules each package's `docs/`. Works but pins are surgical.
-
-### Pick: Astro Starlight per repo + thin aggregator with Pagefind `mergeIndex`
-
-**Why Starlight:**
-- Locked stack is Astro+React+Tailwind+shadcn. Starlight is the **only** option that composes natively — zero-JS default, accepts React islands, shares your Astro+Tailwind toolchain, hosts on CF Pages / GitHub Pages for free.
-- Maintained by Astro core team. Fastest-growing in 2026. **Cloudflare-grade production proof point** (the migration was the canonical "moved off Docusaurus" case study).
-- The two weaknesses (no native versioning, no native multi-package aggregation) are both addressable.
-
-**Deployment: Pattern B (per-repo Starlight + thin aggregator portal).**
-
-- Each package repo has a `/docs/` directory built by Starlight, deployed to `<pkg>.docs.oriz.in` (CF Pages from each repo).
-- A thin aggregator portal at `docs.oriz.in` (another Starlight site) provides:
-  - Landing page with package cards.
-  - **Cross-package search** via Pagefind's `mergeIndex` API — each repo deploys its own Pagefind bundle; the aggregator merges them client-side.
-- No build-time clone-everything required. Each repo is independent. Releases are independent.
-
-**Why not the single-aggregator pattern (A)?** It requires the aggregator to clone every package repo at build time — a build-time coupling that defeats the polyrepo isolation you locked. Pattern B keeps each repo's docs deployable on its own.
-
-**Search: Pagefind** (not Algolia DocSearch). Three reasons:
-1. Starlight ships it zero-config, no application friction, no API key, no card.
-2. `mergeIndex` is the cleanest 2026 polyrepo "one search bar across N independent repos" pattern.
-3. Keeps the "self-hosted on CF Pages/GitHub Pages, no third-party deps" posture intact.
-
-Revisit Algolia DocSearch only if you grow past ~10k pages on a single site and Pagefind UX starts dragging.
-
-**TS API: TypeDoc + typedoc-plugin-markdown + starlight-typedoc.** The only well-trodden Starlight path. Add `@microsoft/api-extractor` later only if you need `.d.ts` rollups or API-review gating.
-
-**Versioning: defer.** With a ship-at-HEAD posture (the donations-only / no-Pro / no-enterprise-support pattern from the locked rules), per-version docs is premature. When a package hits its first breaking change with downstream consumers asking for the old docs:
-- Option 1: `starlight-versions` plugin (community, early dev).
-- Option 2: git-tag branches deployed to `<pkg>.docs.oriz.in/v1/`, `v2/`.
-- Option 3: re-evaluate Docusaurus for that one package only (its versioning is best-in-class).
+**Recommendation**: latest only. For 100-300 LOC packages with `0.x` semver, the version churn is too rapid to maintain `/v0` `/v0.1` `/v0.2` routes; for `1.x+` packages, breaking changes should be rare enough that `git checkout v1.2.3 && cat README.md` is the right escape hatch. Document the latest API; narrate breaking changes in a "Migration" section per package. Lucide pattern. Revisit only if (a) any single package hits multiple major versions in production use, (b) old API surface is needed without git checkout.
 
 ---
 
-## 6. Migration cost — what if the polyrepo turns out wrong?
+## 9. Knowledge bundle integration — one-way pull from `knowledge/` to docs site
 
-If the polyrepo posture fails and you need a single monorepo, the 2026 cost picture (per [Block's published migration](https://engineering.block.xyz/blog/from-polyrepo-fragmentation-to-monorepo-leverage), [monorepovspolyrepo.com migration cost](https://monorepovspolyrepo.com/migration-cost/), and [tskulbru.dev migration writeup](https://tskulbru.dev/posts/migrating-microservices-to-a-monorepo/)) is:
+**[OKF (Open Knowledge Format)](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing)** is real and fresh — Google Cloud announced it ~June 2026 ([spec on GitHub](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md); [Marie Haynes explainer](https://www.mariehaynes.com/okf/); [SEJ coverage](https://www.searchenginejournal.com/google-cloud-announces-the-open-knowledge-format/579253/)) as "an open standard for agent-readable knowledge as directories of markdown files." This is exactly the format `oriz`'s `knowledge/` bundle follows.
 
-- **JS/TS-only fleet:** **a weekend**. `nx import` (Nx 21+, May 2025) explicitly preserves git history per-package. Run `nx import <each repo>` into a fresh monorepo, wire `nx.json`/`package.json`, port reusable workflows to a single `.github/workflows/`, decommission individual repos (archive, don't delete — keep the URL pinned for old npm tarballs that reference them via `repository`).
-- **Per-repo CI rewrite:** **1-2 days total** (the reusable workflows you already have map cleanly to a single `affected` matrix).
-- **Productivity dip post-cutover:** **4-8 weeks** (everyone relearning where files live, build graph debugging, CI cache warmup).
-- **Bazel learning curve (if you go Bazel rather than Nx):** **3-6 months**. Skip Bazel — Nx is the right choice for a JS+Python fleet of this size.
-- **Block's migration of ~450 polyglot JVM services took 18 months and a dedicated platform team.** Your fleet is ~20-35 atomic JS+Python packages, not 450 JVM services. The migration is not in the same universe of complexity.
+OKF's design is **publish-once-read-many** — one source of truth (the `knowledge/` bundle), N consumers (docs site, LLM agents, human readers). Two-way sync between code repo and knowledge repo is **unattested in 2025-2026 sources**. The [OneUptime documentation aggregation guide (Jan 2026)](https://oneuptime.com/blog/post/2026-01-30-documentation-aggregation/view) and the [Starlight multi-instance discussion](https://github.com/withastro/starlight/discussions/956) both favor one-way pull (umbrella reads from sources).
 
-**Net:** the migration is **a 1-2 week effort with a 4-8 week productivity dip**, fully recoverable via `nx import` history preservation. This is the precise reason the polyrepo bet is cheap to reverse — your downside is bounded.
+**Complementary conventions**:
+- **[AGENTS.md](https://github.com/agentsmd/agents.md)** — open spec, README-for-agents. [OpenAI Codex adopted it](https://developers.openai.com/codex/guides/agents-md); reference example in [openai/codex/AGENTS.md](https://github.com/openai/codex/blob/main/AGENTS.md). [2026 best practices template (Augment Code)](https://www.augmentcode.com/guides/how-to-build-agents-md). Lives at repo root, instructions for coding agents.
+- **[llms.txt](https://presenc.ai/research/state-of-llms-txt-2026)** — plain-text root file with curated summary + links for LLM crawlers. **Counterpoint** ([Cameron Rye's "Nobody Uses It"](https://rye.dev/blog/llms-txt-standard-elegant-solution-nobody-using/)): ~10% adoption across 300k domains as of mid-2025; no major LLM provider (OpenAI, Anthropic) auto-fetches it. **Decision**: implementing it costs nothing — use [`starlight-llms-txt`](https://github.com/delucis/starlight-llms-txt) plugin — but don't expect crawler-side magic.
 
-**Counter-cost (lock-in to polyrepo):** ongoing 5-15% tax on cross-cutting refactors (versioning N packages atomically requires N PRs in N repos, not one). The meta-repo pattern + shared tooling (sections 2-4 above) closes most of this gap. AI coding agents (Claude Code with the meta-repo at `oriz-org/oriz` as the root) close the rest.
+The clean 2026 split for `@oriz/*`:
+1. **`AGENTS.md`** at each repo root → instructions for coding agents.
+2. **`knowledge/`** OKF bundle in the umbrella repo → durable facts.
+3. **`llms.txt`** at `packages.oriz.in` root via `starlight-llms-txt` → public-facing agent index.
 
-The "polyrepo with meta-repo orchestration + shared tooling" bet is the **right default for 2026 at your scale**, with a clean escape hatch if scale changes the math.
+**Recommendation**: One-way **pull from `knowledge/decisions/architecture/packages/*.md`** into the docs site at build time via an Astro Content Layer loader (same pattern as §2 but reading from the local filesystem, since umbrella already submodules itself). Each package repo does **not** push to `knowledge/` — the umbrella owns its own facts. Per-package facts that are needed (status, category, position in fleet) come from the umbrella's `packages.json` (§7), which can itself be auto-generated from `knowledge/decisions/architecture/packages/*.md` if desired.
+
+```js
+// packages.oriz.in/src/content/config.ts (snippet)
+import { glob } from 'astro/loaders';
+
+export const collections = {
+  knowledge: defineCollection({
+    loader: glob({
+      pattern: '**/*.md',
+      base: '../knowledge/decisions/architecture/packages', // umbrella-relative path
+    }),
+    schema: z.object({
+      slug: z.string(),
+      status: z.enum(['stable', 'beta', 'archived']),
+      // ...
+    }),
+  }),
+};
+```
 
 ---
 
-## Sources
+## 10. Deploy at `packages.oriz.in` — CF Pages + submodules + Deploy Hook
 
-### Polyrepo vs monorepo
+[CF Pages free tier limits (canonical)](https://developers.cloudflare.com/pages/platform/limits/): **1 concurrent build, 500 builds/month, 20-min timeout, 20k files/site**. For 5-15 packages × ~10 releases/month each = 50-150 docs rebuilds/month, well within budget. Free tier is sufficient.
 
-- https://www.faros.ai/blog/monorepo-vs-polyrepo-benchmark-data
-- https://hivecore.dev/blog/monorepo-vs-polyrepo/
-- https://pandev-metrics.com/docs/blog/monorepo-vs-polyrepo-impact
-- https://engineering.block.xyz/blog/from-polyrepo-fragmentation-to-monorepo-leverage
-- https://www.infoq.com/news/2026/06/block-450-jvm-monorepo-migration/
-- https://monorepovspolyrepo.com/migration-cost/
-- https://tskulbru.dev/posts/migrating-microservices-to-a-monorepo/
-- https://cacm.acm.org/research/why-google-stores-billions-of-lines-of-code-in-a-single-repository/
-- https://netflixtechblog.com/towards-true-continuous-integration-distributed-repositories-and-dependencies-2a2e3108c051
-- https://blog.cloudflare.com/ai-code-review/
-- https://vercel.com/academy/production-monorepos/monorepos-vs-polyrepos
-- https://devnewsletter.com/p/meta-repo-pattern/
-- https://github.com/mateodelnorte/meta
-- https://rajiv.com/blog/2025/11/30/polyrepo-synthesis-synthesis-coding-across-multiple-repositories-with-claude-code-in-visual-studio-code/
-- https://www.raffertyuy.com/raztype/repo-of-repos-pattern/
+**Submodules on CF Pages**: works, but the [canonical Stack Overflow answer](https://stackoverflow.com/questions/72786625/deploying-repos-with-submodules-using-cloudflare-pages) and [CF community thread](https://community.cloudflare.com/t/pages-build-error-failed-error-occurred-while-updating-repo-submodules/356890) make the constraint clear: **`.gitmodules` URLs must be relative** to the parent repo so CF's parent-repo auth flows down. Absolute `https://github.com/...` URLs trigger an HTTPS-auth prompt CF can't answer. Verify `oriz-org/oriz` uses relative paths already.
 
-### Monorepo tooling releases
+**Trigger pattern** — three viable shapes, ranked:
 
-- https://nx.dev/blog/nx-21-release
-- https://nx.dev/blog/nx-21-continuous-tasks
-- https://turborepo.dev/blog/2-9
-- https://turborepo.dev/blog/2-8
-- https://turborepo.dev/blog/2-6
-- https://moonrepo.dev/blog/moon-v2.2
+1. **CF Deploy Hook from sibling release workflow** (best). Each sibling repo's `release.yml` `curl`s a stored hook URL ([CF Pages deploy hooks docs](https://developers.cloudflare.com/pages/configuration/deploy-hooks/); [introducing blog post](https://blog.cloudflare.com/introducing-deploy-hooks-for-cloudflare-pages/)). CF Pages clones the umbrella, runs build with `git submodule update --remote --merge` to pick up latest sibling commits, deploys. **No PAT, no umbrella commit, audit trail in CF deploys panel.**
+2. **`repository_dispatch` to umbrella** ([peter-evans/repository-dispatch v4](https://github.com/peter-evans/repository-dispatch)). Umbrella has `on: repository_dispatch` workflow that bumps submodule pointer + pushes. Triggers CF Pages via git push. Adds a commit per release; useful if you want the umbrella git history to record sibling releases.
+3. **CF Pages cron via GH Actions** ([Hugo CF guide](https://gohugo.io/host-and-deploy/host-on-cloudflare/)). Scheduled workflow calls deploy hook hourly/daily. Worst freshness (1-N hour lag) but zero coupling between sibling repos and umbrella.
 
-### Cross-repo tooling consistency
+**Strategic context**: [CF is folding Pages into Workers Builds](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) ([2026 migration guide on DEV](https://dev.to/rickcogley/cloudflare-pages-vs-workers-in-2026-migration-guide-ka7)). Pages still works but is in maintenance mode. For a new docs site starting mid-2026, **Workers Builds + static assets** is the forward-compatible target; same submodule + deploy-hook story applies.
 
-- https://registry.npmjs.org/@antfu/eslint-config
-- https://github.com/antfu/eslint-config
-- https://www.npmjs.com/package/@sxzz/eslint-config
-- https://eslint.org/docs/latest/use/migrate-to-9.0.0
-- https://github.com/tsconfig/bases/blob/main/README.md
-- https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-rc/#supporting-multiple-configuration-files-in-extends
-- https://biomejs.dev/reference/configuration/
-- https://biomejs.dev/guides/big-projects/
-- https://devtoolbox.blog/biome-vs-eslint-prettier-2026-2/
-- https://toolchew.com/en/review-biome-2/
-- https://docs.github.com/actions/sharing-automations/creating-workflow-templates-for-your-organization
-- https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows
-- https://github.blog/changelog/2025-11-06-new-releases-for-github-actions-november-2025/
-- https://github.com/withastro/automation
-- https://github.com/vercel/.github
-- https://github.com/cloudflare/.github
-- https://github.com/JamieMason/syncpack
-- https://syncpack.dev/
-- https://github.com/pulseengine/temper
+**Recommendation**: CF Pages (or Workers Builds) project pointed at `oriz-org/oriz` umbrella repo. Build command: `git submodule update --init --remote --merge && cd docs && npm ci && npm run build`. Output: `docs/dist`. Custom domain: `packages.oriz.in` (CNAME to CF). Generate a Deploy Hook URL, store in each sibling repo as `secrets.PACKAGES_DEPLOY_HOOK`, fire from `release.yml` (snippet in §2). Verify `.gitmodules` uses relative paths.
 
-### Release coordination
+```bash
+# CF Pages build settings
+# Build command:
+git submodule update --init --remote --merge && cd docs && npm ci && npm run build
+# Build output directory: docs/dist
+# Root directory: (empty)
+# Env vars: GITHUB_TOKEN=<fine-grained PAT, metadata:read on oriz-org/*>
+```
 
-- https://github.com/googleapis/release-please-action
-- https://github.com/googleapis/release-please/blob/main/docs/customizing.md
-- https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md
-- https://changesets-docs.vercel.app/detailed-explanation.html
-- https://blog.hazya.dev/why-i-swapped-semantic-release-for-release-please
-- https://makerstack.co/reviews/semantic-release-review/
-- https://www.pkgpulse.com/guides/semantic-release-vs-changesets-vs-release-it-release-2026
-- https://oleksiipopov.com/blog/npm-release-automation/
-- https://github.blog/changelog/2025-07-31-npm-trusted-publishing-with-oidc-is-generally-available/
-- https://docs.npmjs.com/trusted-publishers/
-- https://github.com/npm/cli/issues/8544
-- https://docs.pypi.org/trusted-publishers/
-- https://github.com/pypa/gh-action-pypi-publish/
-- https://github.com/antfu/bumpp
-- https://github.com/antfu/changelogithub
+```
+# .gitmodules in oriz-org/oriz (verify all entries are relative)
+[submodule "repos/own/hello-npm-pkg"]
+    path = repos/own/hello-npm-pkg
+    url = ../hello-npm-pkg
+[submodule "repos/own/world-npm-pkg"]
+    path = repos/own/world-npm-pkg
+    url = ../world-npm-pkg
+```
 
-### Renovate / Dependabot
+---
 
-- https://docs.renovatebot.com/config-presets/
-- https://docs.renovatebot.com/key-concepts/presets/
-- https://docs.renovatebot.com/presets-config/
-- https://docs.renovatebot.com/dependency-pinning/
-- https://docs.renovatebot.com/bot-comparison/
-- https://github.com/renovatebot/renovate/blob/main/docs/usage/config-presets.md
-- https://github.com/renovatebot/renovate/blob/main/docs/usage/dependency-pinning.md
-- https://github.com/renovatebot/renovate/discussions/12383
-- https://www.mend.io/renovate/
-- https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/customizing-dependency-updates
-- https://github.blog/news-insights/product-news/a-faster-way-to-manage-version-updates-with-dependabot/
-- https://github.com/SpotOnInc/renovate-config
-- https://github.com/miccy/renovate-config
-- https://jsonic.io/guides/dependabot-vs-renovate
-- https://safeguard.sh/resources/blog/dependabot-vs-renovate-operational-experience
-- https://www.even.li/posts/2026-03-07-use-exact-versions/
-- https://github.com/nodejs/package-maintenance/blob/main/docs/dependency-management-guidelines.md
+## File tree (target shape)
 
-### Docs platforms
+```
+oriz-org/oriz/                                    # umbrella repo
+├── AGENTS.md
+├── README.md
+├── CLAUDE.md
+├── knowledge/
+│   ├── index.md
+│   ├── decisions/
+│   │   └── architecture/
+│   │       └── packages/
+│   │           ├── hello.md                      # OKF concept: @oriz/hello
+│   │           └── world.md                      # OKF concept: @oriz/world
+│   ├── rules/
+│   └── runbooks/
+├── repos/
+│   └── own/
+│       ├── hello-npm-pkg/                        # submodule → oriz-org/hello-npm-pkg
+│       │   ├── AGENTS.md
+│       │   ├── README.md                         # plain GFM, ~80 lines
+│       │   ├── CHANGELOG.md                      # changesets-generated
+│       │   ├── .changeset/
+│       │   ├── src/
+│       │   └── package.json
+│       └── world-npm-pkg/                        # submodule → oriz-org/world-npm-pkg
+└── docs/                                         # packages.oriz.in source
+    ├── astro.config.mjs                          # Astro 6 + Starlight 0.41+
+    ├── src/
+    │   ├── data/
+    │   │   └── packages.json                     # hand-curated fleet manifest
+    │   ├── content/
+    │   │   ├── config.ts                         # Content Layer loaders
+    │   │   └── docs/
+    │   │       ├── index.mdx
+    │   │       └── packages/                     # one MDX per package, mostly auto
+    │   └── pages/
+    │       ├── index.astro                       # catalog page (cards)
+    │       └── releases.astro                    # aggregated /releases
+    └── package.json
+```
 
-- https://starlight.astro.build/
-- https://starlight.astro.build/guides/site-search/
-- https://github.com/withastro/starlight
-- https://github.com/HiDeoo/starlight-versions
-- https://github.com/HiDeoo/starlight-typedoc
-- https://www.npmjs.com/package/starlight-typedoc
-- https://kian.org.uk/making-cloudflare-docs-faster-by-300-percent/
-- https://vitepress.dev/guide/what-is-vitepress
-- https://nextra.site/
-- https://the-guild.dev/blog/nextra-4
-- https://fumadocs.dev/
-- https://www.fumadocs.dev/docs/comparisons
-- https://docusaurus.io/docs/versioning
-- https://docusaurus.io/docs/docs-multi-instance
-- https://squidfunk.github.io/mkdocs-material/
-- https://mintlify.com/pricing
-- https://typedoc.org/
-- https://github.com/TypeStrong/typedoc
-- https://api-extractor.com/
-- https://typedoc-plugin-markdown.org/
-- https://pagefind.app/
-- https://pagefind.app/docs/multisite/
-- https://docsearch.algolia.com/docs/who-can-apply
-- https://backstage.io/docs/features/techdocs/
-- https://www.pkgpulse.com/guides/docusaurus-vs-vitepress-vs-nextra-vs-starlight-2026
+---
+
+## Adversarial verification — claims that survived 2-of-3 challenge
+
+- **"Astro Starlight is the right pick"** — verified across 3 independent 2026 comparison articles (pkgpulse 4-way, pkgpulse 3-way, starterpick). All converge.
+- **"CF Pages auto-inits submodules"** — verified by Stack Overflow + CF community thread + Hugo CF guide. All require relative URLs in `.gitmodules`.
+- **"TypeDoc is overkill for tiny packages"** — verified directly from TypeDoc maintainer's own statement (TypeStrong/typedoc#2310) + JSR launch blog + practitioner write-up.
+- **"Pagefind is enough"** — verified: ships in Starlight, used by Nextra v4 too, no infra. Algolia DocSearch eligibility doc confirms application is required (a friction point Pagefind avoids).
+- **"llms.txt is cheap but cosmetic"** — verified by counterpoint piece (Cameron Rye) + adoption stats (~10%). Survives because the cost of shipping it is near-zero.
+
+## Claims that did NOT survive
+
+- Initially considered: "submodules are the rebuild trigger". Refuted by ITNEXT polyrepo pattern article — submodule pins drift, weakest trigger story. Replaced with Deploy Hook from sibling release.
+- Initially considered: "Meilisearch free tier is sufficient". Refuted by Meilisearch's own pricing page — no permanent free Cloud tier in 2026, only 14-day trial. Replaced with Pagefind.
+- Initially considered: "aggregate changelog across repos like wevm does". Refuted by source check — wevm (viem + wagmi, same maintainer) does NOT aggregate. The aggregation pattern is unattested across polyrepo boundaries; opportunity to be the first.
+
+---
+
+## Citations index (by question)
+
+| Q | Primary sources |
+|---|---|
+| 1 | [pkgpulse 3-way 2026](https://www.pkgpulse.com/guides/fumadocs-vs-nextra-v4-vs-starlight-documentation-sites-2026), [Astro Content Layer ref](https://docs.astro.build/en/reference/content-loader-reference/), [WyattAu/starlight-sites](https://github.com/WyattAu/starlight-sites), [pkgpulse 4-way](https://www.pkgpulse.com/guides/docusaurus-vs-vitepress-vs-nextra-vs-starlight-2026) |
+| 2 | [Content Layer deep dive](https://astro.build/blog/content-layer-deep-dive/), [@larkiny/astro-github-loader](https://www.npmjs.com/package/@larkiny/astro-github-loader), [awesome-algorand/starlight-github-loader](https://github.com/awesome-algorand/starlight-github-loader), [peter-evans/repository-dispatch](https://github.com/peter-evans/repository-dispatch), [CF deploy hooks](https://developers.cloudflare.com/pages/configuration/deploy-hooks/) |
+| 3 | [TypeStrong/typedoc #2310](https://github.com/TypeStrong/typedoc/issues/2310), [JSR writing docs](https://jsr.io/docs/writing-docs), [starlight-typedoc](https://github.com/HiDeoo/starlight-typedoc), [typedoc-plugin-markdown](https://github.com/typedoc2md/typedoc-plugin-markdown) |
+| 4 | [Changesets intentional releases](https://levelup.gitconnected.com/intentional-releases-why-chose-changesets-over-semantic-release-9d16d693540b), [viem CHANGELOG](https://github.com/wevm/viem/blob/main/src/CHANGELOG.md), [Vitest /releases](https://main.vitest.dev/releases), [npm trusted publishers](https://docs.npmjs.com/trusted-publishers/) |
+| 5 | [Starlight site search](https://starlight.astro.build/guides/site-search/), [Pagefind](https://pagefind.app/), [Algolia DocSearch eligibility](https://docsearch.algolia.com/docs/who-can-apply/), [Meilisearch pricing](https://www.meilisearch.com/pricing) |
+| 6 | [npm GFM rendering](https://docs.npmjs.com/about-package-readme-files), [Markdown Cosplay](https://claylo.dev/articles/markdown-cosplay/), [viem repo](https://github.com/wevm/viem), [shadcn-ui repo](https://github.com/shadcn-ui/ui) |
+| 7 | [Radix Primitives](https://www.radix-ui.com/primitives), [TanStack docs repo](https://github.com/tanstack/tanstack.com), [shadcn registry index](https://ui.shadcn.com/docs/registry/registry-index), [shields.io](https://shields.io/) |
+| 8 | [Docusaurus versioning](https://docusaurus.io/docs/versioning), [Lucide guide](https://lucide.dev/guide/), [HN versioned docs thread](https://news.ycombinator.com/item?id=44109895), [Starlight versioning discussion](https://github.com/withastro/starlight/discussions/957) |
+| 9 | [OKF Google Cloud blog](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing), [OKF SPEC.md](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md), [AGENTS.md spec](https://github.com/agentsmd/agents.md), [starlight-llms-txt](https://github.com/delucis/starlight-llms-txt), [llms.txt counterpoint](https://rye.dev/blog/llms-txt-standard-elegant-solution-nobody-using/) |
+| 10 | [CF Pages limits](https://developers.cloudflare.com/pages/platform/limits/), [CF submodule SO answer](https://stackoverflow.com/questions/72786625/deploying-repos-with-submodules-using-cloudflare-pages), [CF deploy hooks](https://developers.cloudflare.com/pages/configuration/deploy-hooks/), [CF Pages → Workers migration](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) |
+
+---
+
+*Brief produced via 5-agent parallel WebSearch fan-out + cross-source verification. 60+ URLs surveyed, ~25 cited. Confidence levels reflect convergence across independent sources.*

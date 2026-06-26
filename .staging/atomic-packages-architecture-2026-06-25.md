@@ -1,293 +1,237 @@
-# Atomic Packages Architecture — Blueprint
+# Atomic Packages — Architecture Brief
 
-> Drafted 2026-06-25. Status: **blueprint, not implementation**. Zero packages exist today and zero will be created from this brief — it is the playbook for when the first 2-app demand trigger fires.
+> **Status:** BLUEPRINT, not an action plan. Day-0 fleet has **zero `@oriz/*` packages** and ships fine without them ([`zero-in-house-packages-inline-analytics`](../knowledge/decisions/architecture/packaging/zero-in-house-packages-inline-analytics-2026-06-25.md)). This document tells the next agent **what to do when the trigger fires** ("2+ apps need the same logic, and inlining a third copy would hurt").
 >
-> Inputs: `.staging/research-npm-astro-2026.md`, `.staging/research-monorepo-docs-2026.md`. All picks below are locked from those briefs; this document only synthesizes them into an architecture and a backlog.
+> Synthesised from two June-2026 research briefs:
+> - [`research-npm-astro-2026.md`](./research-npm-astro-2026.md) — build/test/release/CI tool picks
+> - [`research-monorepo-docs-2026.md`](./research-monorepo-docs-2026.md) — docs site + aggregation
 >
-> Reverses nothing. Honors: zero-in-house-packages-inline-analytics (current), polyrepo-with-category-consolidation, fs-own-frk-split, no-auth-in-apps-or-apis, donations-only-no-pro-no-ads, fleet-owner-oriz-org, lean-by-need-not-count, build-gate-top3-must-have-defect.
+> Locked rules respected (do **not** reverse here): Astro 6 + React + Tailwind v4 + shadcn ([`framework-astro-react-tailwind-shadcn-2026-06-25`](../knowledge/decisions/architecture/frontend/framework-astro-react-tailwind-shadcn-2026-06-25.md)); polyrepo + submodules ([`workspace-flat-repos-2026-06-25`](../knowledge/decisions/architecture/infrastructure/workspace-flat-repos-2026-06-25.md), [`umbrella-as-clone-entrypoint-2026-06-25`](../knowledge/decisions/architecture/infrastructure/umbrella-as-clone-entrypoint-2026-06-25.md)); `repos/own/<slug>-npm-pkg/` + `@oriz/*` ns; concern-atomic (1 concern, 100-300 LOC, 3-5 exports); lazy-emergent (2+ app trigger); no auth in apps ([`no-auth-in-apps-or-apis-2026-06-25`](../knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md)); analytics stays inline; GH org secrets ([`github-org-level-secrets`](../knowledge/rules/security/github-org-level-secrets.md)); 6 surviving apps: `blog`, `journal`, `me`, `oriz-ncert-app`, `oriz-lore-app`, `oriz-janaushdhi-app`.
+>
+> Versions of record at time of writing (full table in research brief §0): Astro 6.4, TypeScript 5.9.2, Node 24 LTS / 22 Maintenance, Vitest 4.1, tsdown ^0.22, Tailwind v4, React 19, pnpm v10.
 
 ---
 
-## 0. One-page summary
+## 1. End state — what the fleet looks like at maturity (~6 months)
 
-The oriz fleet is **zero-in-house-packages today** (analytics inline in BaseLayout, six surviving apps each self-contained). A package only emerges when **two or more apps independently grow the same logic** and the inline-then-extract cost beats the keep-inline cost. This blueprint says nothing about when the trigger fires — only what the **shape** of that emergence is when it does.
+At maturity, **5-10 packages** in production. Floor is 0 (today), ceiling is "before you cross 10, audit for resurfacing the 23-package mistake."
 
-**Shape:**
-- One `@oriz/<concern>` package = one concern = 100-300 LOC = 3-5 exports.
-- Lives at `repos/own/<slug>-npm-pkg/` as a submodule of the umbrella; published from its own repo via OIDC trusted publishing on GitHub Actions.
-- Built with **tsdown** (ESM-only). Astro components ship as raw `.astro`/`.tsx` source (no build step) with `astro` as a peer dependency.
-- Released via **release-please** on conventional commits, kept at `0.x.y` until a real external consumer asks for stability.
-- Tested with **Vitest 3.2+** and Astro's experimental Container API.
-- Docs aggregate at **`docs.oriz.in`** (Astro Starlight) using Pagefind `mergeIndex` across each package's own `docs/` build.
-- Shared base configs: **`@oriz/tsconfig`**, **`@oriz/eslint-config`** (thin wrapper over `@antfu/eslint-config`), **`@oriz/biome-config`**, **`oriz-org/automation`** for reusable workflows, **`oriz-org/renovate-config`** for dep policy.
+Each package is a **named, versioned, MIT-licensed concern**, published to npm as `@oriz/<slug>` and source-hosted at `oriz-org/<slug>-npm-pkg/`, pulled into the umbrella as a submodule at `repos/own/<slug>-npm-pkg/`. All packages are pure-TS ESM-only by default; React/Tailwind packages isolate their framework surface to a `./react` subpath export so non-React consumers don't pull React.
 
-**Anti-shape (what we are NOT doing):**
-- No `@oriz/sdk` umbrella package. The 23-package SDK was archived 2026-06-25 — we are not re-doing that.
-- No package that exists "in case someone needs it." The build-gate-top3-must-have-defect rule extends to internal libraries: a package needs a real second consumer at the moment it is born, not a speculative one.
-- No published auth, no published India-data API client, no published analytics wrapper. These are scoped to separate projects (auth) or stay inline (analytics).
-- No private `@oriz/` packages. Everything we publish is public on npmjs.com (the alternative is a paid registry — violates the no-card rule).
+```
+oriz-org/                                       # GitHub org
+├── oriz/                                       # umbrella (this repo)
+│   ├── knowledge/                              # OKF brain
+│   ├── repos/
+│   │   ├── own/
+│   │   │   ├── tsconfig-base-npm-pkg/          # @oriz/tsconfig-base   (foundation, see §11)
+│   │   │   ├── ci-workflows/                   # reusable GHA workflows (not on npm)
+│   │   │   ├── renovate-config/                # Renovate preset      (not on npm)
+│   │   │   ├── seo-base-npm-pkg/               # @oriz/seo-base
+│   │   │   ├── footer-mega-npm-pkg/            # @oriz/footer-mega    (universal-legal section)
+│   │   │   ├── feeds-npm-pkg/                  # @oriz/feeds          (rss/atom/json generator)
+│   │   │   ├── donate-npm-pkg/                 # @oriz/donate         (BMC/GH-Sponsors/UPI footer)
+│   │   │   ├── india-format-npm-pkg/           # @oriz/india-format   (INR, Indian dates, en-IN)
+│   │   │   ├── data-loaders-npm-pkg/           # @oriz/data-loaders   (GH-Pages JSON fetch + zod)
+│   │   │   ├── status-banner-npm-pkg/          # @oriz/status-banner  (dismissible top banner)
+│   │   │   └── shadcn-presets-npm-pkg/         # @oriz/shadcn-presets (theme tokens, .css only)
+│   │   └── frk/                                # forks (not packages)
+│   └── docs/                                   # packages.oriz.in source (Starlight)
+└── packages-oriz-in/                           # OR a sibling repo — see §6
+```
 
----
+Not on this list **and never will be**: auth/login (separate project per [`no-auth-in-apps-or-apis-2026-06-25`](../knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md)); analytics (inline-only per locked rule); per-app design tokens (each app gets its own `frontend-design` pass, per [`per-app-distinctive-frontend-design`](../knowledge/rules/design/per-app-distinctive-frontend-design.md)); India-API response shapes (each API repo is self-contained, only the *fetch* helper gets shared via `@oriz/data-loaders`).
 
-## 1. End state at 6 months (sketch, ~5-10 packages)
-
-This is a **forecast**, not a plan. Each row only ships if 2+ apps independently demand it.
-
-| Pkg | Concern | Likely consumers | Why it stays small |
-|---|---|---|---|
-| `@oriz/tsconfig` | Shared TS base configs (`base`, `astro`, `library`) | Every repo | Pure config; no runtime |
-| `@oriz/eslint-config` | Flat-config wrapper over `@antfu/eslint-config` + oriz overrides | Every repo | Thin (≤30 LOC of rules) |
-| `@oriz/biome-config` | Shared `biome.json` exported via `exports` | Every repo (where Biome wins over ESLint) | Pure config |
-| `@oriz/theme` | Tailwind v4 `@theme` tokens + shared `globals.css` | All 6 apps | One CSS file; no JS |
-| `@oriz/ui` | Headless shadcn-derived components (Button, Card, Modal, Input, Dialog) shipped as raw `.tsx` + `.astro` | All 6 apps | Components only; ~10-15 in total |
-| `@oriz/layouts` | `BaseLayout.astro`, `DonationFooter.astro`, `SEOHead.astro` | All 6 apps | 3-4 components |
-| `@oriz/utils` | Pure TS helpers: `cn`, `formatDate`, `slugify`, `debounce`, `safeJSON` | Apps + other oriz pkgs | ≤200 LOC, zero deps |
-| `@oriz/seo` | `<SEOHead>` + sitemap/feed helpers | Content apps (blog, journal, me) | 1 component + 2 helpers |
-| `@oriz/india-numbers` | `formatINR`, `wordsToINR`, `numToINRWords` (lakh/crore math) | finance app + janaushdhi app + lore app | Pure TS, ~100 LOC |
-| `@oriz/donate` | `<BuyMeACoffee />`, `<UPIQR />`, `<GitHubSponsors />` | All 6 apps | 3 components; no auth |
-
-**Likely cap:** 7-10 packages. The "lean by need, not count" rule says we don't force more.
-
-**What stays inline forever** (not packaged, per zero-in-house-packages-inline-analytics):
-- Cloudflare Analytics / Clarity / PostHog / Fathom / GoatCounter / GA4 snippets — they live in `BaseLayout.astro` per app.
-- Per-app design tokens (frontend-design pass per repo) — only the **baseline** lives in `@oriz/theme`.
-- App-specific routes, content collections, and middleware.
+The fleet's centre of gravity is the **6 surviving apps** consuming the packages. If a package isn't being consumed by ≥2 apps, it shouldn't exist. The build-gate ([`fleet-strategy-build-gate-2026-06-25`](../knowledge/decisions/architecture/apps/fleet-strategy-build-gate-2026-06-25.md)) applies to packages too — only "we have 2 inlined copies and the third would hurt" creates a new package.
 
 ---
 
-## 2. Initial backlog — next 0-3 months
+## 2. Initial backlog — packages most likely to emerge first (0-90 days)
 
-These are the **5 most likely** first emergences, ranked by probability of triggering. Order is calibrated against the locked 6-app surface (blog, journal, me, oriz-ncert-app, oriz-lore-app, oriz-janaushdhi-app).
+These are the packages the **next agent should be ready to create** when the trigger fires. **Do not create them speculatively.** The trigger column names the specific event that creates ≥2 app demand.
 
-### 2.1 `@oriz/tsconfig` — base TS configs
+| # | Name | Concern | Apps that will use it | Trigger event | Est. LOC | First export shape |
+|---|---|---|---|---|---|---|
+| 1 | **`@oriz/feeds`** | Generate RSS 2.0 + Atom 1.0 + JSON Feed v1.1 from an array of items; emit `<link rel="alternate">` head tags. | `blog`, `journal`, `me`, `oriz-lore-app` | 2nd app inlines its 3rd feed format and hits an Atom date-format inconsistency vs blog. | ~200 | `generateFeeds({ items, site, ... }) → { rss, atom, json }`; `<FeedDiscovery site/>` Astro component (zero-hydration) |
+| 2 | **`@oriz/donate`** | Render the 3-rail donations footer (BuyMeACoffee + GH Sponsors + UPI deep-link with QR fallback) per [`donations-only-2026-06-25`](../knowledge/decisions/architecture/monetisation/donations-only-2026-06-25.md). UPI string is the load-bearing piece. | All 6 apps + future docs site | 3rd app needs the donations footer. Inlining the UPI string + QR + 3 buttons crosses the "fix in 6 places when amount changes" line. | ~150 | `<DonationFooter upi={...} bmc={...} sponsorsHandle={...} />` (React, in `./react` subpath); pure-TS `buildUpiLink(opts)` helper at root export |
+| 3 | **`@oriz/india-format`** | Indian number/currency/date formatters: `₹1,23,456.78` (lakh/crore comma rule), `en-IN` date, INR words ("twelve lakh twenty-three thousand…"). | `oriz-ncert-app` (textbook prices), `oriz-janaushdhi-app` (medicine prices + PPP comparisons), future finance app | `oriz-janaushdhi-app` ships INR formatting; `oriz-ncert-app` adds it for textbook prices; both reach for `Intl.NumberFormat('en-IN')` and miss the lakh-grouping subtleties differently. | ~150 | `formatINR(n) → string`; `formatINRWords(n) → string`; `formatINDate(d) → string`; tiny, pure-TS, framework-agnostic |
+| 4 | **`@oriz/seo-base`** | Astro component pack: `<SEO />`, `<OG />`, `<JsonLd />`, sitemap helper, IndexNow ping, `robots.txt` generator. Implements [`seo-three-pillars`](../knowledge/decisions/architecture/ops/seo-three-pillars.md). | All 6 apps + docs site | 2nd app duplicates the SEO head block from `blog` and the canonical-URL logic diverges. | ~250 | `<SEO title description canonical og.../>`; `<JsonLd kind="article" data={...}/>`; `siteMapEntries(items, base)` helper |
+| 5 | **`@oriz/data-loaders`** | Typed fetch helpers for the family's GitHub-Pages JSON APIs ([`github-pages-as-json-api`](../knowledge/decisions/architecture/compute/github-pages-as-json-api.md)) — `oriz-mmi-tickertape-mmi-api`, future `oriz-flow-fii-dii-api`. Zod schemas, build-time cache header passthrough, fallback chain. | `me` (lifestream dashboards), `journal` (cross-link insertions), future `oriz-stats-app` | 2nd consumer of any GitHub-Pages JSON API. The schema validation is the value, not the fetch. | ~200 | `loadJSON(url, schema, opts) → T`; per-API typed wrappers as named exports |
 
-- **Concern:** One published `tsconfig.json` family extended by every repo.
-- **Exports:** `./base.json`, `./astro.json`, `./library.json`, `./node.json`.
-- **Consumers:** all 6 apps + every future `*-npm-pkg`.
-- **Trigger:** the **moment** we add a second app that needs `strict: true` + `moduleResolution: nodenext` + the same `lib` array. We already have 6 apps — the trigger has *technically* fired; we just haven't created the package because no friction was felt yet. **Recommendation: ship this first, even before component packages.** The friction is invisible until the third drift incident.
-- **LOC:** ~40 lines of JSON across 4 files. Effectively zero runtime.
-- **Risk:** thin wrapper temptation. Resist publishing under `@oriz/` if `@tsconfig/strictest` + `@tsconfig/node-lts` already cover the surface — start by extending the community presets directly and only fork into `@oriz/tsconfig` once we have ≥3 oriz-specific overrides.
+**Hidden prerequisite (Day -1):** `@oriz/tsconfig-base` is the foundation every other package extends. It's not a "concern package" per the lazy rule — it's infrastructure. Ship it the same day the *first* concern package is created (not before; YAGNI).
 
-### 2.2 `@oriz/theme` — Tailwind v4 tokens + globals.css
-
-- **Concern:** Single CSS file with `@theme { ... }` tokens consumed by every app's `@import "tailwindcss"` block.
-- **Exports:** `./theme.css`, `./globals.css`, `./reset.css`.
-- **Consumers:** all 6 apps.
-- **Trigger:** the second time we copy-paste the same `oklch()` palette into a second app's `global.css`. With the frontend-design-pass-per-repo rule, each app diverges in *details* but shares the *baseline* (font stack, spacing scale, radius). The baseline is what gets packaged.
-- **LOC:** ~80 lines of CSS.
-- **Risk:** scope creep. Per-app palette overrides MUST stay in the app repo, not leak into `@oriz/theme`. Discipline: `@oriz/theme` exports tokens; the app's `global.css` overrides them via `--color-brand-500: ...` after the `@import "@oriz/theme/theme.css"`.
-
-### 2.3 `@oriz/ui` — headless component pack (raw `.astro` + `.tsx`)
-
-- **Concern:** ~10 components that 2+ apps need verbatim. Buttons, cards, modal, dialog, badge, input.
-- **Exports:** `./Button.astro`, `./Card.astro`, `./Modal.tsx`, `./Dialog.tsx`, `./index.ts` (barrel), `./styles.css`.
-- **Consumers:** all 6 apps. Most likely first pair: **blog + me** (both need cards + button + footer); **oriz-ncert-app + oriz-lore-app** (both need dialog + modal for content browsing).
-- **Trigger:** when the second app copies the same shadcn-derived `Button.tsx` and one of them gets a bug-fix the other doesn't. That divergence is the signal.
-- **LOC:** ~150-250 total. Each component is 15-40 LOC.
-- **Risk:** **the 23-package SDK trap.** Mitigation: ONE package, not one-per-component. Don't split `@oriz/button` from `@oriz/card`. Concern-atomicity here is "shared visual primitives", not "one component each."
-
-### 2.4 `@oriz/utils` — pure TS helpers
-
-- **Concern:** Zero-dep TS functions used across apps. `cn` (clsx wrapper), `formatDate` (Intl-based, locale=en-IN), `slugify`, `safeJSON.parse`, `debounce`, `throttle`.
-- **Exports:** `./cn`, `./date`, `./slug`, `./json`, `./fn`, `./index.ts` (barrel).
-- **Consumers:** all 6 apps + other oriz pkgs.
-- **Trigger:** when the second app needs the same `cn` helper and we feel the urge to copy the same 4 lines. The threshold here is *low* because the helper is tiny — but the visibility of "where did I write this helper last" is high.
-- **LOC:** ~100-150 total.
-- **Risk:** "this could be lodash-es." Stay disciplined: only the helpers actually used in 2+ apps make it in. We are not building a lib.
-
-### 2.5 `@oriz/india-numbers` — INR formatting + lakh/crore math
-
-- **Concern:** `formatINR(1234567)` → `"₹12,34,567"`, `numToINRWords(123456)` → `"one lakh twenty three thousand..."`, `parseINRShorthand("1.5 cr")` → `15000000`.
-- **Exports:** `./format`, `./words`, `./parse`, `./index.ts`.
-- **Consumers:** oriz-janaushdhi-app (drug prices), oriz-lore-app (story-level wealth narratives), future finance app (EMI/SIP route lives on finance.oriz.in per polyrepo-with-category-consolidation).
-- **Trigger:** the second app that needs grouping-by-2-then-3 (Indian numbering system) and we feel the urge to NPM the same 30-line helper. This is the textbook concern-atomic package.
-- **LOC:** ~150.
-- **Risk:** scope creep into "Indian utilities in general" (calendar, holidays, GST). Resist — those are separate concerns and separate packages if they ever happen.
-
-**Packages NOT in the initial backlog (deliberate):**
-- `@oriz/donate` — every app inlines `<a href="https://buymeacoffee.com/...">`. The footer is 6 lines. No package yet.
-- `@oriz/seo` — Astro's `<head>` is fine; one component per app, divergence is welcome (different schemas per app type).
-- `@oriz/eslint-config` — use `@antfu/eslint-config` directly until we have 3+ org-specific overrides.
-- `@oriz/biome-config` — wait until we commit to Biome over ESLint+Prettier across all repos. That decision isn't made.
-- `@oriz/auth` — banned per no-auth-in-apps-or-apis.
-- `@oriz/analytics` — banned per zero-in-house-packages-inline-analytics.
+What's **deliberately NOT on this list** (and the reason):
+- `@oriz/ui` / shadcn component pack — per `per-app-distinctive-frontend-design`, each app gets its own design pass. Sharing components would force a shared palette, which we explicitly rejected. (`@oriz/shadcn-presets` shipping just theme tokens stays viable but only if it emerges, not Day-1.)
+- `@oriz/analytics` — explicitly killed by [`zero-in-house-packages-inline-analytics-2026-06-25`](../knowledge/decisions/architecture/packaging/zero-in-house-packages-inline-analytics-2026-06-25.md).
+- `@oriz/auth` — explicitly killed by [`no-auth-in-apps-or-apis-2026-06-25`](../knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md). Login is a separate project.
+- `@oriz/legal-pages` — per-app legal pages are required by AdSense/Play Store; the *content* is universal and lives as an Astro snippet copy-pasted on Day-0. Only package when content drifts across 3+ apps.
 
 ---
 
 ## 3. Per-package scaffolding template
 
-Every `@oriz/*` package looks the same. The template below is the contract.
+Every `@oriz/<slug>-npm-pkg/` repo has the same shape. The next agent should `cp -r templates/npm-pkg/* repos/own/<slug>-npm-pkg/` (template will live in the umbrella's `templates/` dir on Day-N when the first package emerges).
 
-### 3.1 Repo layout
+### 3.1 Repo file tree
 
 ```
-repos/own/<slug>-npm-pkg/        # checked out by the umbrella as a submodule
-  .github/
-    workflows/
-      ci.yml                     # calls oriz-org/automation/.github/workflows/_ci.yml
-      release-please.yml         # opens/maintains the Release PR
-      publish.yml                # fires on tag push → npm publish via OIDC
-    renovate.json                # { "extends": ["github>oriz-org/renovate-config:lib"] }
-  docs/                          # Starlight site, deployed to <slug>.docs.oriz.in
-    src/content/docs/
-      index.md
-      api/                       # TypeDoc output via starlight-typedoc
-    astro.config.mjs
-    package.json
-  src/
-    index.ts                     # barrel — only re-exports
-    <concern>.ts                 # one file per concern (or one .astro/.tsx per component)
-    <concern>.test.ts            # colocated with source
-    <concern>.test-d.ts          # type-tests (optional)
-  .env.example                   # never committed with real values
-  .gitignore
-  CHANGELOG.md                   # release-please managed
-  LICENSE                        # MIT
-  README.md                      # npm-rendered; the front door
-  package.json
-  tsconfig.json
-  tsdown.config.ts               # absent for components-only packages (no build)
-  vitest.config.ts
+@oriz/<slug>-npm-pkg/
+├── .github/
+│   └── workflows/
+│       └── release.yml            # ci + release-please + publish (see §3.5)
+├── src/
+│   ├── index.ts                   # the only required entry
+│   ├── react/
+│   │   └── index.tsx              # only if package has React surface
+│   └── *.test.ts                  # colocated tests
+├── dist/                          # gitignored; built by tsdown
+├── .gitignore
+├── AGENTS.md                      # 30-line guide for any AI agent editing this repo
+├── CHANGELOG.md                   # auto-maintained by release-please
+├── LICENSE                        # MIT
+├── README.md                      # plain GFM, ~80 lines (see §3.6)
+├── package.json
+├── renovate.json                  # one-line extends (see §3.7)
+├── tsconfig.json                  # 4-line extends (see §3.3)
+├── tsdown.config.ts               # often unnecessary (smart defaults)
+└── vitest.config.ts               # see §3.4
 ```
 
-For **components-only packages** (`@oriz/ui`, `@oriz/theme`, `@oriz/layouts`): drop `tsdown.config.ts`, point `exports` at `src/` directly, set `files: ["src", "index.ts"]`.
+No `.npmignore` (the `package.json#files` whitelist replaces it). No `.changeset/` directory (we use release-please, not Changesets — see §5).
 
-### 3.2 `package.json` — TS utility shape
+### 3.2 `package.json` — canonical shape (ESM-only)
+
+Verbatim from research brief §3, adapted for `@oriz/*` namespace. Copy-paste-ready:
 
 ```jsonc
 {
-  "name": "@oriz/utils",
+  "name": "@oriz/<slug>",
   "version": "0.1.0",
-  "description": "Pure TypeScript helpers used across the oriz fleet",
+  "description": "<one line, present-tense>",
   "license": "MIT",
   "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/oriz-org/utils-npm-pkg.git"
-  },
-  "homepage": "https://utils.docs.oriz.in",
-  "bugs": "https://github.com/oriz-org/utils-npm-pkg/issues",
-  "keywords": ["oriz", "utilities"],
-  "engines": { "node": "^20.19.0 || >=22.12.0" },
-  "sideEffects": false,
-  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
+  "engines": { "node": ">=22.0.0" },
+
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./cn": {
-      "types": "./dist/cn.d.ts",
-      "default": "./dist/cn.js"
-    },
-    "./date": {
-      "types": "./dist/date.d.ts",
-      "default": "./dist/date.js"
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
     },
     "./package.json": "./package.json"
   },
-  "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "test": "vitest run",
-    "test:types": "vitest --typecheck",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint .",
-    "lint:pkg": "publint && attw --pack .",
-    "docs:dev": "astro dev --root docs",
-    "docs:build": "astro build --root docs"
-  },
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "src", "!**/*.test.*", "!**/*.spec.*"],
+  "sideEffects": false,
+
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
-  "devDependencies": {
-    "@arethetypeswrong/cli": "^0.17.0",
-    "@oriz/eslint-config": "^0.1.0",
-    "@oriz/tsconfig": "^0.1.0",
-    "publint": "^0.3.0",
-    "tsdown": "^0.22.0",
-    "typescript": "^5.9.0",
-    "vitest": "^3.2.0"
-  }
-}
-```
 
-### 3.3 `package.json` — Astro component shape (no build)
-
-```jsonc
-{
-  "name": "@oriz/ui",
-  "version": "0.1.0",
-  "type": "module",
-  "license": "MIT",
-  "keywords": ["oriz", "astro-component", "withastro"],
-  "sideEffects": ["**/*.css", "**/*.astro"],
-  "files": ["src", "index.ts"],
-  "exports": {
-    ".": "./index.ts",
-    "./Button.astro": "./src/Button.astro",
-    "./Card.astro": "./src/Card.astro",
-    "./Modal.tsx": "./src/Modal.tsx",
-    "./Dialog.tsx": "./src/Dialog.tsx",
-    "./styles.css": "./src/styles.css",
-    "./package.json": "./package.json"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oriz-org/<slug>-npm-pkg.git"
   },
+  "homepage": "https://packages.oriz.in/<slug>",
+  "bugs": "https://github.com/oriz-org/<slug>-npm-pkg/issues",
+  "funding": "https://github.com/sponsors/chirag127",
+  "keywords": ["oriz", "<slug>"],
+
+  "scripts": {
+    "build": "tsdown",
+    "check:types": "tsc --noEmit",
+    "check:exports": "attw --pack . && publint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build && pnpm check:exports && pnpm test"
+  },
+
   "peerDependencies": {
-    "astro": "^6.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "peerDependenciesMeta": {
     "react": { "optional": true },
-    "react-dom": { "optional": true }
+    "react-dom": { "optional": true },
+    "@types/react": { "optional": true }
   },
+
   "devDependencies": {
-    "astro": "^6.0.0",
+    "@arethetypeswrong/cli": "^0.18.0",
+    "@oriz/tsconfig-base": "^1.0.0",
+    "@types/react": "^19.0.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "publint": "^0.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@oriz/tsconfig": "^0.1.0",
+    "tailwindcss": "^4.0.0",
+    "tsdown": "^0.22.0",
     "typescript": "^5.9.0",
-    "publint": "^0.3.0"
+    "vitest": "^4.1.0"
   }
 }
 ```
 
-### 3.4 `tsconfig.json`
+**Drop the `./react` subpath block, the `peerDependencies` / `peerDependenciesMeta`, and React/Tailwind dev-deps** for pure-TS packages (`@oriz/feeds`, `@oriz/india-format`, `@oriz/data-loaders`).
+
+Critical details (cited research brief §3, §9, §10):
+- **ESM-only**, no `.mjs`/`.cjs` dual-publish. Node 22 LTS's native `require(esm)` removed the dual-publish tax.
+- **Exports map ordering is hard-ruled** by `publint`: `types` first, `default` last.
+- **`files` whitelist beats `.npmignore`** for safety.
+- **`sideEffects: false`** except for packages shipping CSS (use array form: `["./dist/*.css"]`).
+- **`engines.node: ">=22"`** is the 2026 floor.
+- **`publishConfig.provenance: true`** — Sigstore badge automatic.
+- **`moduleResolution: "nodenext"`** in tsconfig — never `"bundler"` for libraries.
+- **React → peer always** at `"^18 || ^19"`. **Tailwind → devDependency only, never peer.**
+
+Gate every publish on `attw --pack . && publint`. These two commands have caught more publish bugs than tests have.
+
+### 3.3 `tsconfig.json` — 4 lines, extends shared base
+
+Per-package `tsconfig.json`:
 
 ```jsonc
 {
-  "extends": "@oriz/tsconfig/library",
-  "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
-  },
+  "extends": "@oriz/tsconfig-base/tsconfig.json",
   "include": ["src/**/*"],
-  "exclude": ["**/*.test.ts", "**/*.test-d.ts", "dist", "docs"]
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.spec.ts"]
 }
 ```
 
-`@oriz/tsconfig/library` sets: `module: nodenext`, `moduleResolution: nodenext`, `target: es2022`, `strict: true`, `declaration: true`, `declarationMap: true`, `sourceMap: true`, `verbatimModuleSyntax: true`, `isolatedModules: true`.
+The shared base (lives in its own repo `@oriz/tsconfig-base`):
 
-### 3.5 `tsdown.config.ts`
-
-```ts
-import { defineConfig } from 'tsdown';
-
-export default defineConfig({
-  entry: ['src/index.ts', 'src/cn.ts', 'src/date.ts'],
-  format: ['esm'],
-  dts: true,
-  clean: true,
-  sourcemap: true,
-  treeshake: true,
-  minify: false,
-});
+```jsonc
+// @oriz/tsconfig-base/tsconfig.json
+{
+  "extends": [
+    "@tsconfig/strictest/tsconfig.json",
+    "@tsconfig/node-lts/tsconfig.json"
+  ],
+  "compilerOptions": {
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2022",
+    "lib": ["es2022"],
+    "skipLibCheck": true
+  }
+}
 ```
 
-For multi-entry packages, list every entry; tsdown auto-derives `exports` from `package.json` if the entries match the subpaths.
+Why ship a shared base (research brief §4): one bump rolls strictness across the fleet. Multi-extends (TS 5.0+) lets us compose `@tsconfig/strictest` + `@tsconfig/node-lts` cleanly. **`verbatimModuleSyntax`** protects library consumers from import elision bugs. **`erasableSyntaxOnly`** keeps the output tool-portable (no `enum`, no `namespace`, no parameter properties — so the same source compiles under tsc, swc, esbuild, oxc, and Node's strip-types).
 
-### 3.6 `vitest.config.ts`
+### 3.4 `vitest.config.ts` — tiny-lib config
 
 ```ts
 import { defineConfig } from 'vitest/config';
@@ -295,568 +239,621 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     include: ['src/**/*.test.ts'],
-    typecheck: {
-      enabled: true,
-      include: ['src/**/*.test-d.ts'],
-    },
     coverage: {
       provider: 'v8',
-      experimentalAstAwareRemapping: true,
-      reporter: ['text', 'lcov'],
       include: ['src/**/*.ts'],
-      exclude: ['src/**/*.test.ts', 'src/**/index.ts'],
+      exclude: ['src/**/*.test.ts'],
       thresholds: { lines: 80, functions: 80, branches: 75, statements: 80 },
+      reporter: ['text', 'html', 'json-summary'],
     },
   },
 });
 ```
 
-### 3.7 `.github/workflows/ci.yml`
+No `projects:` block — that's a monorepo feature; we're per-repo. Use `@vitest/coverage-v8` (parity with istanbul since Vitest 3.2). Skip browser mode for pure-TS packages; pull in `@vitest/browser-playwright` only when the package touches DOM (e.g. `@oriz/donate`'s React component).
+
+### 3.5 GitHub Actions — `release.yml`
+
+Single workflow handles CI on `push` + release-please on `push` + npm publish via OIDC on `release`. **No `NPM_TOKEN` secret** after first publish.
 
 ```yaml
-name: CI
+# .github/workflows/release.yml
+name: Release
+
 on:
-  push: { branches: [main] }
-  pull_request: { branches: [main] }
-jobs:
-  ci:
-    uses: oriz-org/automation/.github/workflows/_ci-npm.yml@main
-    with:
-      node-version: '24'
-```
+  push:
+    branches: [main]
+  release:
+    types: [published]
 
-The reusable workflow in `oriz-org/automation` does: checkout → setup-node → install → `npm run lint` → `npm run type-check` → `npm test` → `npm run build` → `npm run lint:pkg`.
-
-### 3.8 `.github/workflows/release-please.yml`
-
-```yaml
-name: Release Please
-on:
-  push: { branches: [main] }
 permissions:
   contents: write
   pull-requests: write
+  id-token: write   # npm OIDC
+
 jobs:
-  release-please:
+  ci:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
-        with:
-          release-type: node
-```
-
-### 3.9 `.github/workflows/publish.yml`
-
-```yaml
-name: Publish
-on:
-  push:
-    tags: ['v*']
-permissions:
-  contents: read
-  id-token: write
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '24'
+          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install -g npm@latest
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
-      - run: npm publish
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:types
+      - run: pnpm check:exports   # attw + publint
+      - run: pnpm test
+      - run: pnpm build
+
+  release-please:
+    if: github.event_name == 'push'
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          release-type: node
+
+  publish:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@latest          # OIDC needs npm >= 11.5.1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: npm publish --provenance --access public
 ```
 
-No `NODE_AUTH_TOKEN`. No `--provenance` (auto-emitted by OIDC). The `id-token: write` permission is what makes Trusted Publishing work.
+After the fleet hits 3+ packages, hoist the `publish` job into `oriz-org/ci-workflows/.github/workflows/npm-publish.yml@v1` and call it via `uses:` from each consumer — single source of truth across the fleet.
 
-### 3.10 First-publish bootstrap (one-time, per package)
+First-publish setup is manual (one-time per package): run `npm publish` locally with a granular token, then configure trusted publishing on npmjs.com pointing at this workflow path. Delete the token. v0.0.2+ publishes are tokenless.
 
-Trusted Publishing can't do the first publish. Two-step bootstrap:
+### 3.6 `README.md` — plain GFM, ~80 lines
 
-1. **Local first publish:** `npm publish` with a session token (`npm login` → 2-hour token).
-2. **Attach Trusted Publisher** on npmjs.com → package settings → Trusted Publisher → GitHub Actions → fill org=`oriz-org`, repo=`<slug>-npm-pkg`, workflow=`publish.yml`.
-3. From v0.1.1 onward, releases run via OIDC with zero tokens.
+Research brief §6 (docs) is emphatic: **README.md stays plain GFM** because npm + GitHub render only GFM, not MDX. The rich content lives at `packages.oriz.in/<slug>`.
 
-### 3.11 `README.md` skeleton
+````md
+# @oriz/<slug>
 
-```md
-# @oriz/<concern>
+[![npm](https://img.shields.io/npm/v/@oriz/<slug>)](https://npmjs.com/package/@oriz/<slug>)
+[![bundle](https://img.shields.io/bundlephobia/minzip/@oriz/<slug>)](https://bundlephobia.com/package/@oriz/<slug>)
+[![license](https://img.shields.io/npm/l/@oriz/<slug>)](./LICENSE)
 
-> One-sentence concern statement.
+<one-line tagline>. Atomic. ESM-only. Zero runtime deps.
 
 ## Install
 
-\`\`\`bash
-npm i @oriz/<concern>
-\`\`\`
+```bash
+pnpm add @oriz/<slug>
+```
 
-## Use
+## Usage
 
-\`\`\`ts
-import { fn } from '@oriz/<concern>';
-fn();
-\`\`\`
+```ts
+import { thing } from '@oriz/<slug>';
+thing();
+```
 
-## API
+## Docs
 
-See [<slug>.docs.oriz.in](https://<slug>.docs.oriz.in) for the full API reference.
+Full docs at <https://packages.oriz.in/<slug>>.
 
 ## License
 
-MIT
+MIT — © Chirag Singhal.
+````
+
+### 3.7 `renovate.json` — one-line extends
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["oriz-org/renovate-config"]
+}
 ```
 
-### 3.12 `.env.example`
+The preset lives at `oriz-org/renovate-config/default.json` — see research brief §7 for the full preset (auto-merges patches for `@types/*`, eslint, vitest; holds majors for dashboard approval; lockFileMaintenance weekly; Asia/Kolkata weekend schedule).
 
-Per the locked rule (per-repo `.env` + `.env.example` with hand-maintained comments + obtain-steps), every package repo has one even if it's empty:
+Mend Renovate Cloud free tier handles unlimited public + private repos. Dependabot stays on for **security alerts only** (turn off version updates to avoid duplicate PRs).
 
-```bash
-# .env.example
-# This package is library code — no runtime secrets needed.
-# If a contributor wants to publish locally:
-#   NPM_TOKEN: not required if you've configured npm Trusted Publisher and run via CI.
-#   For a local emergency publish: run `npm login` to get a 2-hour session token.
-#   Obtain steps: npmjs.com → Account → Access Tokens (granular, 7-day max).
+### 3.8 `AGENTS.md` — 30-line agent guide
+
+Each package repo also gets a tiny `AGENTS.md` at root (per research brief §9 — the AGENTS.md convention is real and adopted by OpenAI Codex among others). Template:
+
+```md
+# AGENTS.md — @oriz/<slug>
+
+This is an atomic `@oriz/*` npm package. Concern: <one sentence>.
+
+## Rules
+- ESM-only, Node ≥ 22, TypeScript strict.
+- Stay under 300 LOC src/. If you cross that line, split — don't fatten.
+- Public API in `src/index.ts`. ≤5 named exports.
+- Tests colocated, Vitest. 80% coverage floor.
+- Conventional commits. Release via release-please PR merge.
+
+## Don't
+- Add runtime dependencies without a 2-paragraph rationale in the PR.
+- Import from `@oriz/*` peers — keep packages independent.
+- Add Astro / Tailwind / Vite as deps (devDep only, build-tools).
+- Ship CSS without setting `sideEffects: ["**/*.css"]`.
+
+## Verify before publish
+- `pnpm check:types`, `pnpm check:exports` (attw + publint), `pnpm test`.
+
+Knowledge home: ../../knowledge/decisions/architecture/packages/<slug>.md.
 ```
 
 ---
 
-## 4. Consumer pattern — how an Astro app uses an `@oriz/*` package
+## 4. Consumer pattern — how an Astro 6 app uses `@oriz/*`
 
 ### 4.1 Install
 
 ```bash
-# inside repos/own/blog/
-npm i @oriz/ui @oriz/theme @oriz/utils
+# from anywhere inside the umbrella
+pnpm --filter @oriz/blog add @oriz/feeds @oriz/seo-base @oriz/donate
 ```
 
-Submodules don't change anything — each app's own `package.json` resolves from npm just like any other package.
+Each app's `package.json` lists each `@oriz/*` package at a caret range; `pnpm-lock.yaml` pins exact versions. `auto-install-peers=true` is on by default in pnpm 8+.
 
-### 4.2 Wire CSS (once, in BaseLayout)
+### 4.2 Use in `.astro` frontmatter (zero hydration)
 
-```css
-/* src/styles/global.css inside the app */
-@import "tailwindcss";
-@import "@oriz/theme/theme.css";
-
-/* Per-app overrides (frontend-design-pass-per-repo) */
-@theme {
-  --color-brand-500: oklch(0.62 0.21 286);  /* this app's accent */
-}
-
-/* Critical: scan @oriz/ui source so its Tailwind classes generate.
-   Path is relative to this file's directory. */
-@source "../../node_modules/@oriz/ui/src/**/*.{astro,tsx,jsx}";
-```
+Pure-TS packages drop into Astro frontmatter directly — frontmatter is TypeScript with top-level await (research brief §8.2):
 
 ```astro
 ---
-// src/layouts/BaseLayout.astro
-import '../styles/global.css';
-import '@oriz/ui/styles.css';
-const { title } = Astro.props;
+// src/pages/rss.xml.astro  (in oriz-blog-app)
+import { generateFeeds } from '@oriz/feeds';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const { rss } = generateFeeds({
+  site: 'https://blog.oriz.in',
+  items: posts.map(p => ({
+    title: p.data.title,
+    url: `/posts/${p.slug}`,
+    date: p.data.pubDate,
+  })),
+});
 ---
-<!doctype html>
-<html lang="en">
+{rss}
+```
+
+Zero JS shipped to the browser. Type-checked end to end.
+
+### 4.3 Use as a React island
+
+When you need an actual React component (e.g. `<DonateFooter />` with a copy-UPI-link button):
+
+```astro
+---
+// src/components/Footer.astro
+import { DonateFooter } from '@oriz/donate/react';
+---
+<footer>
+  <DonateFooter
+    upi="oriz@upi"
+    bmc="chirag127"
+    sponsorsHandle="chirag127"
+    client:visible
+  />
+</footer>
+```
+
+`client:visible` is the default hydration directive — load JS only when the footer scrolls into view. The package's `./react` subpath is the only thing that pulls React; the root `.` export stays framework-agnostic.
+
+### 4.4 Composing two packages
+
+```astro
+---
+// src/layouts/BaseLayout.astro (in any oriz app)
+import { SEO, JsonLd } from '@oriz/seo-base';
+import { formatINR } from '@oriz/india-format';
+
+const { title, description, ogImage, price } = Astro.props;
+---
+<html>
   <head>
-    <title>{title}</title>
-    <!-- inline analytics scripts stay here -->
+    <SEO title={title} description={description} og={{ image: ogImage }} />
+    {price && <JsonLd kind="product" data={{ price: formatINR(price), priceCurrency: 'INR' }} />}
   </head>
   <body><slot /></body>
 </html>
 ```
 
-### 4.3 Use components
+No new dance: packages are independent libraries imported side-by-side. The atomic discipline pays off here — `@oriz/india-format` doesn't depend on `@oriz/seo-base`, so each can release independently.
 
-```astro
----
-import { Button, Card } from '@oriz/ui';
-import Modal from '@oriz/ui/Modal.tsx';
-import { cn, formatDate } from '@oriz/utils';
----
-<Card>
-  <h2 class={cn('text-xl', 'font-bold')}>Hello</h2>
-  <p>Published {formatDate(new Date())}</p>
-  <Button>Click</Button>
-  <Modal client:visible />
-</Card>
+### 4.5 Where types flow
+
+Types are bundled inside each package's `dist/*.d.ts`, surfaced via the exports-map `types` condition. Consumers get full inference with **zero codegen, zero schema files** — the package's exported function signatures *are* the API contract. This matches the Hono RPC pattern already documented in [`hono-rpc-type-sharing`](../knowledge/decisions/architecture/compute/hono-rpc-type-sharing.md), generalized to libraries.
+
+### 4.6 Tailwind v4 styles (only relevant for `@oriz/donate`, `@oriz/status-banner`, etc.)
+
+Packages that ship Tailwind-classed components follow the **hybrid** model (research brief §10):
+
+1. Ship raw `.tsx` with classNames in source. Do **not** `@import "tailwindcss"` inside the library — that's the consumer's job.
+2. Ship a thin precompiled `./theme.css` containing only `@theme { ... }` tokens (no utilities).
+3. README documents the exact `@source` line the consumer must add.
+
+Consumer app `src/styles/global.css`:
+
+```css
+@import "tailwindcss";
+
+/* node_modules is unconditionally excluded from auto-scan in Tailwind v4.0.18+ */
+/* So consumer apps MUST explicitly opt in: */
+@source "../../node_modules/@oriz/donate/dist";
+
+/* Optional: pull in package's design tokens. */
+@import "@oriz/donate/theme.css";
 ```
 
-`client:load`, `client:visible`, etc. work across package boundaries — Astro 6 PR #14751 fixed the barrel-export hydration bug.
-
-### 4.4 No build step on the consumer for `.astro`/`.tsx`
-
-Astro's Vite reads raw source from `node_modules/@oriz/ui/src/*.astro` and compiles in the consumer. No prebuild is needed. The package ships source, not dist.
-
-### 4.5 TypeScript
-
-The app's `tsconfig.json` extends `@oriz/tsconfig/astro`. `@oriz/utils`'s `.d.ts` files are resolved automatically via the `exports.types` condition. ⌘-click on an import opens the original source thanks to `declarationMap`.
+The `@source` line is the **#1 footgun**. The package README must document it verbatim. Without it, the consumer's build produces unstyled output and the regression isn't obvious until QA.
 
 ---
 
-## 5. Versioning and release
+## 5. Versioning + release strategy
 
-### 5.1 Conventional commits — the contract
+### 5.1 Bootstrap version
 
-Every commit on `main` (or merged via PR) follows:
+Every package starts at **`0.1.0`** — not `0.0.1`, not `1.0.0`. Reasons:
+- `0.x` semver signals "API may change in minor versions" per [semver spec §4](https://semver.org/#spec-item-4).
+- `0.1.0` (not `0.0.1`) leaves headroom for patch-only releases inside the first minor.
+- The fleet's "atomic" discipline means breaking changes will land — versioning needs to absorb them without ceremony.
 
-```
-<type>(<scope>): <subject>
+### 5.2 When to go `1.0.0`
 
-[optional body]
+A package goes `1.0.0` when **all** of:
+- ≥3 apps consume it in production (not just listed in package.json — actually shipped).
+- ≥30 days without an API-shaped change (additions OK; renames/removes count).
+- README contracts are stable enough that the agent doesn't have to re-read `src/index.ts` to know the surface.
 
-[optional footer with BREAKING CHANGE: ...]
-```
+Going `1.0.0` is **not** a celebration — it's a contract. Breaking changes after 1.0 require a major bump and a migration note in `CHANGELOG.md`. Until then, every minor bump is permitted to break consumers (this is normal `0.x` discipline).
 
-Types: `feat` (minor bump), `fix` (patch), `chore`/`docs`/`refactor`/`test` (no bump), `feat!`/`fix!` or `BREAKING CHANGE:` footer (major).
+### 5.3 Release flow (per package)
 
-`commitlint` + `@commitlint/config-conventional` runs on a husky `commit-msg` hook, set up by `oriz-org/automation/.github/workflows/_setup-husky.yml` or by the repo template.
+Per research brief §5, the chosen tool is **release-please** (Apache-2.0, Google-maintained, CC-driven, human-gated). Flow:
 
-### 5.2 release-please flow
+1. Land a conventional-commit on `main` (e.g. `feat(format): add formatINRWords`).
+2. release-please opens or updates a PR titled `chore(main): release @oriz/<slug> 0.2.0` containing the version bump + CHANGELOG.md delta.
+3. Maintainer reviews and merges the PR.
+4. release-please tags `v0.2.0` and creates a GitHub Release.
+5. The `release: { types: [published] }` job runs and publishes to npm via OIDC.
 
-1. Push `feat: add formatINR` to `main`.
-2. release-please-action opens (or updates) a "release-please--branches--main" PR titled `chore(main): release 0.2.0`. It updates `CHANGELOG.md` and bumps `package.json` to `0.2.0`.
-3. Review the PR. Merge when ready.
-4. Merging the Release PR creates a `v0.2.0` tag + GitHub Release.
-5. The tag push triggers `publish.yml`, which runs `npm publish` via OIDC. Provenance auto-attaches.
+The **human gate** (step 3) is the explicit design choice over `semantic-release`. We don't want every merge to main to ship a new version.
 
-The Release PR is a **human checkpoint** — no surprise publishes. This is the key difference from semantic-release.
+### 5.4 Why not Changesets
 
-### 5.3 Initial version: `0.1.0`
+Changesets requires `.changeset/*.md` intent files per PR. Our conventional-commit discipline already does that work in the commit message; Changesets would be double-bookkeeping. Plus, it doesn't naturally produce per-repo release flows in a polyrepo (its monorepo orientation shows). Research brief §5 has the full justification.
 
-Every package starts at `0.1.0` (not `1.0.0`). `0.x.y` signals "API may change without notice." This matches the donations-only / no-paid-support posture: nobody is buying stability from us.
+### 5.5 First-publish bootstrap (one-time per package)
 
-### 5.4 When to go `1.0.0`
-
-Conditions (all must be true):
-1. At least one external (non-oriz) consumer is using the package on a published app or library.
-2. The API hasn't had a breaking change in 60 days.
-3. The docs page is complete (every export documented).
-4. `attw --pack .` and `publint` are clean.
-5. Conscious decision: "we are now promising backwards compatibility for this surface."
-
-Until then: stay on `0.x.y`. Breaking changes bump the minor (`0.2.x` → `0.3.0`), not the major.
-
-### 5.5 Internal-only packages (`@oriz/tsconfig`, `@oriz/eslint-config`, `@oriz/biome-config`)
-
-Same flow, same OIDC, but these may stay on `0.x.y` indefinitely — they only have internal consumers, and major bumps are cheap when you control all the consumers.
-
-### 5.6 Cross-package version coordination
-
-**There isn't any.** Each package is its own polyrepo. If `@oriz/ui` bumps and `@oriz/theme` is unaffected, only `@oriz/ui` ships.
-
-Cross-package internal-dep bumps (e.g., `@oriz/ui` depends on `@oriz/utils`) are handled by Renovate, which opens a PR in `@oriz/ui` when `@oriz/utils` ships a new version. Conventional commit on that PR triggers release-please.
-
-This is the polyrepo tax we accepted. Changesets would close the gap — but only inside a monorepo. We're not in a monorepo.
-
----
-
-## 6. Documentation — `docs.oriz.in` aggregator
-
-### 6.1 Per-package docs site
-
-Every `@oriz/*` package has a `docs/` directory at the repo root that is its own Astro Starlight site. It deploys to `<slug>.docs.oriz.in` (CF Pages, one CF project per repo).
-
-Structure:
-
-```
-docs/
-  src/content/docs/
-    index.md            # mirrors README.md plus deeper guide
-    guides/
-      getting-started.md
-      patterns.md
-    api/                # generated by starlight-typedoc at build time
-  astro.config.mjs      # Starlight + starlight-typedoc + Pagefind
-  package.json
+```bash
+# Locally, with a granular npm token in env
+cd repos/own/<slug>-npm-pkg/
+npm publish --access public
+# Then configure trusted publisher at npmjs.com → Package settings → Trusted Publishers
+#   - Provider: GitHub Actions
+#   - Org: oriz-org
+#   - Repo: <slug>-npm-pkg
+#   - Workflow: .github/workflows/release.yml
+#   - Environment: (blank)
+# Delete the token afterwards. Subsequent publishes are tokenless.
 ```
 
-`astro.config.mjs` registers `starlight-typedoc` pointing at `../src/index.ts`. TypeDoc + typedoc-plugin-markdown emit MDX into `src/content/docs/api/` at build time.
+---
 
-### 6.2 Aggregator at `docs.oriz.in`
+## 6. Documentation site — `packages.oriz.in`
 
-A separate repo `repos/own/docs-aggregator/` (an Astro Starlight site) at `docs.oriz.in`. It contains:
+### 6.1 Where it lives
 
-- Landing page with package cards (one per `@oriz/*`).
-- A search box backed by **Pagefind `mergeIndex`** that pulls each `<slug>.docs.oriz.in/pagefind/` bundle at client load and federates results.
-- A "Patterns" section with cross-package recipes (e.g., "Build a card list using `@oriz/ui` + `@oriz/utils`").
+**Sibling repo `oriz-org/packages-oriz-in/`** (NOT inside the umbrella), submoduled into the umbrella under `repos/own/packages-oriz-in/`. Reasons:
 
-`mergeIndex` setup (client-side):
+1. Independent deploys — docs rebuild doesn't require an umbrella commit.
+2. Cleanly fits the locked file-system convention (one repo per concern).
+3. Its build pulls READMEs from sibling package repos via Astro Content Layer loader — sibling-repo access doesn't require it to be inside the umbrella.
 
-```js
-// docs.oriz.in's search component
-import { Pagefind } from '@pagefind/default-ui';
-const pagefind = await import('/pagefind/pagefind.js');
-await pagefind.options({
-  mergeIndex: [
-    { bundlePath: 'https://utils.docs.oriz.in/pagefind/' },
-    { bundlePath: 'https://ui.docs.oriz.in/pagefind/' },
-    { bundlePath: 'https://theme.docs.oriz.in/pagefind/' },
-    // ...one entry per @oriz/* package
-  ],
-});
+### 6.2 Framework
+
+**Astro 6 + Starlight 0.41+**, deployed to Cloudflare Pages. Per research brief §1, this wins because:
+- Astro 6 is the family default (no new framework).
+- Pagefind built-in (zero search infra).
+- Astro Content Layer is the cleanest aggregation primitive — purpose-built community loaders exist (`@larkiny/astro-github-loader`).
+- Real reference architecture exists: `WyattAu/starlight-sites` runs 9 Starlight sites on CF Pages.
+
+Skip versioned routes (research brief §8) — match Lucide's "latest only + GitHub tags for history" pattern. 100-300 LOC packages don't need `/v0` `/v1` `/v2`.
+
+### 6.3 Per-package or unified?
+
+**Unified.** One Starlight site at `packages.oriz.in` with one section per package. Reasons:
+- 5-15 packages is too few for per-package subdomains; subdomain proliferation hurts SEO authority (see [`subdomain-path-based-on-category-2026-06-25`](../knowledge/decisions/architecture/branding/subdomain-path-based-on-category-2026-06-25.md) — same principle).
+- Pagefind cross-package search works only inside a single site.
+- A single `/releases` page aggregating across the fleet (research brief §4 — Vitest pattern) requires a single site.
+
+Routes:
+- `/` — catalog page (card grid, see §6.5).
+- `/<slug>/` — per-package landing (rendered from sibling repo's README via Content Layer).
+- `/<slug>/api` — TypeDoc-generated API ref **only if** package crosses 5+ exports (most won't; see research brief §3).
+- `/releases` — aggregated releases feed across the fleet (fetched from GitHub Releases API at build time).
+
+### 6.4 How packages contribute docs
+
+Per research brief §2 — Astro Content Layer loader + each sibling repo's release workflow `curl`s a Cloudflare Pages Deploy Hook URL. The flow:
+
+```
+[sibling release workflow]
+  └─ curl -X POST $PACKAGES_DEPLOY_HOOK
+       │
+       └──► [CF Pages build]
+              ├─ git clone oriz-org/packages-oriz-in --recurse-submodules
+              ├─ Astro Content Layer loader fetches READMEs from sibling repos via GitHub API
+              ├─ pnpm build
+              └─ deploy
 ```
 
-CORS must be enabled on each `<slug>.docs.oriz.in` for the aggregator's origin. CF Pages does this with a `_headers` file.
+No README symlinks. No commit-back loops. No frontmatter conventions enforced on package repos (they stay plain GFM). The docs site **pulls**; nothing **pushes** into the docs site.
 
-### 6.3 Why per-repo + aggregator, not single-site
+```ts
+// packages-oriz-in/src/content/config.ts
+import { defineCollection, z } from 'astro:content';
+import { githubFileLoader } from '@larkiny/astro-github-loader';
 
-- Single-aggregator-pulls-everything-at-build requires the aggregator to clone every repo at build time. That couples the docs site's CI to every package release — exactly the polyrepo isolation we worked to keep.
-- Per-repo docs deploy independently. A doc-only fix to `@oriz/utils` doesn't rebuild every other docs site.
-- Pagefind `mergeIndex` solves "one search across all docs" without the build-time coupling.
+const PACKAGES = [
+  'feeds-npm-pkg',
+  'donate-npm-pkg',
+  'india-format-npm-pkg',
+  'seo-base-npm-pkg',
+  'data-loaders-npm-pkg',
+];
 
-### 6.4 Defer versioning
+export const collections = {
+  packages: defineCollection({
+    loader: githubFileLoader({
+      owner: 'oriz-org',
+      repos: PACKAGES,
+      path: 'README.md',
+      ref: 'main',
+      token: import.meta.env.GITHUB_TOKEN,
+    }),
+    schema: z.object({ title: z.string().optional() }).passthrough(),
+  }),
+};
+```
 
-No `/v0/`, `/v1/` paths. We ship at HEAD. The docs always reflect latest. If/when we hit a real downstream consumer asking for old docs, evaluate `starlight-versions` (community plugin) per-package — not site-wide.
+Each sibling repo's `release.yml` ends with:
 
-### 6.5 TypeDoc threshold
+```yaml
+- name: Trigger packages.oriz.in rebuild
+  run: curl -X POST "${{ secrets.PACKAGES_DEPLOY_HOOK }}"
+```
 
-For packages with ≤20 exports: README + `index.md` is enough; skip the TypeDoc generation. For packages with >20 exports: `starlight-typedoc` is the toggle.
+`PACKAGES_DEPLOY_HOOK` is set at the **org level** ([`github-org-level-secrets`](../knowledge/rules/security/github-org-level-secrets.md)) so all sibling repos inherit it.
 
----
+### 6.5 Catalog page
 
-## 7. Migration path — day-by-day
+Hand-curated `packages.json` listing the fleet + enriched at build time with live npm version + bundle size (research brief §7):
 
-### Day 0 (today, 2026-06-25)
+```json
+// packages-oriz-in/src/data/packages.json
+[
+  { "slug": "feeds",        "title": "@oriz/feeds",        "tagline": "RSS + Atom + JSON feed generator.",        "category": "content", "status": "stable" },
+  { "slug": "donate",       "title": "@oriz/donate",       "tagline": "3-rail donation footer (BMC + GH + UPI).",   "category": "ui",      "status": "stable" },
+  { "slug": "india-format", "title": "@oriz/india-format", "tagline": "INR, en-IN date, lakh/crore formatters.",   "category": "i18n",    "status": "stable" },
+  { "slug": "seo-base",     "title": "@oriz/seo-base",     "tagline": "Astro SEO pillars: meta, OG, JSON-LD.",     "category": "seo",     "status": "stable" },
+  { "slug": "data-loaders", "title": "@oriz/data-loaders", "tagline": "Typed fetch + zod for GH-Pages JSON APIs.", "category": "data",    "status": "beta" }
+]
+```
 
-- Zero `@oriz/*` packages exist or are reserved.
-- All 6 apps work and ship independently. Analytics is inline. Components are copy-pasted across apps where they happen to overlap (which is rare — apps are still divergent enough that no real overlap is felt).
-- No `oriz-org/automation`, no `oriz-org/renovate-config`, no `oriz-org/tsconfig` repos exist yet.
+### 6.6 Knowledge bundle sync
 
-### Day 1-7
+Per research brief §9 — **one-way pull**, never two-way. The docs site reads `knowledge/decisions/architecture/packages/<slug>.md` from the umbrella (submoduled) at build time and surfaces "Architecture rationale" on each package's docs page. Each package repo does **not** push to `knowledge/`. The umbrella owns its own facts; the package repo owns its README + CHANGELOG.
 
-- Create the **tooling infrastructure** (not packages, infrastructure):
-  - `oriz-org/automation` — reusable workflows `_ci-npm.yml`, `_release-npm.yml`, `_docs-cf-pages.yml`.
-  - `oriz-org/renovate-config` — `default.json`, `lib.json`, `app.json` per research brief §4.
-  - `oriz-org/.github` — community-health files + workflow templates.
-- Switch all 6 apps to `.github/renovate.json` extending `oriz-org/renovate-config:app`.
-- Onboard the Mend Renovate Community Cloud app at the org level.
-- Enable Dependabot for `github-actions` only in each repo (security advisories).
+When a new package emerges (Day-N flow, §7.2), the agent writes both: a `knowledge/decisions/architecture/packages/<slug>.md` concept file AND the package repo. Same commit on the umbrella, separate commit on the package repo. This matches [`self-update-rule`](../knowledge/rules/agent/self-update-rule.md).
 
-This is **infrastructure, not packages.** No publish to npm yet.
+### 6.7 `llms.txt` and AGENTS.md
 
-### Day 7-14 — first package likely emerges
-
-Most likely candidate: **`@oriz/tsconfig`**. Trigger: someone notices that the 3rd app's `tsconfig.json` drifted from the first two.
-
-Steps:
-1. `gh repo create oriz-org/tsconfig-npm-pkg --public --template oriz-org/npm-pkg-template` (template repo TBD — for now, copy the scaffold from §3).
-2. Add as submodule under `repos/own/`.
-3. First-publish via local `npm publish` (Trusted Publishing can't bootstrap).
-4. Attach Trusted Publisher on npmjs.com.
-5. Open PR in each consumer app to switch `tsconfig.json` to `"extends": "@oriz/tsconfig/astro"`.
-
-### Day 14-30 — second package emerges
-
-Most likely: **`@oriz/theme`**. Trigger: the second frontend-design-pass-per-repo lands and the baseline tokens duplicate.
-
-By day 30 the fleet has 1-2 packages and a tooling infra layer. No more.
-
-### Day 30-60
-
-- `@oriz/utils` likely emerges when the 3rd `cn` copy-paste is felt.
-- `@oriz/ui` likely emerges when the first cross-app bug-fix divergence is felt (one app fixed a Button11y issue and another didn't).
-- `docs.oriz.in` aggregator goes up as soon as there are 2 packages with docs to federate.
-
-### Day 60-90
-
-- `@oriz/india-numbers` likely emerges if the janaushdhi + lore apps both ship.
-- 3-5 packages total. Cap rising slowly.
-
-### Day 90-180
-
-- Evaluate `@oriz/eslint-config` (only if `@antfu/eslint-config` overrides have accumulated to ≥3 oriz-specific rules).
-- Evaluate `@oriz/biome-config` (only if Biome vs ESLint decision lands on Biome).
-- 5-10 packages total at month 6.
-
-### What kills a candidate
-
-If a proposed package gets to "we'd extract this" but the trigger doesn't actually fire (only 1 app uses it, or the divergence between apps is wider than the shared surface), it stays inline. Inline is the default; package is the deviation.
+Cheap to ship, marginal value (research brief §9). Use `starlight-llms-txt` plugin to generate `packages.oriz.in/llms.txt` automatically. Each package repo also gets a tiny `AGENTS.md` per §3.8. This is belt-and-braces for agent-readability; no production system relies on it.
 
 ---
 
-## 8. What this does NOT solve
+## 7. Migration path — from today to maturity
 
-Out of scope for this blueprint by design:
+### 7.1 Day 0 (today, 2026-06-25)
 
-### 8.1 Auth
+State: **zero packages.** All 6 apps inline the analytics tags, the SEO head block, the donations footer, the feed XML — whatever they need. They each work fine. The umbrella has a `templates/npm-pkg/` directory that does NOT exist yet (it will be created the same day the first package emerges, not before).
 
-**Separate project entirely** (per no-auth-in-apps-or-apis). The 6 surviving apps are 100% public — no login, no account dashboard, no per-user state. If/when a future app needs auth, it goes into a separate project repo with its own auth service. No `@oriz/auth` package. No middleware integration. No shared session helpers.
+The fleet's surviving 6 apps + 1 API are independent. No shared code. This is the right starting state per the locked rules.
 
-### 8.2 India-data APIs
+### 7.2 Day 7-30 — first package emerges
 
-Each India-data API (drug prices for janaushdhi, NCERT content, etc.) is a **self-contained service** in its own repo. They don't share a client library, because:
-- Each API has its own shape, auth model, rate-limit story.
-- The total client-side surface is tiny (1-3 endpoints per API).
-- A "@oriz/india-data-clients" umbrella is exactly the 23-package SDK trap.
+Most likely trigger event (rank-ordered):
 
-The `@oriz/india-numbers` package is the *formatting* concern, not the *data fetching* concern. Big difference.
+1. **`@oriz/feeds`** — when `blog`, `journal`, `me`, and `oriz-lore-app` are all building feeds (per [`feeds-rss-atom-json`](../knowledge/decisions/architecture/content/feeds-rss-atom-json.md)), and the 2nd app's Atom-vs-RSS date-format inconsistency wastes 20 min.
+2. **`@oriz/donate`** — when the 3rd app gets the donations footer (UPI deep-link + 2 button rails), and changing the UPI amount means editing 3 files.
+3. **`@oriz/india-format`** — when `oriz-janaushdhi-app` and `oriz-ncert-app` both ship INR prices, and one of them fumbles the lakh-grouping.
 
-### 8.3 App-specific design tokens
+When the trigger fires, the next agent runs:
 
-Per frontend-design-pass-per-repo: each category app has its own palette, typography signature, motion language. `@oriz/theme` exports the **baseline only** (font stack, spacing scale, radius scale, neutral grays). Per-app accent colors, brand fonts, custom animations stay in the app's `global.css` as overrides.
+```bash
+# Day-N: first package emerges
+cd c:/D/oriz
 
-If two apps converge on the same accent... extract to `@oriz/theme/colors/<name>.css` as an opt-in subpath. But that's a future-day problem.
+# 1. Create the foundation tsconfig package (only if it doesn't exist yet)
+mkdir -p repos/own/tsconfig-base-npm-pkg
+# ... scaffold per §3, publish as @oriz/tsconfig-base v1.0.0
+# (no semver caution here — it's infrastructure with a stable contract)
 
-### 8.4 Analytics
+# 2. Create the concern package
+mkdir -p repos/own/feeds-npm-pkg
+# ... scaffold per §3, write src/, write tests, publish v0.1.0
 
-Inline forever, per zero-in-house-packages-inline-analytics. The 6 snippets (CF, Clarity, PostHog, Fathom, GoatCounter, GA4) live in each app's `BaseLayout.astro`. The build-time injection via GH org secrets is a *workflow* concern (handled by `oriz-org/automation`), not a *package* concern.
+# 3. Write the knowledge concept file
+$EDITOR knowledge/decisions/architecture/packages/feeds.md
+# OKF frontmatter + rationale + when-to-use + when-to-NOT-use
 
-### 8.5 Deploy / hosting glue
+# 4. Migrate consumers
+# Replace inlined feed code in oriz-blog-app with `import { generateFeeds } from '@oriz/feeds'`
+# Same for the second app.
 
-CF Pages and GitHub Pages configs stay in each app's repo. No `@oriz/deploy` package. The reusable workflow `oriz-org/automation/_deploy-cf.yml` handles deploys via shared YAML, which is the right grain.
+# 5. Commit umbrella
+git add knowledge/decisions/architecture/packages/feeds.md repos/own/feeds-npm-pkg
+git commit -m "feat(packages): introduce @oriz/feeds — 2-app trigger fired in blog+journal"
+```
 
-### 8.6 Per-app content
+**Important — do not pre-create the docs site at Day 7.** With only one package, `packages.oriz.in` is a vanity URL. Wait until package #3 ships, then bootstrap the docs site as part of that commit.
 
-Blog posts, journal entries, NCERT content collections, lore stories — all stay in their respective app repos. Astro content collections don't generalize across categories cleanly.
+### 7.3 Day 30-90 — more packages emerge organically
 
----
+Per emergence:
 
-## 9. Risks and mitigations
+1. Confirm 2+ app demand has materialized (don't speculate).
+2. `cp -r templates/npm-pkg/ repos/own/<slug>-npm-pkg/` — the template now exists.
+3. Customize `package.json#name`, `description`, `src/index.ts`, `README.md`.
+4. Write `knowledge/decisions/architecture/packages/<slug>.md` concept file in the same commit on the umbrella.
+5. Create the GitHub repo at `oriz-org/<slug>-npm-pkg`. Set up trusted-publisher config on npmjs.com after first manual publish.
+6. Migrate consumers; delete inlined copies.
+7. When package #3 ships, bootstrap `oriz-org/packages-oriz-in/` per §6 and create the CF Pages project + Deploy Hook.
 
-### 9.1 Risk: Re-doing the 23-package SDK mistake
+**Rate limit:** no more than one package per week. The "lazy by design" rule means the velocity is supposed to be low. If the agent is creating two packages in one week, something is wrong (probably speculative atomicity — see risks).
 
-**The 2026-06-25 archive of 23 packages happened because:** each package was speculative, none had 2+ real consumers, and the maintenance overhead of 23 release pipelines exceeded the value delivered. Mitigation:
+### 7.4 Day 90+ — steady state
 
-- **Build-gate at the package level.** A package may not be created without **2 apps that already independently grew the same logic.** Not "two apps that might need it" — two apps that DID.
-- **Concern-atomic, not function-atomic.** `@oriz/ui` (one package, 10 components) > `@oriz/button` + `@oriz/card` + `@oriz/modal` (three packages).
-- **Lean by need, not count.** No minimum package count. We are happy to have 0 packages for 6 months if the inline cost stays low.
-- **Quarterly review.** At month 3 and month 6, every package is reviewed for "is this still earning its weight?" Packages with <2 active consumers are deprecated (kept on npm at last version, archived on GitHub).
-
-### 9.2 Risk: Speculative atomicity
-
-**Symptom:** "we should split `@oriz/ui` into `@oriz/ui-core` and `@oriz/ui-icons`." Mitigation:
-
-- Splits require the same 2-consumer trigger that creates a new package. If the splits don't both have 2+ consumers, they don't happen.
-- The default direction is **consolidate** (merge two underused packages into one), not split.
-
-### 9.3 Risk: Tooling lock-in
-
-**Symptom:** tsdown turns out to be wrong, or release-please dies in 2027. Mitigation:
-
-- All picks are **standards-compatible.** tsdown emits standard ESM; switching to tsup is a 90-second sed. release-please writes standard `CHANGELOG.md`; switching to changelogithub is a workflow swap.
-- The package.json `exports` map is the contract, not the build tool. Consumers don't see what we build with.
-
-### 9.4 Risk: Polyrepo coordination tax
-
-**Symptom:** changing `@oriz/utils` requires PRs in 5 apps + 3 packages. Mitigation:
-
-- Renovate batches the consumer updates as auto-mergeable PRs (patch + minor + dev-deps auto-merge per `oriz-org/renovate-config`).
-- Stay at `0.x.y` until breaking changes are rare. Most updates should be additive.
-- If the tax gets unbearable, the escape hatch is `nx import` to a monorepo (1-2 week migration per research brief §6). Bounded downside.
-
-### 9.5 Risk: Trusted Publishing breaks first-publish
-
-**Mitigation:** documented in §3.10. First publish is local; OIDC takes over from v0.1.1.
-
-### 9.6 Risk: docs aggregator becomes a build-time SPOF
-
-**Mitigation:** Pattern B (per-repo docs + aggregator with mergeIndex) avoids this. Each package's docs deploys independently. The aggregator is a static site with a JS search component; if it goes down, per-package docs are still reachable.
-
-### 9.7 Risk: `@oriz/eslint-config` reinvents `@antfu/eslint-config`
-
-**Mitigation:** don't create `@oriz/eslint-config` until 3+ oriz-specific overrides have accumulated AND are duplicated in 2+ repos. Until then, extend `@antfu/eslint-config` directly in each repo with inline overrides.
-
-### 9.8 Risk: Astro version churn
-
-**Mitigation:** Astro is a peer dep (`^6.0.0`). When Astro 7 lands, each package opens a major-version PR widening the peer range (`^6.0.0 || ^7.0.0`) after smoke testing. The 6 apps upgrade Astro independently per their own readiness.
-
-### 9.9 Risk: PWABuilder needs a wrapper
-
-PWABuilder is hosted, no SDK to wrap. Not a package concern.
-
-### 9.10 Risk: maintainer bus factor
-
-Single-maintainer fleet. Mitigation:
-
-- All publish via OIDC — no personal access tokens.
-- All repos under `oriz-org` (per fleet-owner-oriz-org), not `chirag127`.
-- Backup keys in `oriz-org/backup` (per backup-keys-repo-oriz-org-backup).
-- Each `.env.example` documents obtain-steps so a successor can rebuild credentials.
+The fleet stabilizes at 5-10 packages. New packages emerge ~quarterly. The docs site at `packages.oriz.in` is live. Renovate is keeping deps fresh. Each release passes through release-please's PR gate. The umbrella's `knowledge/decisions/architecture/packages/` directory has one concept file per package, hand-deleted when a package is sunset (per [`knowledge-deletion-not-supersession`](../knowledge/rules/agent/knowledge-deletion-not-supersession.md)).
 
 ---
 
-## 10. Decision table — when to extract, when to inline
+## 8. Out of scope — what this blueprint does NOT solve
 
-When a piece of logic appears in 2+ apps, the question is: **inline, copy, or package?**
-
-| Signal | Lean toward |
-|---|---|
-| Logic is <20 LOC and rarely changes | Copy-paste; revisit in 3 months |
-| Logic is <20 LOC and changes monthly | Package (drift cost > publish cost) |
-| Logic is >50 LOC and identical in 2+ apps | Package |
-| Logic is >50 LOC but differs in each app | Inline (the difference is the point) |
-| Logic touches state that crosses apps | Service, not package (e.g., shared API) |
-| Logic is a single CSS variable | `@oriz/theme` |
-| Logic is a single component used identically | `@oriz/ui` |
-| Logic is "we keep typing this `<a>` snippet" | Markdown shortcode / Astro `<slot>` pattern in `@oriz/layouts` |
-| Logic is API client for an oriz-owned service | Service exposes a thin TS client at `<api>.oriz.in/client.js`; no npm package |
-| Logic is purely browser, no shared state | Package candidate if 2+ consumers |
-| Logic is auth-related | Banned from `@oriz/*`. Goes into the auth project. |
+- **Auth.** Login is a separate project per [`no-auth-in-apps-or-apis-2026-06-25`](../knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md). Apps redirect to `login.oriz.in`, never embed it. No `@oriz/auth` package, ever.
+- **India-data API response shapes.** Each `oriz-*-api` repo defines its own response schema and serves via GitHub Pages JSON. The *fetch helper* (`@oriz/data-loaders`) is shared; the *schemas* are per-API and live in each API's repo.
+- **App-specific design tokens.** Each app gets its own `frontend-design` pass per [`per-app-distinctive-frontend-design`](../knowledge/rules/design/per-app-distinctive-frontend-design.md). `@oriz/shadcn-presets` (if it ever ships) carries only the shadcn-component-source pattern, never a palette.
+- **Analytics.** Inline-only per [`zero-in-house-packages-inline-analytics-2026-06-25`](../knowledge/decisions/architecture/packaging/zero-in-house-packages-inline-analytics-2026-06-25.md). CF Web Analytics + Clarity + PostHog are `<script>` tags in `BaseLayout.astro`, env-gated. No package abstraction. This is non-negotiable.
+- **Hosting.** `@astrojs/cloudflare@13` dropped Cloudflare Pages support for Astro 6 SSR (research brief §8.1). Static Astro builds still upload to CF Pages. SSR Astro sites must move to Workers. **Action item:** the existing hosting-split rule may need a revision pass — see open questions §10.
+- **Books, blog posts, userscripts, extensions.** These are content/distribution surfaces, not packages. They have their own decision files; they don't consume `@oriz/*` packages today and shouldn't be force-fit.
+- **Forks (`repos/frk/*`).** Forks track upstream. They don't consume `@oriz/*` packages; we don't add fleet-internal deps to a fork because it makes the rebase contract painful per [`fork-customization-minimum-conflict`](../knowledge/rules/development/fork-customization-minimum-conflict.md).
 
 ---
 
-## 11. Anti-patterns — explicit non-rules
+## 9. Risks + mitigations
 
-Things this architecture **forbids**:
-
-1. **`@oriz/sdk` / `@oriz/core` umbrella package.** Concern-atomic means no umbrella. We learned this 2026-06-25.
-2. **One-function packages.** `@oriz/cn` is not a package. `cn` lives in `@oriz/utils`.
-3. **Pre-1.0 promise of API stability.** Until 1.0, breaking changes only need a minor bump and a CHANGELOG line.
-4. **Private packages on the public registry.** Everything we publish is intentionally public. If we ever need a private package, the policy is to **rewrite it inline** — not to pay for a private registry.
-5. **TypeScript-only packages that ship `.ts` source.** Either ship compiled `.js`+`.d.ts` (tsdown) or ship `.astro`/`.tsx` for Astro/Vite consumption. No raw `.ts` shipping.
-6. **Build-tool inflation.** No webpack, no rollup configs by hand, no esbuild scripts. tsdown is the one tool.
-7. **`peerDependencies` of `lodash` or `date-fns`.** Internal helpers replace them where possible.
-8. **Packages that exist to "consolidate constants."** Constants belong in the app that uses them; if a constant is shared across 2 apps, it's a config concern, not a package concern.
-9. **Documentation outside `<pkg>/docs/`.** No Notion, no GitHub Wiki, no separate docs repo. The docs ship with the package.
-10. **Deprecating in silence.** Deprecated packages get a `npm deprecate @oriz/foo "use @oriz/bar instead"` AND a README banner AND a CHANGELOG entry.
-
----
-
-## 12. Appendix — quick start when the first trigger fires
-
-When the first package needs to ship:
-
-1. **Verify the trigger.** Two apps with the same logic, drifting. Document the drift in a `knowledge/decisions/` concept.
-2. **Choose the slug.** Concern-atomic name, lowercase, hyphen-separated.
-3. **`gh repo create oriz-org/<slug>-npm-pkg --public`** + add as submodule under `repos/own/<slug>-npm-pkg/`.
-4. **Copy the scaffolding template** from §3.1.
-5. **Fill out `package.json`** with the name, description, and exports.
-6. **Write the code** in `src/`. Aim for 100-300 LOC, 3-5 exports.
-7. **Write tests** in `src/*.test.ts` and `src/*.test-d.ts`.
-8. **Run locally:** `npm run lint && npm run type-check && npm test && npm run build && npm run lint:pkg`.
-9. **First publish:** `npm login` (2-hour session) → `npm publish`. Verify on npmjs.com.
-10. **Attach Trusted Publisher** on npmjs.com.
-11. **Open consumer PRs** in the 2 apps that triggered the extraction. Replace inline copies with `@oriz/<slug>` imports.
-12. **Set up docs:** `docs/` directory with Starlight scaffold; add to `docs.oriz.in` aggregator's `mergeIndex` array.
-13. **Record the extraction** in `knowledge/decisions/atomic-pkg-<slug>-extracted-YYYY-MM-DD.md`.
-
-That's the loop. Repeat at most once per ~3 weeks across the fleet, per the lean-by-need-not-count posture.
+| Risk | Description | Mitigation |
+|---|---|---|
+| **Re-running the 23-packages mistake** | Aggressively planning packages becomes "speculative atomicity"; we add 5 packages without proving demand. Killed in [`zero-in-house-packages-inline-analytics-2026-06-25`](../knowledge/decisions/architecture/packaging/zero-in-house-packages-inline-analytics-2026-06-25.md) the first time. | **2-app trigger is the only door.** Every package PR opens with proof of 2 inlined consumers and a paragraph showing the third would hurt. The agent must paste both consumer code blocks into the commit message. |
+| **Speculative atomicity** | Agent reads this blueprint and starts scaffolding the 5 backlog packages on Day 1 to "be ready". | This document explicitly says **"BLUEPRINT, not action plan"** at the top. Templates do not pre-exist in `templates/npm-pkg/` — the first agent to need them creates them. The 5 backlog packages are *predictions*, not assignments. |
+| **Maintenance fatigue** | 5-10 packages × monthly Renovate PRs × release-please PRs × CI failures = inbox death. | Renovate auto-merges patches for low-risk deps (research brief §7 preset); release-please batches commits into a single PR; reusable workflow at `oriz-org/ci-workflows` means one upgrade ripples to all packages. **Hard cap:** if the fleet crosses 10 packages and the agent is spending >30 min/week on package chores, audit and sunset the bottom 2. |
+| **Astro 7 / breaking framework upgrade** | Astro releases a major; framework-locked packages break across the fleet simultaneously. | Bias to **framework-agnostic pure-TS** for new packages (research brief §8.3). React/Astro touches go in `./react`, `./astro` subpath exports. The pure-TS root is portable; only the subpath surfaces need re-testing on framework majors. |
+| **Cloudflare Pages SSR sunset** | `@astrojs/cloudflare@13` drops Pages support for SSR Astro. Existing hosting decision file (hosting-split-cf-and-gh-2026-06-25) may be stale. | **Open question §10.1.** This is a hosting decision, not a packages decision, but the fleet build depends on it. Verify whether the surviving 6 apps are static (CF Pages still works) or SSR (must move to Workers). |
+| **First publish footguns** | npm Trusted Publishing requires the package to exist on the registry first (bootstrap problem). Provenance attestation needs `id-token: write` permission, easily forgotten in reusable workflows. | First-publish runbook lives at `knowledge/runbooks/security/npm-publish-token-setup.md` (verify it's current). The reusable workflow at `oriz-org/ci-workflows/.github/workflows/npm-publish.yml@v1` codifies `permissions: { contents: read, id-token: write }`. |
+| **Tailwind `@source` footgun** | Package ships fine; consumer build silently drops the package's classnames; QA misses it. | **README must document the exact `@source` line.** This blueprint §4.6 includes it verbatim. CI on each package can include a `pnpm --filter <consumer-app> build && grep -c "<expected-class>" dist/` smoke check. |
+| **OIDC publish stalls on Node version** | npm Trusted Publishing requires npm ≥ 11.5.1. Node 22 LTS ships npm 10.x. Workflow fails with a misleading 404. | Workflow pins `node-version: '24'` AND runs `npm install -g npm@latest` as belt-and-braces. Both already in the §3.5 template. |
+| **Two-way sync with knowledge bundle** | Agent gets tempted to push package facts back into `knowledge/` from each package repo. | **One-way pull only** per research brief §9. AGENTS.md in each package repo says so. The umbrella owns its facts; packages own their READMEs. |
+| **Renovate creates 20+ noisy PRs per week** | Default config opens patch + minor + major PRs per dep per repo. | Preset config (research brief §7) auto-merges patches for known-safe deps (`@types/*`, eslint, prettier, vitest patches); holds majors for `dependencyDashboardApproval`; uses Asia/Kolkata weekend schedule. Result: ~5 PRs/week across the whole fleet at maturity. |
+| **shadcn temptation** | Agent sees an app using shadcn components, factors them into `@oriz/ui`, breaks the per-app-distinctive-design rule. | shadcn is **source-distributed by design** (research brief §10). The right pattern at scale is a shadcn-registry repo (which is *not* an npm package), not `@oriz/ui`. If the fleet ever wants this, it's its own decision — not a packages decision. |
 
 ---
 
-## Sources
+## 10. Open questions for the user
 
-All technical picks in this brief are sourced from:
+Three items the research couldn't resolve unilaterally. These should be grilled before the first package ships.
 
-- `.staging/research-npm-astro-2026.md` — build tools, package shape, Astro 6 patterns, publishing, testing
-- `.staging/research-monorepo-docs-2026.md` — polyrepo topology, tooling consistency, release coordination, Renovate, docs
+### 10.1 Astro 6 SSR hosting — does the locked hosting-split rule still hold?
 
-All fleet rules referenced are from the locked knowledge base:
+Research brief §8.1: `@astrojs/cloudflare@13` (Mar 2026) dropped Cloudflare Pages SSR support; SSR Astro must now move to Workers. The locked rule (`hosting-split-cf-and-gh-2026-06-25`) says "apps deploy to Cloudflare Pages on custom subdomains." That decision was made on 2026-06-25 — same day as today, presumably before this finding surfaced.
 
-- `knowledge/decisions/zero-in-house-packages-inline-analytics.md`
-- `knowledge/decisions/polyrepo-with-category-consolidation.md`
-- `knowledge/decisions/fs-own-frk-split.md`
-- `knowledge/decisions/no-auth-in-apps-or-apis.md`
-- `knowledge/decisions/donations-only-no-pro-no-ads.md`
-- `knowledge/decisions/fleet-owner-oriz-org.md`
-- `knowledge/decisions/lean-by-need-not-count.md`
-- `knowledge/decisions/build-gate-top3-must-have-defect.md`
-- `knowledge/decisions/frontend-design-pass-per-repo.md`
-- `knowledge/decisions/repo-slug-suffix-npm-pkg.md`
-- `knowledge/decisions/repo-names-drop-oriz-prefix.md`
-- `knowledge/decisions/gh-org-secrets-build-time-inject.md`
+**Question:** Are the 6 surviving apps (blog, journal, me, oriz-ncert-app, oriz-lore-app, oriz-janaushdhi-app) static or SSR?
+- If **static** (`output: 'static'`) → CF Pages still works, rule stands.
+- If **SSR** (`output: 'server'` or `'hybrid'`) → either switch each app to Workers, or revert to static + GH Actions for any dynamic bits.
+
+The packages design doesn't bend on this — it's a hosting question — but the fleet build pipeline does.
+
+### 10.2 First-package trigger — which of the 5 is actually first?
+
+The blueprint ranks `@oriz/feeds` as most likely to trigger first. But the user may already know which app pair is closest to the 2-app trigger:
+
+- Is `blog` already publishing feeds and `journal` is about to? → `@oriz/feeds` first.
+- Is the UPI footer about to land on a 3rd app? → `@oriz/donate` first.
+- Is `oriz-janaushdhi-app` shipping INR-heavy UIs and `oriz-ncert-app` is about to add textbook prices? → `@oriz/india-format` first.
+
+This affects what gets built into the `templates/npm-pkg/` directory first and what example lives at `packages.oriz.in/index`.
+
+### 10.3 `@oriz/tsconfig-base` — eager or lazy?
+
+The blueprint treats `@oriz/tsconfig-base` as **infrastructure** that ships the same day as the first concern package — not before. But strict "lazy by need" would say wait until the **second** concern package, since at N=1 you don't have duplication.
+
+**Question:** Bend the lazy rule for the tsconfig (because the duplication is genuinely cheap to share and the upgrade leverage is high)? Or stay strict (no `@oriz/tsconfig-base` until N=2, accept the one-time copy-paste)?
+
+Default recommendation: ship `@oriz/tsconfig-base` v1.0.0 the same day as package #1. The cost is ~10 minutes; the upside is one source of truth for fleet-wide TS strictness rolls.
+
+---
+
+## 11. Appendix — quick-reference
+
+### 11.1 The TL;DR table (synthesised from both research briefs)
+
+| Concern | Winner | One-line rationale |
+|---|---|---|
+| Build tool | **tsdown ^0.22** | tsup README says so; rolldown-based; 2x perf; massive 2026 adoption |
+| Test runner | **Vitest 4.1 + @vitest/coverage-v8** | v8 reached istanbul parity in 3.2; browser mode GA in 4.0 |
+| Package shape | **ESM-only, exports map types-first/default-last, files whitelist, engines.node ≥ 22** | Node 22 LTS native `require(esm)` killed the dual-publish tax |
+| Module resolution | **`nodenext`** for libraries | TS handbook calls bundler-mode "infectious" |
+| Strictness | **`@oriz/tsconfig-base` extending `@tsconfig/strictest` + `@tsconfig/node-lts`** + `verbatimModuleSyntax` + `erasableSyntaxOnly` | Multi-extends (TS 5.0+) lets one base compose three concerns |
+| Release automation | **release-please-action v5** | CC-driven, human-gated, Apache-2.0, active |
+| CI on free tier | **GitHub Actions + npm Trusted Publishing (OIDC)** | Public repos = unlimited minutes; no `NPM_TOKEN` |
+| Dep updates | **Mend Renovate Cloud (free) + preset repo + Dependabot security alerts** | Renovate has shareable presets; Dependabot still doesn't in 2026 |
+| Astro consumption | **Pure-TS framework-agnostic in `.astro` frontmatter; React via `./react` subpath + `client:visible`** | Zero hydration when possible; isolate React |
+| Peer deps | **`react ^18 \|\| ^19` peer; Radix as deps; Tailwind devDep-only** | Matches every major library on the registry |
+| Tailwind delivery | **Ship raw `.tsx` + `./theme.css`; document `@source` line in README** | node_modules excluded from v4 auto-scan; library CSS isn't consumer-tree-shaken |
+| Docs site | **Astro Starlight 0.41+ on CF Pages, Pagefind built-in** | Family default; cleanest aggregation primitive; real reference architecture exists |
+| README aggregation | **Astro Content Layer loader pulling from sibling repos via GH API at build time** | Build-time deterministic; sub-second freshness via Deploy Hook |
+| Build trigger | **CF Pages Deploy Hook fired by sibling release workflow** | No PAT, no commit-back loop, audit trail in CF panel |
+| README format | **Plain GFM, ~80 lines** | npm + GitHub render GFM only; viem/wagmi/hono/shadcn/Astro all do this |
+| Changelog visibility | **Per-repo CHANGELOG.md (release-please) + aggregated `/releases` page on docs site** | Mirror Vitest's three-surface pattern |
+| Versioned docs routes | **None; latest only** | Lucide pattern; Starlight has no native versioning |
+| Search | **Pagefind (built-in)** | Static, zero infra; switch to Algolia DocSearch only if UX limits |
+| TypeDoc | **Skip per-repo; run at docs-site only if >5 exports** | TypeDoc maintainer himself says so for tiny libs |
+| Knowledge sync | **One-way pull from `knowledge/`** | OKF is publish-once-read-many by design |
+
+### 11.2 Fleet bootstrap order (if rebuilding from zero)
+
+1. **Day 0**: zero packages, zero `@oriz/*` repos. Templates don't exist yet. All apps inline shared logic. Wait.
+2. **Day N₁** (first 2-app trigger fires):
+   - Create `oriz-org/tsconfig-base-npm-pkg/`, publish `@oriz/tsconfig-base@1.0.0`.
+   - Create `oriz-org/renovate-config/` (NOT a package — just a Renovate preset repo).
+   - Create `oriz-org/ci-workflows/` with `npm-publish.yml@v1`.
+   - Create `oriz-org/<concern>-npm-pkg/` (probably `@oriz/feeds`), publish v0.1.0.
+   - Write `knowledge/decisions/architecture/packages/<concern>.md` concept file in the same umbrella commit.
+   - Migrate 2 consumer apps to use the package. Delete their inlined copies.
+3. **Day N₂** (second trigger): Add next package. Same drill.
+4. **Day N₃** (third package ships): Bootstrap `oriz-org/packages-oriz-in/` (Starlight docs site) + CF Pages project + Deploy Hook. Wire all 3 packages.
+5. **Day 90+**: Steady state. New packages emerge ~quarterly. Renovate keeps deps fresh. Docs site auto-rebuilds on each release.
+
+### 11.3 References — the locked knowledge files this blueprint respects
+
+- [`framework-astro-react-tailwind-shadcn-2026-06-25`](../knowledge/decisions/architecture/frontend/framework-astro-react-tailwind-shadcn-2026-06-25.md) — stack lock
+- [`workspace-flat-repos-2026-06-25`](../knowledge/decisions/architecture/infrastructure/workspace-flat-repos-2026-06-25.md) — `repos/own/<slug>-npm-pkg/` layout
+- [`umbrella-as-clone-entrypoint-2026-06-25`](../knowledge/decisions/architecture/infrastructure/umbrella-as-clone-entrypoint-2026-06-25.md) — single-clone fleet
+- [`zero-in-house-packages-inline-analytics-2026-06-25`](../knowledge/decisions/architecture/packaging/zero-in-house-packages-inline-analytics-2026-06-25.md) — analytics inline-only
+- [`no-auth-in-apps-or-apis-2026-06-25`](../knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md) — no auth in apps
+- [`donations-only-2026-06-25`](../knowledge/decisions/architecture/monetisation/donations-only-2026-06-25.md) — donations only
+- [`per-app-distinctive-frontend-design`](../knowledge/rules/design/per-app-distinctive-frontend-design.md) — per-app design pass
+- [`use-pnpm`](../knowledge/rules/development/use-pnpm.md), [`conventional-commits`](../knowledge/rules/development/conventional-commits.md), [`always-latest-deps`](../knowledge/rules/development/always-latest-deps.md), [`one-branch-only`](../knowledge/rules/development/one-branch-only.md) — development discipline
+- [`github-org-level-secrets`](../knowledge/rules/security/github-org-level-secrets.md), [`no-hardcoded-secrets`](../knowledge/rules/security/no-hardcoded-secrets.md) — secret management
+- [`self-update-rule`](../knowledge/rules/agent/self-update-rule.md), [`knowledge-deletion-not-supersession`](../knowledge/rules/agent/knowledge-deletion-not-supersession.md) — knowledge discipline
+
+---
+
+*Brief synthesised 2026-06-25. Source briefs: `research-npm-astro-2026.md` (~700 lines, 50+ citations), `research-monorepo-docs-2026.md` (444 lines, 25+ citations). This brief is not a decision — locking it requires the user's grill pass.*
