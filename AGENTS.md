@@ -106,8 +106,8 @@ Grouped by subdirectory of `knowledge/rules/`. The full table with descriptions 
 - `no-emoji-in-chrome` — no emoji in nav, headers, footers, wordmarks, `<title>`.
 - `per-app-distinctive-frontend-design` — each app gets its own palette/type/signature.
 
-### Development (19) — `knowledge/rules/development/`
-- `always-latest-deps`, `astro-version-pin`, `community-packages-first`, `conventional-commits`, `fork-customization-minimum-conflict`, `fork-discipline`, `git-identity-chirag127-noreply`, `no-force-push-to-main`, `no-rebuilding-free-software`, `no-web3forms-server-side`, `one-branch-only`, `playwright-persistent-sessions`, `push-by-default`, `readme-star-badge-required`, `repo-naming`, `repos-work-independently`, `tests-parallel-and-master-install`, `use-pnpm`, `userscript-author-handle`.
+### Development (20) — `knowledge/rules/development/`
+- `always-latest-deps`, `astro-version-pin`, `community-packages-first`, `conventional-commits`, `env-example-mirrors-env-with-steps` (per-repo `.env.example` + `.env` in lock-step; every var documented with how-to-obtain steps), `fork-customization-minimum-conflict`, `fork-discipline`, `git-identity-chirag127-noreply`, `no-force-push-to-main`, `no-rebuilding-free-software`, `no-web3forms-server-side`, `one-branch-only`, `playwright-persistent-sessions`, `push-by-default`, `readme-star-badge-required`, `repo-naming`, `repos-work-independently`, `tests-parallel-and-master-install`, `use-pnpm`, `userscript-author-handle`.
 
 ### Infrastructure (10) — `knowledge/rules/infrastructure/`
 - `aws-lambda-exception` (3rd-rail fallback), `cloudflare-pages-apps-only`, `cloudflare-pages-only`, `free-tier-with-cost-controls` (cards OK only with hard caps), `no-firebase-admin-in-workers`, `no-firebase-functions-blaze`, `no-paid-self-hosting-only`, `no-subscriptions`, `one-level-subdomain-only`, `shared-tenant-by-default` (one Sentry/GA4/Clarity family-wide).
@@ -115,12 +115,13 @@ Grouped by subdirectory of `knowledge/rules/`. The full table with descriptions 
 ### User interaction (21) — `knowledge/rules/interaction/`
 - `auto-only-tracking`, `communication-stt-friendly`, `future-overrides-past`, `linux-ci-only`, `match-surrounding-style`, `never-delete-empty-placeholder-repos`, `never-hit-quotas` (≥10× headroom, alert at 60%), `no-card-on-file`, `openai-compat-for-all-ai-providers`, `parallel-by-default`, `parallel-fan-out-by-default`, `parse-mcq-other-for-context`, `profile-readme-cross-link`, `recruiter-strategy`, `telegram-channels-and-roles`, `user-prefers-atomic-split`, `user-prefers-deletion-over-archive`, `user-prefers-pure-tool-brand`, `user-prefers-same-name-repo-and-npm`, `user-prefers-strict-no-toggle`, `user-prefers-wider-coverage`.
 
-### Security (5) — `knowledge/rules/security/`
-- `env-example-synced-from-master` — canonical `.env.example` at `templates/.env.example`.
+### Security (4) — `knowledge/rules/security/`
 - `github-org-level-secrets` — secrets at oriz-org level, not per-repo.
 - `no-hardcoded-secrets` — all secrets via envpact + sops+age.
 - `org-level-secrets-only-no-per-repo` — don't hit the GH API thousands of times.
 - `submodule-env-files-three-file-pattern` — `.env` / `.env.development` / `.env.production` split.
+
+> **Note 2026-06-25:** the older `env-example-synced-from-master` rule (single canonical `.env.example` at `templates/.env.example`) is superseded by [`rules/development/env-example-mirrors-env-with-steps`](knowledge/rules/development/env-example-mirrors-env-with-steps.md). Each repo now owns its own `.env.example` + `.env` independently; no umbrella-master template.
 
 ---
 

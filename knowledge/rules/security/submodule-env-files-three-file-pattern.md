@@ -79,26 +79,35 @@ Single-key advantages:
 - No key-rotation coordination across N submodules
 - Bitwarden is the single recovery point — lose Bitwarden, lose everything (acceptable for solo dev with multiple recovery codes)
 
-## Per-submodule SUBSET, not full copy
+## Per-submodule INDEPENDENCE, not subset-of-umbrella
 
-Each submodule's `.env.enc` holds ONLY the keys that submodule actually consumes. NOT a copy of the umbrella's 65-key `.env`. Example:
+Each submodule's `.env.enc` holds ONLY the keys that submodule actually consumes. Each repo is **independently runnable** — there is no umbrella `.env` superset.
 
-- `oriz-roam-journal-app/.env.enc` → just Firebase config + the journal-specific Razorpay keys
-- `freellmapi/.env.enc` → just the 16 LLM provider API keys it uses
+- `oriz-roam-journal-app/.env.enc` → just Firebase config + the journal-specific keys
+- `freellmapi/.env.enc` → just the LLM provider API keys it uses
 - `oriz-pdf-book/.env.enc` → none (no CI secrets consumed), no `.env.enc` needed
 
-The umbrella `.env.enc` remains the SUPERSET (all 65 keys) — the single source-of-truth from which submodule subsets are derived. If the umbrella adds a key, the consuming submodule(s) get a one-line addition to their `.env.enc` and a re-encrypt commit.
+The earlier "umbrella `.env.enc` as 65-key superset" pattern is deprecated per `rules/development/env-example-mirrors-env-with-steps` (2026-06-25 "per-repo independence"). Each repo manages its own env files; cross-repo shared tokens travel through GitHub org-level Actions secrets at build time per `rules/security/github-org-level-secrets`, not through a local umbrella `.env`.
 
-## .env.example generation
+## .env.example shape (per `rules/development/env-example-mirrors-env-with-steps`)
 
-`.env.example` is auto-generated from `.env` so it never drifts. Approach:
+`.env.example` is NOT auto-generated. It's hand-maintained in lock-step with `.env`, with comment blocks documenting every variable. The two files have IDENTICAL keys; only difference is `.env.example` values are blank.
 
-```bash
-# In each submodule, after editing .env:
-awk -F= 'NF && $1 !~ /^#/ {print $1"=<your_"tolower($1)">"}' .env > .env.example
+```env
+# Firebase Web SDK config (for journal.oriz.in client). Public — embedded
+# in the static output. Get it at:
+#   1. https://console.firebase.google.com → pick the journal project
+#   2. Project settings (gear icon) → "General" tab
+#   3. Scroll to "Your apps" → Web app → "SDK setup and configuration"
+#   4. Copy the `apiKey` field (39-char string)
+PUBLIC_FIREBASE_API_KEY=
 ```
 
-Output transforms `FIREBASE_API_KEY=AIzaSy...` → `FIREBASE_API_KEY=<your_firebase_api_key>`. Preserves key names + order, zero secret leakage. Run as a pre-commit hook OR a periodic CI step OR manually after key adds.
+When a variable is added or changed:
+1. Edit both `.env` and `.env.example` in the same commit.
+2. `.env` gets the real value; `.env.example` gets a blank value.
+3. The comment block above each variable explains what / how to obtain / format.
+4. Re-encrypt `.env.enc` (`sops -e .env > .env.enc`) so the encrypted snapshot stays in sync.
 
 ## Why this matters
 
