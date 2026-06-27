@@ -1,8 +1,8 @@
 ---
 type: rule
-title: 'MCP servers go in repo .mcp.json, NOT global ~/.claude.json'
-description: Workspace-scoped MCP belongs in the committed .mcp.json. Don't add to ~/.claude.json (per-project or global). Forks/clones get the same MCPs automatically. No machine-specific paths.
-tags: [mcp, scope, workspace-only, hard-rule, never-reask]
+title: 'MCP servers: use workspace scope, not global'
+description: Workspace-scoped MCP belongs in the committed .mcp.json. `claude mcp add -s project` is the right command. Default scope (local) goes to ~/.claude.json which is wrong for workspace MCP.
+tags: [mcp, scope, workspace-only, hard-rule]
 timestamp: 2026-06-27
 format_version: okf-v0.1
 status: active
@@ -12,49 +12,59 @@ related:
   - rules/agent/serena-mcp-installed
 ---
 
-# MCP scope: repo .mcp.json only
+# MCP scope: workspace, not global
 
 ## Rule
 
 When adding any MCP server for use in this workspace:
 
-- ✅ Add to `c:/D/oriz/.mcp.json` (committed to git, travels with the repo).
-- ❌ Do NOT use `claude mcp add` (writes to `~/.claude.json` per-project).
-- ❌ Do NOT add to `~/.claude.json` global `mcpServers`.
+- ✅ `claude mcp add <name> -s project -- <command>` — writes to repo `.mcp.json` (committed to git).
+- ✅ OR edit `c:/D/oriz/.mcp.json` directly.
+- ❌ Do NOT omit `-s project` — the default scope is `local` (writes to `~/.claude.json` projects entry; machine-specific, not committed).
+- ❌ Do NOT use `-s user` — writes to `~/.claude.json` global mcpServers (affects every project on this machine).
 - ❌ Do NOT hard-code absolute paths like `c:/D/oriz` — use `.` so any clone path works.
+
+The `claude mcp add` command itself is fine. The **`-s` flag** is what matters.
+
+## Scope reference
+
+| Scope flag | Writes to | Visible to | Committed? |
+|---|---|---|---|
+| `-s local` (default) | `~/.claude.json` projects[`<cwd>`].mcpServers | Just you, on this machine, in this dir | ❌ |
+| `-s project` | `<cwd>/.mcp.json` | Anyone who clones the repo | ✅ |
+| `-s user` | `~/.claude.json` mcpServers (top-level) | Just you, every project on this machine | ❌ |
+
+**Use `-s project` for everything workspace-related.**
 
 ## Why
 
 1. **Reproducible across machines**: clone the repo, MCPs come with it.
 2. **No global pollution**: `~/.claude.json` stays minimal.
-3. **Same rules as for AGENTS.md**: workspace-scoped configuration only.
+3. **Same principle as AGENTS.md**: workspace-scoped configuration only.
 4. **Visible in git**: anyone reviewing the repo sees which MCPs are wired.
 
 ## When to deviate
 
-NEVER, for workspace MCP servers. The only exceptions:
+The exceptions are narrow:
 
-- MCP servers that need user-specific credentials (smithery, github auth) —
-  those live in `~/.claude.json` AND/OR Smithery vault per `mcp-no-key-in-repo-keyed-in-smithery`.
-- MCP servers that span all workspaces (rare; would be a true global tool).
+- MCP servers that need user-specific credentials (smithery, github auth) — those live in `~/.claude.json` AND/OR Smithery vault per `mcp-no-key-in-repo-keyed-in-smithery`.
+- MCP servers that span all workspaces (rare; would be a true cross-project tool).
 
 ## Migration
 
-If `claude mcp add` was used and the MCP landed in `~/.claude.json`:
+If `claude mcp add` was used without `-s project` and the MCP landed in `~/.claude.json`:
 
 ```bash
-# Find the project key
-node -e "const j=require('os').homedir()+'/.claude.json'; const o=JSON.parse(require('fs').readFileSync(j)); console.log(Object.keys(o.projects).filter(k=>k.toLowerCase().includes('oriz')))"
+# Re-add with the right scope flag — this writes to .mcp.json
+claude mcp add <name> -s project -- <command> <args...>
 
-# Delete it from ~/.claude.json, add to .mcp.json instead
+# Then remove the stray local-scope entry from ~/.claude.json
 node -e "
 const fs=require('fs'); const p=require('os').homedir()+'/.claude.json';
 const j=JSON.parse(fs.readFileSync(p));
 delete j.projects['C:/d/oriz'].mcpServers['<server-name>'];
 fs.writeFileSync(p, JSON.stringify(j, null, 2));
 "
-
-# Then add to .mcp.json + commit
 ```
 
 ## Cross-refs
