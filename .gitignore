@@ -5,7 +5,7 @@
 .env.example.lock
 .sops-age-key.txt
 *.log
-.vscode/
+.vscode/*
 .idea/
 .DS_Store
 node_modules/
@@ -50,3 +50,6 @@ logs
 
 # Playwright CLI sandbox (created by smoke runs, not source)
 .playwright-cli/
+
+# Allow workspace MCP config for Cline even though .vscode/ is ignored
+!.vscode/mcp.json

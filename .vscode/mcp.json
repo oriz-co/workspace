@@ -1,0 +1,65 @@
+{
+  "mcpServers": {
+    "wikipedia": {
+      "command": "npx",
+      "args": ["-y", "wikipedia-mcp"]
+    },
+    "arxiv": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/arxiv-mcp-server"]
+    },
+    "hackernews": {
+      "command": "npx",
+      "args": ["-y", "hn-mcp"]
+    },
+    "wayback": {
+      "command": "npx",
+      "args": ["-y", "mcp-wayback-machine"]
+    },
+    "osm": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/openstreetmap-mcp-server"]
+    },
+    "open-meteo": {
+      "command": "npx",
+      "args": ["-y", "open-meteo-mcp"]
+    },
+    "youtube-transcript": {
+      "command": "npx",
+      "args": ["-y", "youtube-transcript-mcp"]
+    },
+    "npm-registry": {
+      "command": "npx",
+      "args": ["-y", "mcp-npm-registry"]
+    },
+    "fx": {
+      "command": "npx",
+      "args": ["-y", "fx-mcp"]
+    },
+    "time": {
+      "command": "npx",
+      "args": ["-y", "time-mcp"]
+    },
+    "duckduckgo": {
+      "command": "npx",
+      "args": ["-y", "duckduckgo-mcp"]
+    },
+    "crawl-md": {
+      "command": "node",
+      "args": ["./scripts/crawl-mcp/server.js"]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "."
+      ]
+    }
+  }
+}
