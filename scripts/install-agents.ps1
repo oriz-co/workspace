@@ -91,25 +91,50 @@ if (Have claude) {
 Step '3. OpenCode'
 if (-not (Have opencode)) {
   Invoke-Native 'npm install -g opencode-ai' | Out-Null
+  # npm global bin (%APPDATA%\npm) often isn't on PATH for a fresh shell.
+  # Refresh in-process so the Have-check below sees it.
+  $npmBin = Join-Path $env:APPDATA 'npm'
+  if (Test-Path $npmBin) { $env:PATH = "$npmBin;$env:PATH" }
 }
 if (Have opencode) {
-  Ok 'opencode installed'
+  Ok ('opencode: ' + ((opencode --version 2>&1) | Select-Object -First 1 | Out-String).Trim())
 } else {
-  Warn 'opencode install failed'
+  # Last-ditch: check the path directly even if PATH refresh didn't help.
+  $opencodeCmd = Join-Path $env:APPDATA 'npm\opencode.cmd'
+  if (Test-Path $opencodeCmd) {
+    Ok ("opencode installed at $opencodeCmd (PATH refresh needed - open new cmd window)")
+  } else {
+    Warn 'opencode install failed'
+  }
 }
 
 # ── 4. VS Code + Cline + Kilo Code ────────────────────────────────────────
 Step '4. VS Code + extensions'
+
+# VS Code installs go to either system-wide or user-local. Check both.
+$vsCodeBins = @(
+  (Join-Path $env:LOCALAPPDATA 'Programs\Microsoft VS Code\bin'),
+  (Join-Path $env:ProgramFiles  'Microsoft VS Code\bin')
+)
+foreach ($p in $vsCodeBins) {
+  if (Test-Path $p) { $env:PATH = "$p;$env:PATH" }
+}
+
 if (-not (Have code)) {
   Invoke-Native 'winget install --id Microsoft.VisualStudioCode -e --silent --accept-source-agreements --accept-package-agreements --disable-interactivity' | Out-Null
-  $env:PATH = "$env:ProgramFiles\Microsoft VS Code\bin;$env:PATH"
+  # Re-scan both possible install locations after winget.
+  foreach ($p in $vsCodeBins) {
+    if (Test-Path $p) { $env:PATH = "$p;$env:PATH" }
+  }
 }
+
 if (Have code) {
+  Ok ('code: ' + ((code --version 2>&1) | Select-Object -First 1 | Out-String).Trim())
   Invoke-Native 'code --install-extension saoudrizwan.claude-dev --force' | Out-Null
   Invoke-Native 'code --install-extension kilocode.Kilo-Code --force'     | Out-Null
   Ok 'Cline + Kilo Code installed via VS Code'
 } else {
-  Warn 'code CLI not on PATH; Cline + Kilo Code skipped'
+  Warn ("code CLI not on PATH. Looked in:`n     " + ($vsCodeBins -join "`n     ") + "`n  Open a new cmd window (PATH refresh) and re-run if VS Code was just installed.")
 }
 
 # ── 5. Wire .kilocode/rules -> .agents/kilocode/rules ─────────────────────
