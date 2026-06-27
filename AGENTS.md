@@ -13,6 +13,8 @@
 3. **No auth in apps or APIs.** Login lives in a separate TBD project; apps/APIs are 100% public. See [`knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md`](./knowledge/decisions/architecture/security/no-auth-in-apps-or-apis-2026-06-25.md).
 4. **No card-on-file, ever.** Hard rule. Has killed: CF R2, Vercel Pro, Auth0, Clerk Pro, Firebase Blaze, Twilio. See [`knowledge/rules/interaction/no-card-on-file.md`](./knowledge/rules/interaction/no-card-on-file.md).
 5. **Donations only.** No Pro tier, no ads, no recurring fees. Buy Me a Coffee + GitHub Sponsors + UPI. See [`knowledge/decisions/architecture/monetisation/donations-only-2026-06-25.md`](./knowledge/decisions/architecture/monetisation/donations-only-2026-06-25.md).
+6. **Search the web at least twice before any non-trivial decision.** No memory-only answers about tool availability, hosting limits, pricing, library status, "does X already exist." Two independent searches; cross-check; only then recommend. See [`knowledge/rules/agent/preferences/always-search-twice-before-deciding.md`](./knowledge/rules/agent/preferences/always-search-twice-before-deciding.md).
+7. **No feature branches on own repos.** Commit directly to `main` on `chirag127/*` and `oriz-org/*`. Branches exist only for upstream PRs. See [`knowledge/rules/agent/preferences/no-branches-on-own-repos.md`](./knowledge/rules/agent/preferences/no-branches-on-own-repos.md).
 
 ---
 
