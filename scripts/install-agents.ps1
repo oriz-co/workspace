@@ -9,6 +9,10 @@ param()
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+# Suppress the noisy IWR progress bar (135 MB MSIX download streams 100k+
+# lines otherwise and hides real errors).
+$ProgressPreference = 'SilentlyContinue'
 
 function Step($m) { Write-Host "`n=== $m ===" -ForegroundColor Cyan }
 function Ok($m)   { Write-Host "  [ok] $m"   -ForegroundColor Green }
@@ -20,12 +24,37 @@ $Workspace = 'C:\D\oriz'
 # ── 0. winget ─────────────────────────────────────────────────────────────
 Step '0. winget'
 if (-not (Have winget)) {
-  Warn 'winget missing. Installing App Installer from aka.ms/getwinget...'
+  Warn 'winget missing. Installing App Installer (Microsoft.DesktopAppInstaller)...'
   $msix = Join-Path $env:TEMP 'AppInstaller.msixbundle'
-  Invoke-WebRequest -UseBasicParsing -Uri 'https://aka.ms/getwinget' -OutFile $msix
-  Add-AppxPackage -Path $msix -ForceApplicationShutdown -ErrorAction Stop
+
+  # Cache: skip 135 MB redownload if previously fetched.
+  $needDownload = $true
+  if (Test-Path $msix) {
+    $sizeMB = [math]::Round((Get-Item $msix).Length / 1MB, 1)
+    if ($sizeMB -gt 50) {
+      Ok ("Reusing cached MSIX at $msix ($sizeMB MB)")
+      $needDownload = $false
+    } else {
+      Remove-Item $msix -Force
+    }
+  }
+  if ($needDownload) {
+    Write-Host '  Downloading App Installer (~135 MB)...' -ForegroundColor DarkGray
+    try {
+      Invoke-WebRequest -UseBasicParsing -Uri 'https://aka.ms/getwinget' -OutFile $msix
+    } catch {
+      throw "MSIX download failed: $($_.Exception.Message). Check internet, or download manually from https://aka.ms/getwinget and place at $msix"
+    }
+  }
+
+  Write-Host '  Installing MSIX...' -ForegroundColor DarkGray
+  try {
+    Add-AppxPackage -Path $msix -ForceApplicationShutdown -ErrorAction Stop
+  } catch {
+    throw "Add-AppxPackage failed: $($_.Exception.Message). Corporate policy may block AppX install. Try installing 'App Installer' from Microsoft Store manually: https://www.microsoft.com/store/productId/9NBLGGH4NNS1"
+  }
   $env:PATH = "$env:LOCALAPPDATA\Microsoft\WindowsApps;$env:PATH"
-  if (-not (Have winget)) { throw 'winget install ran but command still not on PATH.' }
+  if (-not (Have winget)) { throw 'winget install ran but command still not on PATH. Open a new cmd window and re-run.' }
 }
 Ok 'winget present'
 
