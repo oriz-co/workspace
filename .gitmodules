@@ -61,3 +61,6 @@
 [submodule "repos/own/constants-api"]
 	path = repos/own/constants-api
 	url = https://github.com/oriz-org/constants-api
+[submodule "repos/own/ragas-api"]
+	path = repos/own/ragas-api
+	url = https://github.com/oriz-org/ragas-api
